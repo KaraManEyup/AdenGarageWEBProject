@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AdenGarageWEB.DataAccess;
 using Core.Models;
 
-namespace AdenGarageWEB.Web.Controllers
+namespace AdenGarageWEB.Controllers
 {
     public class MusterisController : Controller
     {
@@ -20,39 +25,43 @@ namespace AdenGarageWEB.Web.Controllers
             return View(await _context.Musteriler.ToListAsync());
         }
 
+        // GET: Musteris/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var musteri = await _context.Musteriler
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (musteri == null)
+            {
+                return NotFound();
+            }
+
+            return View(musteri);
+        }
+
         // GET: Musteris/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        // POST: Musteris/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Isim,Soyisim,Telefon")] Musteri musteri)
+        public async Task<IActionResult> Create([Bind("Id,Isim,Soyisim,Telefon")] Musteri musteri)
         {
-            if (_context.Musteriler.Any(m =>
-                m.Isim == musteri.Isim &&
-                m.Soyisim == musteri.Soyisim &&
-                m.Telefon == musteri.Telefon))
-            {
-                ModelState.AddModelError("", "Bu müşteri zaten kayıtlı.");
-                return View(musteri);
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Add(musteri);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", "Bir hata oluştu: " + ex.Message);
-                }
+                _context.Add(musteri);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-
             return View(musteri);
         }
 
@@ -73,6 +82,8 @@ namespace AdenGarageWEB.Web.Controllers
         }
 
         // POST: Musteris/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Isim,Soyisim,Telefon")] Musteri musteri)
@@ -105,7 +116,7 @@ namespace AdenGarageWEB.Web.Controllers
             return View(musteri);
         }
 
-        // GET: Musteris/Delete/1
+        // GET: Musteris/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -115,7 +126,6 @@ namespace AdenGarageWEB.Web.Controllers
 
             var musteri = await _context.Musteriler
                 .FirstOrDefaultAsync(m => m.Id == id);
-
             if (musteri == null)
             {
                 return NotFound();
@@ -124,23 +134,20 @@ namespace AdenGarageWEB.Web.Controllers
             return View(musteri);
         }
 
-        // POST: Musteris/DeleteConfirmed/1
+        // POST: Musteris/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var musteri = await _context.Musteriler.FindAsync(id);
-            if (musteri == null)
+            if (musteri != null)
             {
-                return NotFound();
+                _context.Musteriler.Remove(musteri);
             }
 
-            _context.Musteriler.Remove(musteri);
             await _context.SaveChangesAsync();
-
             return RedirectToAction(nameof(Index));
         }
-
 
         private bool MusteriExists(int id)
         {

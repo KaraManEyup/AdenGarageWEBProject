@@ -22,7 +22,8 @@ namespace AdenGarageWEB.Controllers
         // GET: Arabas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Arabalar.ToListAsync());
+            var adenGarageDbContext = _context.Arabalar.Include(a => a.Musteri);
+            return View(await adenGarageDbContext.ToListAsync());
         }
 
         // GET: Arabas/Details/5
@@ -34,6 +35,7 @@ namespace AdenGarageWEB.Controllers
             }
 
             var araba = await _context.Arabalar
+                .Include(a => a.Musteri)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (araba == null)
             {
@@ -46,17 +48,13 @@ namespace AdenGarageWEB.Controllers
         // GET: Arabas/Create
         public IActionResult Create()
         {
-            ViewBag.MusteriId = new SelectList(
-                _context.Musteriler
-                    .Select(m => new { m.Id, FullName = m.Isim + " " + m.Soyisim })
-                    .ToList(),
-                "Id",
-                "FullName"
-            );
-
+            ViewData["MusteriId"] = new SelectList(_context.Musteriler, "Id", "Isim");
             return View();
         }
 
+        // POST: Arabas/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Marka,Model,Km,Islem,Tarih,MusteriId")] Araba araba)
@@ -67,8 +65,7 @@ namespace AdenGarageWEB.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-
+            ViewData["MusteriId"] = new SelectList(_context.Musteriler, "Id", "Isim", araba.MusteriId);
             return View(araba);
         }
 
@@ -85,14 +82,13 @@ namespace AdenGarageWEB.Controllers
             {
                 return NotFound();
             }
+            ViewData["MusteriId"] = new SelectList(_context.Musteriler, "Id", "Isim", araba.MusteriId);
             return View(araba);
-
-            ViewBag.MusteriId = new SelectList(_context.Musteriler, "Id", "Ad");
-
         }
 
-
-
+        // POST: Arabas/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Marka,Model,Km,Islem,Tarih,MusteriId")] Araba araba)
@@ -121,8 +117,8 @@ namespace AdenGarageWEB.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-
             }
+            ViewData["MusteriId"] = new SelectList(_context.Musteriler, "Id", "Isim", araba.MusteriId);
             return View(araba);
         }
 
@@ -135,6 +131,7 @@ namespace AdenGarageWEB.Controllers
             }
 
             var araba = await _context.Arabalar
+                .Include(a => a.Musteri)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (araba == null)
             {

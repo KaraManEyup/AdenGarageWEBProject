@@ -27,9 +27,10 @@ namespace Core.Models
         [DataType(DataType.Date)]
         public DateTime Tarih { get; set; }
 
-        [Required(ErrorMessage = "Müşteri seçimi zorunludur.")]
+     
         public int MusteriId { get; set; }
         // Navigation Property
-        public Musteri Musteri { get; set; }
+
+        public Musteri? Musteri { get; set; }
     }
 }

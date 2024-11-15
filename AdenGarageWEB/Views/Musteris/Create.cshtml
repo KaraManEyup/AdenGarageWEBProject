@@ -1,42 +1,43 @@
 ﻿@model Core.Models.Musteri
 
 @{
-    ViewData["Title"] = "Yeni Müşteri Ekle";
+    ViewData["Title"] = "Create";
 }
 
-<h2 class="text-center mb-4">@ViewData["Title"]</h2>
+<h1>Create</h1>
 
-<div class="card shadow-lg">
-    <div class="card-header bg-primary text-white text-center">
-        <h5>Yeni Müşteri Ekle</h5>
-    </div>
-    <div class="card-body">
-        <form asp-action="Create" method="post">
-            <div class="mb-3">
-                <label asp-for="Isim" class="form-label">Ad</label>
-                <input asp-for="Isim" class="form-control" placeholder="Müşterinin adı" />
+<h4>Musteri</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Isim" class="control-label"></label>
+                <input asp-for="Isim" class="form-control" />
                 <span asp-validation-for="Isim" class="text-danger"></span>
             </div>
-            <div class="mb-3">
-                <label asp-for="Soyisim" class="form-label">Soyad</label>
-                <input asp-for="Soyisim" class="form-control" placeholder="Müşterinin soyadı" />
+            <div class="form-group">
+                <label asp-for="Soyisim" class="control-label"></label>
+                <input asp-for="Soyisim" class="form-control" />
                 <span asp-validation-for="Soyisim" class="text-danger"></span>
             </div>
-            <div class="mb-3">
-                <label asp-for="Telefon" class="form-label">Telefon Numarası</label>
-                <input asp-for="Telefon" class="form-control" placeholder="Telefon numarası" />
+            <div class="form-group">
+                <label asp-for="Telefon" class="control-label"></label>
+                <input asp-for="Telefon" class="form-control" />
                 <span asp-validation-for="Telefon" class="text-danger"></span>
             </div>
-            <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-success px-5">Müşteri Ekle</button>
-                <a asp-action="Index" class="btn btn-secondary px-5">İptal</a>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

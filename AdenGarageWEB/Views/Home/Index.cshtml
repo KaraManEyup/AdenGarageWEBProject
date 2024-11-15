@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Sol Bölüm: Başlık ve Tanıtım -->
+        <div class="col-md-6 mb-4">
+            <h1 class="display-4 text-primary mb-3">Hoşgeldiniz!</h1>
+            <p class="lead text-muted">
+                AdenGarage'a hoş geldiniz. Aracınız için profesyonel tamir ve bakım hizmeti sunuyoruz.
+                Sizin için en uygun çözümü bulmak için buradayız.
+            </p>
+         
+        </div>
+
+        <!-- Sağ Bölüm: Görsel -->
+        <div class="col-md-6">
+            <img src="~/logo.png" class="img-fluid rounded" alt="Garage Image">
+        </div>
+    </div>
+
+    <!-- Özellikler Bölümü -->
+    <div class="row text-center mt-5">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-body">
+                    <h5 class="card-title">Profesyonel Hizmet</h5>
+                    <p class="card-text">Yüksek kaliteli hizmetlerimizle aracınıza en iyi bakımı sağlıyoruz. Uzman kadromuzla güvence altındasınız.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-body">
+                    <h5 class="card-title">Zamanında Teslim</h5>
+                    <p class="card-text">Aracınız, belirtilen süre içinde teslim edilir. Zamanında teslimat garantisi ile hizmetinizdeyiz.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-body">
+                    <h5 class="card-title">Uygun Fiyat</h5>
+                    <p class="card-text">Fiyatlarımız oldukça rekabetçidir. Hem kalite hem de uygun fiyatı bir arada bulacaksınız.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hızlı Erişim Butonları -->
+    <div class="row text-center mt-5">
+        <div class="col">
+            <h1 class="text-primary">Hızlı Erişim</h1>
+            <p>Hızlı bir şekilde işlemlere başlamak için aşağıdaki bağlantılara tıklayabilirsiniz:</p>
+            <a href="@Url.Action("Index", "Musteris")" class="btn btn-outline-primary btn-lg mx-8">Müşteri Listele</a>
+            <a href="@Url.Action("Create", "Musteris")" class="btn btn-outline-success btn-lg mx-8">Yeni Müşteri Ekle</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+﻿@model Core.Models.Musteri
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+<h3>Silmek istedinge eminmisin?</h3>
+<div>
+    <h4>Musteri</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Isim)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.Isim)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Soyisim)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.Soyisim)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Telefon)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.Telefon)
+        </dd>
+       
+     
+
+
+    </dl>
+
+    <form asp-action="Delete">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Yes" class="btn btn-danger" />&nbsp;&nbsp;
+        <a asp-action="Index" class="btn btn-success">No</a>
+    </form>
+</div>

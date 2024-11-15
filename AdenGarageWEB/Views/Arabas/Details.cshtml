@@ -1,54 +1,66 @@
 ﻿@model Core.Models.Araba
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Araba Detayları";
 }
 
-<h1>Details</h1>
+<h1 class="text-center text-white my-4">Araba Detayları</h1>
 
-<div>
-    <h4>Araba</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Marka)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Marka)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Model)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Model)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Km)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Km)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Islem)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Islem)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tarih)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tarih)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Musteri)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Musteri.Isim)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <table class="table table-bordered text-white" style="background-color: rgba(255, 255, 255, 0.2);">
+                <thead>
+                    <tr>
+                        <th class="text-center" colspan="2">
+                            <h4>Araba Bilgileri</h4>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Marka -->
+                    <tr>
+                        <th style="width: 30%;">Marka</th>
+                        <td>@Html.DisplayFor(model => model.Marka)</td>
+                    </tr>
+
+                    <!-- Model -->
+                    <tr>
+                        <th>Model</th>
+                        <td>@Html.DisplayFor(model => model.Model)</td>
+                    </tr>
+
+                    <!-- Kilometre -->
+                    <tr>
+                        <th>Kilometre</th>
+                        <td>@Html.DisplayFor(model => model.Km)</td>
+                    </tr>
+
+                    <!-- İşlem -->
+                    <tr>
+                        <th>İşlem</th>
+                        <td>@Html.DisplayFor(model => model.Islem)</td>
+                    </tr>
+
+                    <!-- Tarih -->
+                    <tr>
+                        <th>Tarih</th>
+                        <td>@Html.DisplayFor(model => model.Tarih)</td>
+                    </tr>
+
+                    <!-- Müşteri -->
+                    <tr>
+                        <th>Müşteri</th>
+                        <td>@Html.DisplayFor(model => model.Musteri.Isim)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <!-- Edit and Back Buttons -->
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning btn-sm shadow-sm rounded-pill">Düzenle</a>
+        <a asp-action="Index" class="btn btn-link text-white">Listeye Dön</a>
+    </div>
 </div>

@@ -1,36 +1,47 @@
 ﻿@model Core.Models.Musteri
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Müşteri Detayları";
 }
 
-<h1>Details</h1>
+<h1 class="text-center mb-4 text-warning">Müşteri Detayları</h1>
 
-<div>
-    <h4>Musteri</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Isim)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Isim)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Soyisim)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Soyisim)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Telefon)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Telefon)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg rounded">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="m-0">Müşteri Bilgileri</h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.Isim)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.Isim)
+                        </dd>
+
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.Soyisim)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.Soyisim)
+                        </dd>
+
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.Telefon)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.Telefon)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning btn-sm shadow-sm rounded-pill">Düzenle</a>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm shadow-sm rounded-pill">Listeye Dön</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,57 +1,91 @@
 ﻿@model Core.Models.Araba
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Yeni Araba Ekle";
 }
 
-<h1>Create</h1>
+<h1 class="text-center my-4 text-primary">Yeni Araba Ekle</h1>
 
-<h4>Araba</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Marka" class="control-label"></label>
-                <input asp-for="Marka" class="form-control" />
-                <span asp-validation-for="Marka" class="text-danger"></span>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg rounded">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="m-0">Araba Bilgilerini Girin</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <!-- Marka Alanı -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Marka" class="form-label fw-bold">Marka</label>
+                            <input asp-for="Marka" class="form-control shadow-sm" placeholder="Araba markasını girin" />
+                            <span asp-validation-for="Marka" class="text-danger"></span>
+                        </div>
+
+                        <!-- Model Alanı -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Model" class="form-label fw-bold">Model</label>
+                            <input asp-for="Model" class="form-control shadow-sm" placeholder="Araba modelini girin" />
+                            <span asp-validation-for="Model" class="text-danger"></span>
+                        </div>
+
+                        <!-- Km Alanı -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Km" class="form-label fw-bold">Kilometre</label>
+                            <input asp-for="Km" class="form-control shadow-sm" placeholder="Kilometre bilgisini girin" />
+                            <span asp-validation-for="Km" class="text-danger"></span>
+                        </div>
+
+                        <!-- İşlem Alanı -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Islem" class="form-label fw-bold">Yapılan İşlem</label>
+                            <input asp-for="Islem" class="form-control shadow-sm" placeholder="Yapılan işlemi girin" />
+                            <span asp-validation-for="Islem" class="text-danger"></span>
+                        </div>
+
+                        <!-- Tarih Alanı -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Tarih" class="form-label fw-bold">Tarih</label>
+                            <input asp-for="Tarih" class="form-control shadow-sm" type="date" />
+                            <span asp-validation-for="Tarih" class="text-danger"></span>
+                        </div>
+
+                        <!-- Müşteri Seçimi -->
+                        <div class="form-group mb-3">
+                            <label asp-for="MusteriId" class="form-label fw-bold">Müşteri Seç</label>
+                            <select asp-for="MusteriId" class="form-control shadow-sm" asp-items="ViewBag.MusteriId">
+                                <option value="">-- Müşteri Seçin --</option>
+                            </select>
+                            <span asp-validation-for="MusteriId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Submit Butonu -->
+                        <div class="form-group text-center mt-4">
+                            <input type="submit" value="Kaydet" class="btn btn-primary btn-lg w-100 shadow-sm" />
+                        </div>
+                    </form>
+
+                    <!-- Listeye Dön Butonu -->
+                    <div class="text-center mt-3">
+                        <a asp-action="Index" class="btn btn-link text-decoration-none">Listeye Dön</a>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Km" class="control-label"></label>
-                <input asp-for="Km" class="form-control" />
-                <span asp-validation-for="Km" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Islem" class="control-label"></label>
-                <input asp-for="Islem" class="form-control" />
-                <span asp-validation-for="Islem" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Tarih" class="control-label"></label>
-                <input asp-for="Tarih" class="form-control" />
-                <span asp-validation-for="Tarih" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MusteriId" class="control-label"></label>
-                <select asp-for="MusteriId" class ="form-control" asp-items="ViewBag.MusteriId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<!-- Sayfa Altı -->
+<footer class="bg-dark text-white text-center py-4 mt-5">
+    <div class="container">
+        <p class="mb-0">&copy; 2024 AdenGarage. Tüm hakları saklıdır.</p>
+    </div>
+</footer>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -2,61 +2,88 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container py-5">
-    <div class="row">
-        <!-- Sol Bölüm: Başlık ve Tanıtım -->
-        <div class="col-md-6 mb-4">
-            <h1 class="display-4 text-primary mb-3">Hoşgeldiniz!</h1>
-            <p class="lead text-muted">
-                AdenGarage'a hoş geldiniz. Aracınız için profesyonel tamir ve bakım hizmeti sunuyoruz.
-                Sizin için en uygun çözümü bulmak için buradayız.
+<div class="container-fluid bg-dark py-10">
+    <!-- Ana Başlık ve Tanıtım Bölümü -->
+    <div class="row align-items-center">
+        <div class="col-lg-6 text-center text-lg-start">
+            <h1 class="display-4 text-white fw-bold mb-4 animate__animated animate__fadeInUp">AdenGarage'a Hoşgeldiniz!</h1>
+            <p class="lead text-white fs-4 animate__animated animate__fadeInUp animate__delay-1s">
+                Aracınız için profesyonel bakım, tamir ve servis hizmeti sunuyoruz. En uygun fiyatlarla, zamanında teslimat garantisiyle.
             </p>
-         
+            
         </div>
-
-        <!-- Sağ Bölüm: Görsel -->
-        <div class="col-md-6">
-            <img src="~/logo.png" class="img-fluid rounded" alt="Garage Image">
-        </div>
-    </div>
-
-    <!-- Özellikler Bölümü -->
-    <div class="row text-center mt-5">
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card shadow-sm border-light">
-                <div class="card-body">
-                    <h5 class="card-title">Profesyonel Hizmet</h5>
-                    <p class="card-text">Yüksek kaliteli hizmetlerimizle aracınıza en iyi bakımı sağlıyoruz. Uzman kadromuzla güvence altındasınız.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card shadow-sm border-light">
-                <div class="card-body">
-                    <h5 class="card-title">Zamanında Teslim</h5>
-                    <p class="card-text">Aracınız, belirtilen süre içinde teslim edilir. Zamanında teslimat garantisi ile hizmetinizdeyiz.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card shadow-sm border-light">
-                <div class="card-body">
-                    <h5 class="card-title">Uygun Fiyat</h5>
-                    <p class="card-text">Fiyatlarımız oldukça rekabetçidir. Hem kalite hem de uygun fiyatı bir arada bulacaksınız.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Hızlı Erişim Butonları -->
-    <div class="row text-center mt-5">
-        <div class="col">
-            <h1 class="text-primary">Hızlı Erişim</h1>
-            <p>Hızlı bir şekilde işlemlere başlamak için aşağıdaki bağlantılara tıklayabilirsiniz:</p>
-            <a href="@Url.Action("Index", "Musteris")" class="btn btn-outline-primary btn-lg mx-8">Müşteri Listele</a>
-            <a href="@Url.Action("Create", "Musteris")" class="btn btn-outline-success btn-lg mx-8">Yeni Müşteri Ekle</a>
+        <div class="col-lg-6 mt-4 mt-lg-0">
+            <img src="~/logo.png" class="img-fluid rounded shadow-lg animate__animated animate__fadeInUp animate__delay-1s" alt="Garage Image">
         </div>
     </div>
 </div>
+
+<!-- Özellikler Bölümü -->
+<div class="container py-5">
+    <h2 class="text-center text-light mb-5 animate__animated animate__fadeIn animate__delay-3s">Neden AdenGarage?</h2>
+    
+    
+    <div class="row text-center text-bg-dark">
+        @foreach (var service in new[]
+        {
+        new { Icon = "bi-person-check",  Title = "Profesyonel Hizmet", Description = "Yüksek kaliteli hizmetlerimizle aracınıza en iyi bakımı sağlıyoruz. Uzman kadromuzla güvence altındasınız." },
+        new { Icon = "bi-clock", Title = "Zamanında Teslim", Description = "Aracınız, belirtilen süre içinde teslim edilir. Zamanında teslimat garantisi ile hizmetinizdeyiz." },
+        new { Icon = "bi-wallet2", Title = "Uygun Fiyat", Description = "Fiyatlarımız oldukça rekabetçidir. Hem kalite hem de uygun fiyatı bir arada bulacaksınız." }
+        })
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card border-0 shadow-lg rounded-lg hover-zoom-in animate__animated animate__fadeIn animate__delay-4s">
+                    <div class="card-body p-4">
+                        <i class="bi @service.Icon display-4 text-primary mb-3"></i>
+                        <h5 class="card-title text-dark fw-bold">@service.Title</h5>
+                        <p class="card-text text-muted">@service.Description</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.5">
+    <title>Wallpapers </title>
+    <style>
+        body {
+            border-radius: 8px; /* Köşeleri yuvarlatır */
+            background-image: url('adenlogoblack.jpg');
+            background-size: cover; /* Görselin sayfaya tam uymasını sağlar */
+            background-position: center center; /* Görselin ortalanmasını sağlar */
+            background-attachment: fixed; /* Görselin sabit olmasını sağlar, kaydırıldığında da sabit kalır */
+            background-repeat: no-repeat; /* Görselin tekrarlanmamasını sağlar */
+        }
+    </style>
+</head>
+
+</html>
+<!-- Hızlı Erişim -->
+<div class="container py-5 bg-light rounded-3 shadow-sm">
+    <div class="row text-center">
+        <div class="col">
+
+            <h2 class="text-dark mb-4 animate__animated animate__fadeIn animate__delay-5s">Hızlı Erişim</h2>
+            <p class="text-muted fs-5 mb-4">Hızlı bir şekilde işlemlere başlamak için aşağıdaki bağlantılara tıklayabilirsiniz:</p>
+            <a href="@Url.Action("Index", "Musteris")" class="btn btn-outline-success btn-lg mx-3 animate__animated animate__fadeIn animate__delay-6s">Müşteri Listele</a>
+            <a href="@Url.Action("Create", "Musteris")" class="btn btn-outline-success btn-lg mx-3 animate__animated animate__fadeIn animate__delay-7s">Yeni Müşteri Ekle</a>
+            <a href="@Url.Action("Index", "Arabas")" class="btn btn-outline-success btn-lg mx-3 animate__animated animate__fadeIn animate__delay-7s">Araba Listele</a>
+            <a href="@Url.Action("Create", "Arabas")" class="btn btn-outline-success btn-lg mx-3 animate__animated animate__fadeIn animate__delay-7s">Yeni Araba Ekle</a>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+
+
+
+<!-- Bootstrap ve Iconlar -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></script>
+}

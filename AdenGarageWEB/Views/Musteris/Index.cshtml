@@ -1,47 +1,52 @@
 ﻿@model IEnumerable<Core.Models.Musteri>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Müşteri Listesi";
 }
 
-<h1>Index</h1>
+<h1 style="color:aliceblue; text-align:center;" class="mb-4">MÜŞTERİLER</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
+<table style="background-color: rgba(255,255,255,0.3)" class="table table-hover kutu">
+    <thead style="font-size:large">
         <tr>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Isim)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Soyisim)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Telefon)
             </th>
-            <th></th>
+            <th class="text-center">
+                İşlemler
+            </th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Isim)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Soyisim)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefon)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+    <tbody style="font-synthesis-style:unset">
+        @foreach (var item in Model)
+        {
+            <tr style="color:ivory;">
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Isim)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Soyisim)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Telefon)
+                </td>
+                <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm shadow-sm rounded-pill" style="color:gold;">Düzenle</a>&nbsp;|&nbsp;
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm shadow-sm rounded-pill" style="color:paleturquoise;">Detaylar</a>&nbsp;|&nbsp;
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm shadow-sm rounded-pill">Sil</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<p class="text-center mt-4">
+    <a asp-action="Create" class="btn btn-success btn-lg shadow-sm rounded-pill" style="background-color:darkorchid;">Yeni Müşteri Ekle</a>
+</p>
+

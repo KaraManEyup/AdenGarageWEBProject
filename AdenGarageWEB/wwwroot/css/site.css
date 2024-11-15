@@ -18,7 +18,15 @@ html {
 }
 
 body {
-    
-    background-color:darkgray
-    
+    background-color: #f0f8ff; /* Açýk mavi arka plan rengi */
+    background-image: url('../adenlogoblack.jpg');
+    background-size: cover; /* Arka planýn tam sayfayý kaplamasýný saðlar */
+    background-position: center center; /* Resmin ortalanmasý */
+    background-repeat: no-repeat; /* Resmin tekrarlanmamasý */
+}
+
+
+.kutu {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
 }

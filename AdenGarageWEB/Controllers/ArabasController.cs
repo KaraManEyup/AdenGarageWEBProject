@@ -20,11 +20,32 @@ namespace AdenGarageWEB.Controllers
         }
 
         // GET: Arabas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var adenGarageDbContext = _context.Arabalar.Include(a => a.Musteri);
-            return View(await adenGarageDbContext.ToListAsync());
+            // Arabalar sorgusunu başlatıyoruz ve sıralama işlemi yapıyoruz
+            var arabalar = _context.Arabalar.AsQueryable();  // Arabalar için sorguyu başlatıyoruz
+
+            // Sıralama işlemi
+            switch (sortOrder)
+            {
+                case "MarkaDesc":
+                    arabalar = arabalar.OrderByDescending(a => a.Marka); // Azalan sıralama
+                    break;
+                case "MarkaAsc":
+                default:
+                    arabalar = arabalar.OrderBy(a => a.Marka); // Artan sıralama
+                    break;
+            }
+
+            // Müşteri bilgisini dahil ediyoruz
+            arabalar = arabalar.Include(a => a.Musteri);
+
+            // Veritabanından listeyi çekiyoruz
+            var arabalarList = await arabalar.ToListAsync();  // Verileri listeye çeviriyoruz
+
+            return View(arabalarList);  // Listeyi View'a gönderiyoruz
         }
+
 
         // GET: Arabas/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -49,15 +70,22 @@ namespace AdenGarageWEB.Controllers
         public IActionResult Create()
         {
             ViewData["MusteriId"] = new SelectList(_context.Musteriler, "Id", "Isim");
+            ViewData["MusteriId"] = new SelectList(
+     _context.Musteriler.Select(m => new
+     {
+         Id = m.Id,
+         FullName = m.Isim + " " + m.Soyisim
+     }).ToList(),
+     "Id",
+     "FullName");
+
             return View();
         }
 
-        // POST: Arabas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Marka,Model,Km,Islem,Tarih,MusteriId")] Araba araba)
+        public async Task<IActionResult> Create([Bind("Id,Marka,Model,Km,Islem,Tarih,MusteriId,Plaka")] Araba araba)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +119,7 @@ namespace AdenGarageWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Marka,Model,Km,Islem,Tarih,MusteriId")] Araba araba)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Marka,Model,Km,Islem,Tarih,MusteriId,Plaka")] Araba araba)
         {
             if (id != araba.Id)
             {

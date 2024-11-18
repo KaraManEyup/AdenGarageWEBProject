@@ -14,6 +14,10 @@ namespace Core.Models
         [Required(ErrorMessage = "Marka zorunludur.")]
         public string Marka { get; set; }
 
+
+        [Required(ErrorMessage = "Marka zorunludur.")]
+        public string Plaka { get; set; }
+
         [Required(ErrorMessage = "Model zorunludur.")]
         public string Model { get; set; }
 
@@ -28,9 +32,11 @@ namespace Core.Models
         public DateTime Tarih { get; set; }
 
      
-        public int MusteriId { get; set; }
+        public int? MusteriId { get; set; }
         // Navigation Property
 
         public Musteri? Musteri { get; set; }
+
+       
     }
 }

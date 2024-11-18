@@ -1,75 +1,70 @@
 ﻿@model Core.Models.Araba
 
 @{
-    ViewData["Title"] = "Sil";
+    ViewData["Title"] = "Araba Sil";
 }
 
-<h1 class="text-center text-danger my-4">Sil</h1>
+<h1 class="text-center mb-4 text-danger">Araba Sil</h1>
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="alert alert-warning text-center">
-                <h4>Bu öğeyi silmek istediğinizden emin misiniz?</h4>
+            <div class="card shadow-lg rounded">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="m-0">Araba Silme İşlemi</h4>
+                </div>
+                <div class="card-body">
+                    <h3 class="text-center text-warning mb-4">Bu arabayı silmek istediğinizden emin misiniz?</h3>
+
+                    <!-- Araba Bilgileri Tablosu -->
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Bilgi Türü</th>
+                                <th>Değer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-bold">Marka</td>
+                                <td>@Html.DisplayFor(model => model.Marka)</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Model</td>
+                                <td>@Html.DisplayFor(model => model.Model)</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Kilometre</td>
+                                <td>@Html.DisplayFor(model => model.Km)</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">İşlem</td>
+                                <td>@Html.DisplayFor(model => model.Islem)</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Tarih</td>
+                                <td>@Html.DisplayFor(model => model.Tarih)</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Müşteri</td>
+                                <td>@Html.DisplayFor(model => model.Musteri.Isim)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Silme Formu -->
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-danger btn-lg px-5 shadow-sm">Sil</button>
+                            <a asp-action="Index" class="btn btn-secondary btn-lg px-5 ms-3 shadow-sm">İptal</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <table class="table table-bordered text-white" style="background-color: rgba(255, 255, 255, 0.2);">
-                <thead>
-                    <tr>
-                        <th class="text-center" colspan="2">
-                            <h4>Araba Bilgileri</h4>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Marka -->
-                    <tr>
-                        <th style="width: 30%;">Marka</th>
-                        <td>@Html.DisplayFor(model => model.Marka)</td>
-                    </tr>
-
-                    <!-- Model -->
-                    <tr>
-                        <th>Model</th>
-                        <td>@Html.DisplayFor(model => model.Model)</td>
-                    </tr>
-
-                    <!-- Kilometre -->
-                    <tr>
-                        <th>Kilometre</th>
-                        <td>@Html.DisplayFor(model => model.Km)</td>
-                    </tr>
-
-                    <!-- İşlem -->
-                    <tr>
-                        <th>İşlem</th>
-                        <td>@Html.DisplayFor(model => model.Islem)</td>
-                    </tr>
-
-                    <!-- Tarih -->
-                    <tr>
-                        <th>Tarih</th>
-                        <td>@Html.DisplayFor(model => model.Tarih)</td>
-                    </tr>
-
-                    <!-- Müşteri -->
-                    <tr>
-                        <th>Müşteri</th>
-                        <td>@Html.DisplayFor(model => model.Musteri.Isim)</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <form asp-action="Delete" class="text-center mt-4">
-                <input type="hidden" asp-for="Id" />
-                <input type="submit" value="Sil" class="btn btn-danger btn-sm shadow-sm rounded-pill" />
-                <a asp-action="Index" class="btn btn-link text-white">Listeye Dön</a>
-            </form>
         </div>
     </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+<!-- Sayfa Altı -->
+

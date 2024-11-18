@@ -14,51 +14,43 @@
                     <h4 class="m-0">Müşteri Silme İşlemi</h4>
                 </div>
                 <div class="card-body">
-                    <h3 class="text-center text-warning">Bu müşteriyi silmek istediğinizden emin misiniz?</h3>
-                    <div>
-                        <h4>Müşteri Bilgileri</h4>
-                        <hr />
-                        <dl class="row">
-                            <dt class="col-sm-3 fw-bold">
-                                @Html.DisplayNameFor(model => model.Isim)
-                            </dt>
-                            <dd class="col-sm-9">
-                                @Html.DisplayFor(model => model.Isim)
-                            </dd>
-                            <dt class="col-sm-3 fw-bold">
-                                @Html.DisplayNameFor(model => model.Soyisim)
-                            </dt>
-                            <dd class="col-sm-9">
-                                @Html.DisplayFor(model => model.Soyisim)
-                            </dd>
-                            <dt class="col-sm-3 fw-bold">
-                                @Html.DisplayNameFor(model => model.Telefon)
-                            </dt>
-                            <dd class="col-sm-9">
-                                @Html.DisplayFor(model => model.Telefon)
-                            </dd>
-                        </dl>
-                    </div>
+                    <h3 class="text-center text-warning mb-4">Bu müşteriyi silmek istediğinizden emin misiniz?</h3>
+
+                    <!-- Müşteri Bilgileri Tablosu -->
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Bilgi Türü</th>
+                                <th>Değer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-bold">Ad</td>
+                                <td>@Html.DisplayFor(model => model.Isim)</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Soyad</td>
+                                <td>@Html.DisplayFor(model => model.Soyisim)</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Telefon</td>
+                                <td>@Html.DisplayFor(model => model.Telefon)</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
                     <!-- Silme Formu -->
-                    <form asp-action="Delete">
+                    <form asp-action="Delete" method="post">
                         <input type="hidden" asp-for="Id" />
-                        <div class="form-group text-center mt-4">
-                            <input type="submit" value="Sil" class="btn btn-danger btn-lg" />
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-danger btn-lg px-5 shadow-sm">Sil</button>
+                            <a asp-action="Index" class="btn btn-secondary btn-lg px-5 ms-3 shadow-sm">İptal</a>
                         </div>
                     </form>
-                    <div class="text-center mt-3">
-                        <a asp-action="Index" class="btn btn-outline-secondary btn-sm shadow-sm rounded-pill">Listeye Dön</a>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Sayfa Altı -->
-<footer class="bg-dark text-white text-center py-4 mt-5">
-    <div class="container">
-        <p class="mb-0">&copy; 2024 AdenGarage. Tüm hakları saklıdır.</p>
-    </div>
-</footer>

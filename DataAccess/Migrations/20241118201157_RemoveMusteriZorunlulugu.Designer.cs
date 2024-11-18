@@ -4,6 +4,7 @@ using AdenGarageWEB.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AdenGarageDbContext))]
-    partial class AdenGarageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241118201157_RemoveMusteriZorunlulugu")]
+    partial class RemoveMusteriZorunlulugu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +48,7 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MusteriId")
+                    b.Property<int>("MusteriId")
                         .HasColumnType("int");
 
                     b.Property<string>("Plaka")
@@ -91,7 +94,9 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("Core.Models.Musteri", "Musteri")
                         .WithMany()
-                        .HasForeignKey("MusteriId");
+                        .HasForeignKey("MusteriId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Musteri");
                 });

@@ -20,27 +20,30 @@ namespace AdenGarageWEB.Controllers
         }
 
         // GET: Musteris
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            return View(await _context.Musteriler.ToListAsync());
-        }
 
-        // GET: Musteris/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
+            var musteriler = _context.Musteriler.AsQueryable();
+
+            if (string.IsNullOrEmpty(sortOrder))
             {
-                return NotFound();
+                sortOrder = "IsimAsc";  // Default sıralama
             }
 
-            var musteri = await _context.Musteriler
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (musteri == null)
+            switch (sortOrder)
             {
-                return NotFound();
+                case "IsimDesc":
+                    musteriler = musteriler.OrderByDescending(m => m.Isim);
+                    break;
+                case "IsimAsc":
+                default:
+                    musteriler = musteriler.OrderBy(m => m.Isim);
+                    break;
             }
 
-            return View(musteri);
+            var musterilerList = await musteriler.ToListAsync();
+
+            return View(musterilerList);  
         }
 
         // GET: Musteris/Create
@@ -49,9 +52,7 @@ namespace AdenGarageWEB.Controllers
             return View();
         }
 
-        // POST: Musteris/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Isim,Soyisim,Telefon")] Musteri musteri)

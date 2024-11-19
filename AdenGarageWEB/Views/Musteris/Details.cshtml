@@ -9,40 +9,47 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-lg rounded">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="m-0">Müşteri Bilgileri</h4>
-                </div>
-                <div class="card-body">
-                    <dl class="row">
-                        <dt class="col-sm-3">
-                            @Html.DisplayNameFor(model => model.Isim)
-                        </dt>
-                        <dd class="col-sm-9">
-                            @Html.DisplayFor(model => model.Isim)
-                        </dd>
+            <h4 class="m-0">Müşteri Bilgileri</h4>
+        </div>
+        <table class="table table-bordered text-white" style="background-color: rgba(0, 0, 0, 0.6);">
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="2">
+                        <h4>Musteri Bilgileri</h4>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Marka -->
+                <tr>
+                    <th style="width: 30%;">Isim</th>
+                    <td>@Html.DisplayFor(model => model.Isim)</td>
+                </tr>
 
-                        <dt class="col-sm-3">
-                            @Html.DisplayNameFor(model => model.Soyisim)
-                        </dt>
-                        <dd class="col-sm-9">
-                            @Html.DisplayFor(model => model.Soyisim)
-                        </dd>
+                <!-- Model -->
+                <tr>
+                    <th>Soy Isim</th>
+                    <td>@Html.DisplayFor(model => model.Soyisim)</td>
+                </tr>
 
-                        <dt class="col-sm-3">
-                            @Html.DisplayNameFor(model => model.Telefon)
-                        </dt>
-                        <dd class="col-sm-9">
-                            @Html.DisplayFor(model => model.Telefon)
-                        </dd>
-                    </dl>
-                </div>
-                <div class="card-footer text-center">
-                    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning btn-sm shadow-sm rounded-pill">Düzenle</a>
-                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm shadow-sm rounded-pill">Listeye Dön</a>
-                </div>
-            </div>
+                <!-- Kilometre -->
+                <tr>
+                    <th>Telefon</th>
+                    <td>@Html.DisplayFor(model => model.Telefon)</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+
+        <div class="text-center mt-4">
+            <!-- Edit and Back Buttons -->
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning btn-sm shadow-sm rounded-pill">Düzenle</a>
+            <a asp-action="Index" class="btn btn-link text-white">Listeye Dön</a>
         </div>
     </div>
+</div>
+<div class="text-center mt-4">
+    <a asp-action="Index" style="color:white" class="btn btn-danger">Listeye Dön</a>
 </div>
 

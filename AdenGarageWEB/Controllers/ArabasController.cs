@@ -110,17 +110,20 @@ namespace AdenGarageWEB.Controllers
             {
                 return NotFound();
             }
+
+            // Müşteri seçimi için veriler
             ViewData["MusteriId"] = new SelectList(_context.Musteriler, "Id", "Isim", araba.MusteriId);
             return View(araba);
         }
 
-        // POST: Arabas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Marka,Model,Km,Islem,Tarih,MusteriId,Plaka")] Araba araba)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Marka,Model,Plaka,Km,Islem,Tarih,MusteriId")] Araba araba)
         {
+            // Log veya breakpoint ile kontrol
+            Console.WriteLine("Edit metodu çalıştı."); // Çalıştığını kontrol edin
+
             if (id != araba.Id)
             {
                 return NotFound();
@@ -135,7 +138,7 @@ namespace AdenGarageWEB.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ArabaExists(araba.Id))
+                    if (!_context.Arabalar.Any(e => e.Id == araba.Id))
                     {
                         return NotFound();
                     }
@@ -146,6 +149,8 @@ namespace AdenGarageWEB.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            // Model hatalıysa sayfa yeniden yüklenecek
             ViewData["MusteriId"] = new SelectList(_context.Musteriler, "Id", "Isim", araba.MusteriId);
             return View(araba);
         }

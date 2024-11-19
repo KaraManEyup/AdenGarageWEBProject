@@ -82,9 +82,7 @@ namespace AdenGarageWEB.Controllers
             return View(musteri);
         }
 
-        // POST: Musteris/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Isim,Soyisim,Telefon")] Musteri musteri)
@@ -116,6 +114,26 @@ namespace AdenGarageWEB.Controllers
             }
             return View(musteri);
         }
+
+        // GET: Musteris/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound(); // ID gönderilmezse NotFound döner
+            }
+
+            var musteri = await _context.Musteriler
+                .FirstOrDefaultAsync(m => m.Id == id); // Veritabanından ID'ye göre müşteri getir
+
+            if (musteri == null)
+            {
+                return NotFound(); // Belirtilen ID'ye ait müşteri bulunamazsa NotFound döner
+            }
+
+            return View(musteri); // Müşteri detayını View'a gönderir
+        }
+
 
         // GET: Musteris/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -154,5 +172,6 @@ namespace AdenGarageWEB.Controllers
         {
             return _context.Musteriler.Any(e => e.Id == id);
         }
+
     }
 }

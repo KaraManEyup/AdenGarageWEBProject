@@ -7,14 +7,15 @@
 <h1 style="color:aliceblue" class="text-center mb-4">Araba Listesi</h1>
 
 <p>
-    <a asp-action="Index" asp-route-sortOrder="MarkaAsc">Marka (A-Z)</a> 
-    <a asp-action="Index" asp-route-sortOrder="MarkaDesc">Marka (Z-A)</a>
+    <a class="btn btn-outline-warning" asp-action="Index" asp-route-sortOrder="MarkaAsc">Isim Artan |↑|</a>
+    <a class="btn btn-outline-warning" asp-action="Index" asp-route-sortOrder="MarkaDesc">Isim Azalan |↓|</a>
 </p>
-<table style="background-color: rgba(255,255,255,0.3) " class="table table-hover kutu">
+<table style="background-color:rgba(0,0,0,0.8) " class="table table-hover kutu">
     <thead class="text-center" style="font-size:large">
-        <tr class="text-center" style="color:aliceblue">
+        <tr class="text-center" style="color:gold">
             <th class="text-center">Marka</th>
             <th class="text-center">Model</th>
+            <th class="text-center">Plaka</th>
             <th class="text-center">Kilometre</th>
             <th class="text-center">İşlem</th>
             <th class="text-center">Tarih</th>
@@ -25,18 +26,19 @@
     <tbody>
         @foreach (var araba in Model)
         {
-            <tr style="color:aliceblue" class="text-center">
-                <td class="text-center">@araba.Marka</td>
-                <td class="text-center">@araba.Model</td>
-                <td class="text-center">@araba.Km</td>
-                <td class="text-center">@araba.Islem</td>
-                <td class="text-center">@araba.Tarih.ToString("dd/MM/yyyy")</td>
+            <tr style="color:white" class="text-center">
+                <td class="text-center"><b>@araba.Marka</b></td>
+                <td class="text-center"><b>@araba.Model</b></td>
+                <td class="text-center"><b>@araba.Plaka</b></td>
+                <td class="text-center"><b>@araba.Km</b></td>
+                <td class="text-center"><b>@araba.Islem</b></td>
+                <td class="text-center"><b>@araba.Tarih.ToString("dd/MM/yyyy")</b></td>
 
                 <!-- Müşteri Bilgisi Kontrolü -->
                 <td class="text-center">
                     @if (araba.MusteriId != null)
                     {
-                        <span>@araba.Musteri.Isim</span> <span>@araba.Musteri.Soyisim</span>
+                        <span><b>@araba.Musteri.Isim</b></span> <span><b>@araba.Musteri.Soyisim</b></span>
                     }
                     else
                     {
@@ -47,6 +49,7 @@
                 <!-- İşlem butonları -->
                 <td class="text-center">
                     <a asp-action="Edit" asp-route-id="@araba.Id" class="btn btn-warning btn-sm">Düzenle</a>
+                    <a asp-action="Details" asp-route-id="@araba.Id" style="color:white" class="btn btn-info btn-sm shadow-sm rounded-pill" style="color:paleturquoise;">Detaylar</a>&nbsp;|&nbsp;
                     <a asp-action="Delete" asp-route-id="@araba.Id" class="btn btn-danger btn-sm">Sil</a>
                 </td>
             </tr>

@@ -15,7 +15,7 @@ namespace Core.Models
         public string Marka { get; set; }
 
 
-        [Required(ErrorMessage = "Marka zorunludur.")]
+        [Required(ErrorMessage = "Plaka zorunludur.")]
         public string Plaka { get; set; }
 
         [Required(ErrorMessage = "Model zorunludur.")]

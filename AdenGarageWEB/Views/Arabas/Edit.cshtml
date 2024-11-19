@@ -4,28 +4,35 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1 class="text-center text-white my-4">Araba Düzenle</h1>
+<h1>Edit</h1>
 
+<h4>Araba</h4>
+<hr />
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="card-body">
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                 <input type="hidden" asp-for="Id" />
 
-                <!-- Marka -->
                 <div class="form-group mb-3">
-                    <label asp-for="Marka" class="form-label">Marka</label>
-                    <input asp-for="Marka" class="form-control" />
+                    <label asp-for="Marka" class="form-label fw-bold"></label>
+                    <input asp-for="Marka" class="form-control shadow-sm" placeholder="Marka girin" />
                     <span asp-validation-for="Marka" class="text-danger"></span>
                 </div>
 
-                <!-- Model -->
                 <div class="form-group mb-3">
-                    <label asp-for="Model" class="form-label">Model</label>
-                    <input asp-for="Model" class="form-control" />
+                    <label asp-for="Model" class="form-label fw-bold"></label>
+                    <input asp-for="Model" class="form-control shadow-sm" placeholder="Model girin" />
                     <span asp-validation-for="Model" class="text-danger"></span>
                 </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Plaka" class="form-label fw-bold"></label>
+                    <input asp-for="Plaka" class="form-control shadow-sm" placeholder="Plaka girin" />
+                    <span asp-validation-for="Plaka" class="text-danger"></span>
+                </div>
+
 
                 <!-- Km -->
                 <div class="form-group mb-3">
@@ -48,25 +55,25 @@
                     <span asp-validation-for="Tarih" class="text-danger"></span>
                 </div>
 
-                <!-- Müşteri -->
-                <div class="form-group mb-3">
-                    <label asp-for="MusteriId" class="form-label">Müşteri</label>
-                    <select asp-for="MusteriId" class="form-control" asp-items="ViewBag.MusteriId"></select>
-                    <span asp-validation-for="MusteriId" class="text-danger"></span>
+
+                <div class="form-group">
+                    <label for="MusteriId">Müşteri</label>
+                    <select asp-for="MusteriId" class="form-control" asp-items="@(ViewData["MusteriId"] as SelectList)">
+                        <option value="">Seçiniz</option> <!-- "Seçiniz" opsiyonu -->
+                    </select>
                 </div>
 
-                <!-- Submit Button -->
                 <div class="form-group text-center">
                     <input type="submit" value="Kaydet" class="btn btn-primary w-100" />
                 </div>
             </form>
         </div>
     </div>
+</div>
 
-    <!-- Back Link -->
-    <div class="text-center mt-4">
-        <a asp-action="Index" class="btn btn-link">Listeye Dön</a>
-    </div>
+<!-- Back Link -->
+<div class="text-center mt-4">
+    <a asp-action="Index" class="btn btn-link">Listeye Dön</a>
 </div>
 
 
@@ -75,3 +82,10 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+
+<div class="form-group">
+    <label asp-for="Plaka" class="control-label"></label>
+    <input asp-for="Plaka" class="form-control" />
+    <span asp-validation-for="Plaka" class="text-danger"></span>
+</div>

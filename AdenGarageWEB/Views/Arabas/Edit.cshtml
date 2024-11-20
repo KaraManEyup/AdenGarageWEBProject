@@ -4,30 +4,33 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>Araba</h4>
-<hr />
-<div class="container">
+<div style="background:rgba(0,0,0,0.8)" class="container kutu">
     <div class="row justify-content-center">
+        <span>
+
+
+        </span>
+        <br />
+        <h4 style="color: greenyellow">ARABA DUZENLE</h4>
         <div class="card-body">
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                 <input type="hidden" asp-for="Id" />
 
-                <div class="form-group mb-3">
+                <div style="color:white" class="form-group mb-3">
                     <label asp-for="Marka" class="form-label fw-bold"></label>
                     <input asp-for="Marka" class="form-control shadow-sm" placeholder="Marka girin" />
                     <span asp-validation-for="Marka" class="text-danger"></span>
                 </div>
 
-                <div class="form-group mb-3">
+                <div style="color:white" class="form-group mb-3">
                     <label asp-for="Model" class="form-label fw-bold"></label>
                     <input asp-for="Model" class="form-control shadow-sm" placeholder="Model girin" />
                     <span asp-validation-for="Model" class="text-danger"></span>
                 </div>
 
-                <div class="form-group mb-3">
+                <div style="color:white" class="form-group mb-3">
                     <label asp-for="Plaka" class="form-label fw-bold"></label>
                     <input asp-for="Plaka" class="form-control shadow-sm" placeholder="Plaka girin" />
                     <span asp-validation-for="Plaka" class="text-danger"></span>
@@ -35,32 +38,33 @@
 
 
                 <!-- Km -->
-                <div class="form-group mb-3">
+                <div style="color:white" class="form-group mb-3">
                     <label asp-for="Km" class="form-label">Kilometre</label>
                     <input asp-for="Km" class="form-control" />
                     <span asp-validation-for="Km" class="text-danger"></span>
                 </div>
 
                 <!-- İşlem -->
-                <div class="form-group mb-3">
+                <div style="color:white" class="form-group mb-3">
                     <label asp-for="Islem" class="form-label">İşlem</label>
                     <input asp-for="Islem" class="form-control" />
                     <span asp-validation-for="Islem" class="text-danger"></span>
                 </div>
 
                 <!-- Tarih -->
-                <div class="form-group mb-3">
+                <div style="color:white" class="form-group mb-3">
                     <label asp-for="Tarih" class="form-label">Tarih</label>
                     <input asp-for="Tarih" class="form-control" />
                     <span asp-validation-for="Tarih" class="text-danger"></span>
                 </div>
 
 
-                <div class="form-group">
+                <div style="color:white" class="form-group">
                     <label for="MusteriId">Müşteri</label>
                     <select asp-for="MusteriId" class="form-control" asp-items="@(ViewData["MusteriId"] as SelectList)">
                         <option value="">Seçiniz</option> <!-- "Seçiniz" opsiyonu -->
                     </select>
+
                 </div>
 
                 <div class="form-group text-center">
@@ -71,9 +75,8 @@
     </div>
 </div>
 
-<!-- Back Link -->
 <div class="text-center mt-4">
-    <a asp-action="Index" class="btn btn-link">Listeye Dön</a>
+    <a asp-action="Index" style="color:white" class="btn btn-danger">Listeye Dön</a>
 </div>
 
 
@@ -83,9 +86,3 @@
     }
 }
 
-
-<div class="form-group">
-    <label asp-for="Plaka" class="control-label"></label>
-    <input asp-for="Plaka" class="form-control" />
-    <span asp-validation-for="Plaka" class="text-danger"></span>
-</div>

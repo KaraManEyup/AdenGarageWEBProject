@@ -1,5 +1,6 @@
 using AdenGarageWEB.DataAccess;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,11 @@ builder.Services.AddDbContext<AdenGarageDbContext>(options =>
 
 
 var app = builder.Build();
+var cultureInfo = new CultureInfo("tr-TR");
+cultureInfo.DateTimeFormat.ShortDatePattern = "yyyy-MM-dd";
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

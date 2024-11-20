@@ -27,9 +27,9 @@ namespace Core.Models
         [Required(ErrorMessage = "İşlem bilgisi zorunludur.")]
         public string Islem { get; set; }
 
-        [Required(ErrorMessage = "Tarih bilgisi zorunludur.")]
+        
         [DataType(DataType.Date)]
-        public DateTime Tarih { get; set; }
+        public DateTime? Tarih { get; set; }
 
      
         public int? MusteriId { get; set; }

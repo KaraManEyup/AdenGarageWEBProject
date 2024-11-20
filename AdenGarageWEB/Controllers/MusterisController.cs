@@ -62,14 +62,25 @@ namespace AdenGarageWEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Musteri musteri)
         {
+            if (musteri.Arabalar != null)
+            {
+                foreach (var araba in musteri.Arabalar)
+                {
+                    if (araba.Tarih == default)
+                    {
+                        araba.Tarih = DateTime.Now;  // Tarih boşsa, bugünün tarihi atanır
+                    }
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 // Arabaları filtrele (Boş olanları kaldır)
                 musteri.Arabalar = musteri.Arabalar?.Where(a =>
-                    !string.IsNullOrWhiteSpace(a.Marka) ||
-                    !string.IsNullOrWhiteSpace(a.Model) ||
-                    !string.IsNullOrWhiteSpace(a.Plaka) ||
-                    a.Tarih != default).ToList();
+        !string.IsNullOrWhiteSpace(a.Marka) ||
+        !string.IsNullOrWhiteSpace(a.Model) ||
+        !string.IsNullOrWhiteSpace(a.Plaka) ||
+        a.Tarih != default).ToList();
 
                 // Müşteriyi ve arabalarını veritabanına ekle
                 _context.Musteriler.Add(musteri);
@@ -77,6 +88,7 @@ namespace AdenGarageWEB.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
             return View(musteri);
         }
 

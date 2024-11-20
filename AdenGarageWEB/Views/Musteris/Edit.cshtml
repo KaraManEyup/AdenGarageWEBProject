@@ -1,44 +1,57 @@
 ﻿@model Core.Models.Musteri
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Müşteri Düzenle";
 }
 
-<h1>Edit</h1>
+<h1 class="text-center mb-4 text-warning">Müşteri Düzenle</h1>
 
-<h4>Musteri</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Isim" class="control-label"></label>
-                <input asp-for="Isim" class="form-control" />
-                <span asp-validation-for="Isim" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Soyisim" class="control-label"></label>
-                <input asp-for="Soyisim" class="form-control" />
-                <span asp-validation-for="Soyisim" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Telefon" class="control-label"></label>
-                <input asp-for="Telefon" class="form-control" />
-                <span asp-validation-for="Telefon" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <!-- Hidden Input for Id -->
+                <input type="hidden" asp-for="Id" />
+
+                <!-- Isim Alanı -->
+                <div class="form-group mb-4">
+                    <label asp-for="Isim" class="form-label fw-bold text-white">Ad</label>
+                    <input asp-for="Isim" class="form-control shadow-sm" placeholder="Adınızı girin" />
+                    <span asp-validation-for="Isim" class="text-danger"></span>
+                </div>
+
+                <!-- Soyisim Alanı -->
+                <div class="form-group mb-4">
+                    <label asp-for="Soyisim" class="form-label fw-bold text-white">Soyad</label>
+                    <input asp-for="Soyisim" class="form-control shadow-sm" placeholder="Soyadınızı girin" />
+                    <span asp-validation-for="Soyisim" class="text-danger"></span>
+                </div>
+
+                <!-- Telefon Alanı -->
+                <div class="form-group mb-4">
+                    <label asp-for="Telefon" class="form-label fw-bold text-white">Telefon</label>
+                    <input asp-for="Telefon" class="form-control shadow-sm" placeholder="Telefon numaranızı girin" />
+                    <span asp-validation-for="Telefon" class="text-danger"></span>
+                </div>
+
+                <!-- Save Button -->
+                <div class="form-group d-grid gap-2">
+                    <input type="submit" value="Kaydet" class="btn btn-success btn-lg shadow-sm rounded-pill" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Geri Git Linki -->
+    <div class="text-center mt-4">
+        <a asp-action="Index" class="btn btn-danger text-white rounded-pill px-4 py-2">Listeye Dön</a>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

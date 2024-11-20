@@ -110,10 +110,21 @@ namespace AdenGarageWEB.Controllers
             {
                 return NotFound();
             }
-
-            // Müşteri seçimi için veriler
             ViewData["MusteriId"] = new SelectList(_context.Musteriler, "Id", "Isim", araba.MusteriId);
+            ViewData["MusteriId"] = new SelectList(
+     _context.Musteriler.Select(m => new
+     {
+         Id = m.Id,
+         FullName = m.Isim + " " + m.Soyisim
+     }).ToList(),
+     "Id",
+     "FullName");
+
             return View(araba);
+
+            //// Müşteri seçimi için veriler
+            //ViewData["MusteriId"] = new SelectList(_context.Musteriler, "Id", "Isim", araba.MusteriId);
+            //return View(araba);
         }
 
 

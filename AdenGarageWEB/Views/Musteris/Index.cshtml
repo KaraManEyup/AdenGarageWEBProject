@@ -4,15 +4,25 @@
     ViewData["Title"] = "Müşteri Listesi";
 }
 
+<!-- Butonları Flexbox ile yerleştiriyoruz -->
+
 <h1 class="text-center mb-4 text-warning">Müşteri Listesi</h1>
 
-<!-- Sıralama linkleri -->
-<a class="btn btn-outline-warning" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimAsc" })">Isim Artan |↑|</a>
-<a class="btn btn-outline-warning" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimDesc" })">Isim Azalan |↓|</a>
+<div class="d-flex justify-content-between mb-3">
+    <!-- Sıralama linkleri sol tarafta -->
+    <div>
+        <a class="btn btn-outline-warning" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimAsc" })">Isim Artan |↑|</a>
+        <a class="btn btn-outline-warning" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimDesc" })">Isim Azalan |↓|</a>
+    </div>
+
+    <!-- "Araba Ile Yeni Müşteri Ekle" butonu sağ tarafta -->
+    <div>
+        <a asp-action="Create" class="btn btn-warning">Yeni Müşteri Ekle</a>
+    </div>
+</div>
+
 <!-- Müşteri tablosu -->
-<table style="background-color: rgba(0,0,0,0.6) " class="table table-hover kutu">
-
-
+<table style="background-color: rgba(0,0,0,0.6)" class="table table-hover kutu">
     <thead style="font-size:large">
         <tr style="color:gold">
             <th>#</th>
@@ -23,7 +33,6 @@
             <th>İşlemler</th>
             <th>Plaka</th>
         </tr>
-
     </thead>
     <tbody>
         @if (Model.Any())
@@ -48,10 +57,9 @@
                                 }
                             </ul>
                         }
-
                         else
                         {
-                            <span class="text-muted">Bu müşterinin arabası yok.</span>
+                            <span class="text-warning">Bu müşterinin arabası yok!</span>
                         }
                     </td>
                     <td>
@@ -99,8 +107,3 @@
         }
     </tbody>
 </table>
-
-<a asp-action="Create" class="btn btn-success">Yeni Müşteri Ekle</a>
-
-
-

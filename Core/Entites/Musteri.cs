@@ -17,7 +17,8 @@ namespace Core.Models
         [RegularExpression(@"^\d{10}$", ErrorMessage = "Telefon numarası 10 haneli olmalıdır.")]
         public string Telefon { get; set; }
 
- 
+        public ICollection<Araba>? Arabalar { get; set; } = new List<Araba>();
+
 
     }
 }

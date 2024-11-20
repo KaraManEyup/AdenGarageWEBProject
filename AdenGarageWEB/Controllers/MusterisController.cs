@@ -22,14 +22,18 @@ namespace AdenGarageWEB.Controllers
         // GET: Musteris
         public async Task<IActionResult> Index(string sortOrder)
         {
-
-            var musteriler = _context.Musteriler.AsQueryable();
-
+            // Varsayılan sıralama
             if (string.IsNullOrEmpty(sortOrder))
             {
-                sortOrder = "IsimAsc";  // Default sıralama
+                sortOrder = "IsimAsc"; // Default sıralama
             }
 
+            // Müşteri verilerini arabalarla birlikte getiriyoruz
+            var musteriler = _context.Musteriler
+                .Include(m => m.Arabalar) // Arabaları dahil et
+                .AsQueryable();
+
+            // Sıralama işlemleri
             switch (sortOrder)
             {
                 case "IsimDesc":
@@ -41,32 +45,42 @@ namespace AdenGarageWEB.Controllers
                     break;
             }
 
+            // Listeyi döndürüyoruz
             var musterilerList = await musteriler.ToListAsync();
-
-            return View(musterilerList);  
+            return View(musterilerList);
         }
 
-        // GET: Musteris/Create
+
         public IActionResult Create()
         {
-            return View();
+            return View(new Musteri()); // Arabalar boş olarak dönebilir
         }
 
-     
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Isim,Soyisim,Telefon")] Musteri musteri)
+        public async Task<IActionResult> Create(Musteri musteri)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(musteri);
+                // Arabaları filtrele (Boş olanları kaldır)
+                musteri.Arabalar = musteri.Arabalar?.Where(a =>
+                    !string.IsNullOrWhiteSpace(a.Marka) ||
+                    !string.IsNullOrWhiteSpace(a.Model) ||
+                    !string.IsNullOrWhiteSpace(a.Plaka) ||
+                    a.Tarih != default).ToList();
+
+                // Müşteriyi ve arabalarını veritabanına ekle
+                _context.Musteriler.Add(musteri);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(musteri);
         }
 
-        // GET: Musteris/Edit/5
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,18 +88,21 @@ namespace AdenGarageWEB.Controllers
                 return NotFound();
             }
 
-            var musteri = await _context.Musteriler.FindAsync(id);
+            var musteri = await _context.Musteriler
+                .Include(m => m.Arabalar) // Arabalar da yüklensin
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (musteri == null)
             {
                 return NotFound();
             }
+
             return View(musteri);
         }
 
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Isim,Soyisim,Telefon")] Musteri musteri)
+        public async Task<IActionResult> Edit(int id, Musteri musteri)
         {
             if (id != musteri.Id)
             {
@@ -96,6 +113,20 @@ namespace AdenGarageWEB.Controllers
             {
                 try
                 {
+                    // Arabalar ilişkilendirilmişse güncelle
+                    foreach (var araba in musteri.Arabalar)
+                    {
+                        if (araba.Id == 0) // Yeni araba eklenmişse
+                        {
+                            _context.Arabalar.Add(araba);
+                        }
+                        else // Mevcut araba güncelleniyorsa
+                        {
+                            _context.Arabalar.Update(araba);
+                        }
+                    }
+
+                    // Müşteriyi güncelle
                     _context.Update(musteri);
                     await _context.SaveChangesAsync();
                 }
@@ -110,9 +141,18 @@ namespace AdenGarageWEB.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(musteri);
+        }
+
+
+
+        private bool MusteriExists(int id)
+        {
+            return _context.Musteriler.Any(e => e.Id == id);
         }
 
         // GET: Musteris/Details/5
@@ -120,18 +160,19 @@ namespace AdenGarageWEB.Controllers
         {
             if (id == null)
             {
-                return NotFound(); // ID gönderilmezse NotFound döner
+                return NotFound();
             }
 
             var musteri = await _context.Musteriler
-                .FirstOrDefaultAsync(m => m.Id == id); // Veritabanından ID'ye göre müşteri getir
+                .Include(m => m.Arabalar)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (musteri == null)
             {
-                return NotFound(); // Belirtilen ID'ye ait müşteri bulunamazsa NotFound döner
+                return NotFound();
             }
 
-            return View(musteri); // Müşteri detayını View'a gönderir
+            return View(musteri);
         }
 
 
@@ -168,10 +209,10 @@ namespace AdenGarageWEB.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MusteriExists(int id)
-        {
-            return _context.Musteriler.Any(e => e.Id == id);
-        }
+        //private bool MusteriExists(int id)
+        //{
+        //    return _context.Musteriler.Any(e => e.Id == id);
+        //}
 
     }
 }

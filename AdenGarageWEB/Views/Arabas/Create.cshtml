@@ -4,80 +4,84 @@
     ViewData["Title"] = "Yeni Araba Ekle";
 }
 
-<h1 class="text-center my-4 text-primary">Yeni Araba Ekle</h1>
+<div class="container mt-5" style="background-color: #f7f8fc; border-radius: 15px; padding: 30px;">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <!-- Başlık -->
+            <div class="text-center mb-4">
+                <h2 class="text-primary" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Yeni Araba Ekle</h2>
+                <p class="text-muted" style="font-size: 1.1rem;">Araba bilgilerini eklemek için formu doldurun.</p>
+            </div>
 
+            <!-- Form Başlangıcı -->
+            <div class="card shadow-lg" style="border-radius: 15px;">
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<form asp-action="Create">
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <!-- Marka -->
+                        <div class="form-group mb-4">
+                            <label for="Marka" class="font-weight-bold text-dark">Marka</label>
+                            <input asp-for="Marka" class="form-control form-control-lg" style="border-radius: 10px;" placeholder="Araba markasını girin" />
+                            <span asp-validation-for="Marka" class="text-danger"></span>
+                        </div>
 
-    <!-- Marka Alanı -->
-    <div class="form-group mb-3">
-        <label asp-for="Marka" style="color:whitesmoke" class="form-label fw-bold">Marka</label>
-        <input asp-for="Marka" class="form-control shadow-sm" placeholder="Araba markasını girin" />
-        <span asp-validation-for="Marka" class="text-danger"></span>
+                        <!-- Model -->
+                        <div class="form-group mb-4">
+                            <label for="Model" class="font-weight-bold text-dark">Model</label>
+                            <input asp-for="Model" class="form-control form-control-lg" style="border-radius: 10px;" placeholder="Araba modelini girin" />
+                            <span asp-validation-for="Model" class="text-danger"></span>
+                        </div>
+
+                        <!-- Plaka -->
+                        <div class="form-group mb-4">
+                            <label for="Plaka" class="font-weight-bold text-dark">Plaka</label>
+                            <input asp-for="Plaka" class="form-control form-control-lg" style="border-radius: 10px;" placeholder="Araba plakasını girin" />
+                            <span asp-validation-for="Plaka" class="text-danger"></span>
+                        </div>
+
+                        <!-- Km -->
+                        <div class="form-group mb-4">
+                            <label for="Km" class="font-weight-bold text-dark">Kilometre</label>
+                            <input asp-for="Km" class="form-control form-control-lg" style="border-radius: 10px;" placeholder="Kilometre bilgisini girin" />
+                            <span asp-validation-for="Km" class="text-danger"></span>
+                        </div>
+
+                        <!-- İşlem -->
+                        <div class="form-group mb-4">
+                            <label for="Islem" class="font-weight-bold text-dark">Yapılan İşlem</label>
+                            <input asp-for="Islem" class="form-control form-control-lg" style="border-radius: 10px;" placeholder="Yapılan işlemi girin" />
+                            <span asp-validation-for="Islem" class="text-danger"></span>
+                        </div>
+
+                        <!-- Tarih -->
+                        <div class="form-group mb-4">
+                            <label for="Tarih" class="font-weight-bold text-dark">Tarih</label>
+                            <input asp-for="Tarih" class="form-control form-control-lg" style="border-radius: 10px;" type="date" />
+                            <span asp-validation-for="Tarih" class="text-danger"></span>
+                        </div>
+
+                        <!-- Müşteri Seçimi -->
+                        <div class="form-group mb-4">
+                            <label for="MusteriId" class="font-weight-bold text-dark">Müşteri</label>
+                            <select asp-for="MusteriId" class="form-control form-control-lg" style="border-radius: 10px;" asp-items="@(ViewData["MusteriId"] as SelectList)">
+                                <option value="">Müşteri Seçiniz</option>
+                            </select>
+                        </div>
+
+                        <!-- Kaydet Butonu -->
+                        <div class="form-group text-center mt-4">
+                            <input type="submit" value="Kaydet" class="btn btn-success btn-lg w-100" style="border-radius: 10px; font-weight: bold;" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Listeye Dön Butonu -->
+            <div class="text-center mt-4">
+                <a asp-action="Index" class="btn btn-outline-danger btn-lg" style="border-radius: 10px; width: 100%;">Listeye Dön</a>
+            </div>
+        </div>
     </div>
-
-    <!-- Model Alanı -->
-    <div class="form-group mb-3">
-        <label asp-for="Model" style="color:whitesmoke" class="form-label fw-bold">Model</label>
-        <input asp-for="Model" class="form-control shadow-sm" placeholder="Araba modelini girin" />
-        <span asp-validation-for="Model" class="text-danger"></span>
-    </div>
-
-    <div class="form-group mb-3">
-        <label asp-for="Plaka" style="color:whitesmoke" class="form-label fw-bold">Plaka</label>
-        <input asp-for="Plaka" class="form-control shadow-sm" placeholder="Araba plakasini girin" />
-        <span asp-validation-for="Plaka" class="text-danger"></span>
-    </div>
-    <!-- Km Alanı -->
-    <div class="form-group mb-3">
-        <label asp-for="Km" style="color:whitesmoke" class="form-label fw-bold">Kilometre</label>
-        <input asp-for="Km" class="form-control shadow-sm" placeholder="Kilometre bilgisini girin" />
-        <span asp-validation-for="Km" class="text-danger"></span>
-    </div>
-
-    <!-- İşlem Alanı -->
-    <div class="form-group mb-3">
-        <label asp-for="Islem" style="color:whitesmoke" class="form-label fw-bold">Yapılan İşlem</label>
-        <input asp-for="Islem" class="form-control shadow-sm" placeholder="Yapılan işlemi girin" />
-        <span asp-validation-for="Islem" class="text-danger"></span>
-    </div>
-
-    <!-- Tarih Alanı -->
-    <div class="form-group mb-3">
-        <label asp-for="Tarih" style="color:whitesmoke" class="form-label fw-bold">Tarih</label>
-        <input asp-for="Tarih" class="form-control shadow-sm" type="date" />
-        <span asp-validation-for="Tarih" class="text-danger"></span>
-    </div>
-
-    <!-- Müşteri Seçimi -->
-    <div class="form-group">
-        <label for="MusteriId">Müşteri</label>
-        <select asp-for="MusteriId" class="form-control" asp-items="@(ViewData["MusteriId"] as SelectList)">
-            <option value="">Seçiniz</option> <!-- "Seçiniz" opsiyonu -->
-        </select>
-
-    </div>
-
-    <!-- Submit Butonu -->
-    <div class="form-group d-grid gap-2">
-        <input type="submit" value="Kaydet" class="btn btn-success btn-lg shadow-sm rounded-pill" />
-    </div>
-</form>
-
-<!-- Listeye Dön Butonu -->
-<div class="text-center mt-4">
-    <a asp-action="Index" style="color:white" class="btn btn-danger">Listeye Dön</a>
 </div>
 
-
-
-
-
-
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

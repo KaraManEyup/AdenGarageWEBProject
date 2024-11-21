@@ -23,7 +23,7 @@ namespace AdenGarageWEB.Controllers
         public async Task<IActionResult> Index(string sortOrder)
         {
             // Arabalar sorgusunu başlatıyoruz ve sıralama işlemi yapıyoruz
-            var arabalar = _context.Arabalar.AsQueryable();  // Arabalar için sorguyu başlatıyoruz
+            var arabalar = _context.Arabalar.Include(a => a.Musteri).AsQueryable();  // Arabalar için sorguyu başlatıyoruz
 
             // Sıralama işlemi
             switch (sortOrder)
@@ -37,15 +37,15 @@ namespace AdenGarageWEB.Controllers
                     break;
             }
 
-            // Müşteri bilgisini dahil ediyoruz
-            arabalar = arabalar.Include(a => a.Musteri);
+            // Toplam araba sayısını hesapla
+            var toplamArabaSayisi = await arabalar.CountAsync();
 
-            // Veritabanından listeyi çekiyoruz
-            var arabalarList = await arabalar.ToListAsync();  // Verileri listeye çeviriyoruz
+            // ViewData'ya toplam araba sayısını ekliyoruz
+            ViewData["ToplamArabaSayisi"] = toplamArabaSayisi;
 
-            return View(arabalarList);  // Listeyi View'a gönderiyoruz
+            // Arabalar listesi ile birlikte View'a gönderiyoruz
+            return View(await arabalar.ToListAsync());
         }
-
 
         // GET: Arabas/Details/5
         public async Task<IActionResult> Details(int? id)

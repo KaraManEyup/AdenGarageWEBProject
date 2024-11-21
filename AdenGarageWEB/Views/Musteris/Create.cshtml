@@ -1,74 +1,112 @@
 ﻿@model Core.Models.Musteri
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Yeni Müşteri Ekle";
 }
 
-<h1 class="text-center mb-4 text-warning">Yeni Müşteri Ekle</h1>
-
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-            <!-- Isim Alanı -->
-            <div class="form-group mb-3">
-                <label asp-for="Isim" style="color:whitesmoke" class="form-label fw-bold"></label>
-                <input asp-for="Isim" class="form-control shadow-sm" placeholder="Adınızı girin" />
-                <span asp-validation-for="Isim" class="text-danger"></span>
+<div class="container mt-5" style="background-color: #f7f8fc; border-radius: 15px; padding: 30px;">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <!-- Başlık -->
+            <div class="text-center mb-4">
+                <h2 class="text-warning" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Yeni Müşteri Ekle</h2>
+                <p class="text-muted" style="font-size: 1.1rem;">Müşteri bilgilerini ve araba bilgilerini girerek, yeni kaydınızı oluşturun.</p>
             </div>
 
-            <!-- Soyisim Alanı -->
-            <div class="form-group mb-3">
-                <label asp-for="Soyisim" style="color:whitesmoke" class="form-label fw-bold"></label>
-                <input asp-for="Soyisim" class="form-control shadow-sm" placeholder="Soyadınızı girin" />
-                <span asp-validation-for="Soyisim" class="text-danger"></span>
+            <!-- Kartlar (Müşteri ve Araba Bilgileri) -->
+            <div class="row">
+                <!-- Müşteri Kartı -->
+                <div class="col-md-6">
+                    <div class="card shadow-lg mb-4" style="border-radius: 15px;">
+                        <div class="card-body">
+                            <h5 class="card-title text-center text-dark font-weight-bold mb-4">Müşteri Bilgileri</h5>
+                            <form asp-action="Create">
+                                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                                <!-- İsim -->
+                                <div class="form-group mb-4">
+                                    <label for="Isim" class="font-weight-bold text-dark">İsim</label>
+                                    <input asp-for="Isim" class="form-control form-control-lg" style="border-radius: 10px;" placeholder="Adınızı girin" />
+                                    <span asp-validation-for="Isim" class="text-danger"></span>
+                                </div>
+
+                                <!-- Soyisim -->
+                                <div class="form-group mb-4">
+                                    <label for="Soyisim" class="font-weight-bold text-dark">Soyisim</label>
+                                    <input asp-for="Soyisim" class="form-control form-control-lg" style="border-radius: 10px;" placeholder="Soyadınızı girin" />
+                                    <span asp-validation-for="Soyisim" class="text-danger"></span>
+                                </div>
+
+                                <!-- Telefon -->
+                                <div class="form-group mb-4">
+                                    <label for="Telefon" class="font-weight-bold text-dark">Telefon</label>
+                                    <input asp-for="Telefon" class="form-control form-control-lg" style="border-radius: 10px;" placeholder="Telefon numaranızı girin" />
+                                    <span asp-validation-for="Telefon" class="text-danger"></span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Araba Kartı -->
+                <div class="col-md-6">
+                    <div class="card shadow-lg mb-4" style="border-radius: 15px;">
+                        <div class="card-body">
+                            <h5 class="card-title text-center text-dark font-weight-bold mb-4">Araba Bilgileri</h5>
+                            <form asp-action="Create">
+                                <div id="arabalar-container" class="mt-4">
+                                    <!-- Marka -->
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold text-dark">Marka</label>
+                                        <input name="Arabalar[0].Marka" class="form-control form-control-lg" placeholder="Marka Girin" style="border-radius: 10px;" />
+                                    </div>
+
+                                    <!-- Model -->
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold text-dark">Model</label>
+                                        <input name="Arabalar[0].Model" class="form-control form-control-lg" placeholder="Model Girin" style="border-radius: 10px;" />
+                                    </div>
+
+                                    <!-- Kilometre -->
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold text-dark">Kilometre</label>
+                                        <input name="Arabalar[0].Km" class="form-control form-control-lg" placeholder="Kilometre Girin" style="border-radius: 10px;" />
+                                    </div>
+
+                                    <!-- İşlem -->
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold text-dark">İşlem</label>
+                                        <input name="Arabalar[0].Islem" class="form-control form-control-lg" placeholder="İşlem Girin" style="border-radius: 10px;" />
+                                    </div>
+
+                                    <!-- Plaka -->
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold text-dark">Plaka</label>
+                                        <input name="Arabalar[0].Plaka" class="form-control form-control-lg" placeholder="Plaka Girin" style="border-radius: 10px;" />
+                                    </div>
+
+                                    <!-- Geliş Tarihi -->
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold text-dark">Geliş Tarihi</label>
+                                        <input type="date" name="Arabalar[0].Tarih" class="form-control form-control-lg" style="border-radius: 10px;" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Telefon Alanı -->
-            <div class="form-group mb-3">
-                <label asp-for="Telefon" style="color:whitesmoke" class="form-label fw-bold"></label>
-                <input asp-for="Telefon" class="form-control shadow-sm" placeholder="Telefon numaranızı girin" />
-                <span asp-validation-for="Telefon" class="text-danger"></span>
+            <!-- Kaydet Butonu -->
+            <div class="form-group text-center mt-4">
+                <input type="submit" value="Kaydet" class="btn btn-success btn-sm w-50" style="border-radius: 10px; font-weight: bold;" />
             </div>
 
-            <!-- Arabalar için Alanlar -->
-            <div id="arabalar-container">
-                <h5 style="color:whitesmoke" class="form-label fw-bold">Arabalar</h5>
-                <div class="form-group">
-                    <label style="color:whitesmoke" class="form-label fw-bold">Marka</label>
-                    <input name="Arabalar[0].Marka" class="form-control" placeholder="Marka Girin" />
-                </div>
-                <div class="form-group">
-                    <label style="color:whitesmoke" class="form-label fw-bold">Model</label>
-                    <input name="Arabalar[0].Model" class="form-control" placeholder=" Model Girin" />
-                </div>
-                <div class="form-group">
-                    <label style="color:whitesmoke" class="form-label fw-bold">Kilometre</label>
-                    <input name="Arabalar[0].Km" class="form-control" placeholder="Kilometre Girin" />
-                </div>
-                <div class="form-group">
-                    <label style="color:whitesmoke" class="form-label fw-bold">İşlem</label>
-                    <input name="Arabalar[0].Islem" class="form-control" placeholder=" Islem Girin" />
-                </div>
-                <div class="form-group">
-                    <label style="color:whitesmoke" class="form-label fw-bold">Plaka</label>
-                    <input name="Arabalar[0].Plaka" class="form-control" placeholder="Plaka Girin" />
-                </div>
-                <div class="form-group">
-                    <label style="color:whitesmoke" class="form-label fw-bold">Geliş Tarihi</label>
-                    <input type="date" name="Arabalar[0].Tarih" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                </div>
+            <!-- Listeye Dön Butonu -->
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="btn btn-outline-danger btn-sm w-50" style="border-radius: 10px; font-weight: bold;">Listeye Dön</a>
             </div>
-
-            <div class="form-group d-grid gap-2">
-                <input type="submit" value="Kaydet" class="btn btn-success btn-lg shadow-sm rounded-pill" />
-            </div>
-        </form>
-        <div class="text-center mt-4">
-            <a asp-action="Index" style="color:white" class="btn btn-danger">Listeye Dön</a>
         </div>
+    </div>
+</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

@@ -4,51 +4,54 @@
     ViewData["Title"] = "Müşteri Düzenle";
 }
 
-<h1 class="text-center mb-4 text-warning">Müşteri Düzenle</h1>
+<div class="container py-5">
+    <!-- Sayfa Başlığı -->
+    <div class="text-center mb-4">
+        <h1 class="display-4 text-dark font-weight-bold">Müşteri Düzenle</h1>
+        <p class="lead text-muted">Bilgileri güncellemek için formu doldurun.</p>
+    </div>
 
-<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <form asp-action="Edit">
+            <!-- Form Başlangıcı -->
+            <form asp-action="Edit" class="bg-light p-5 rounded shadow-lg">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                 <!-- Hidden Input for Id -->
                 <input type="hidden" asp-for="Id" />
 
-                <!-- Isim Alanı -->
-                <div class="form-group mb-4">
-                    <label asp-for="Isim" class="form-label fw-bold text-white">Ad</label>
+                <!-- Ad Alanı -->
+                <div class="form-group mb-3">
+                    <label asp-for="Isim" class="form-label text-dark">Ad</label>
                     <input asp-for="Isim" class="form-control shadow-sm" placeholder="Adınızı girin" />
                     <span asp-validation-for="Isim" class="text-danger"></span>
                 </div>
 
-                <!-- Soyisim Alanı -->
-                <div class="form-group mb-4">
-                    <label asp-for="Soyisim" class="form-label fw-bold text-white">Soyad</label>
+                <!-- Soyad Alanı -->
+                <div class="form-group mb-3">
+                    <label asp-for="Soyisim" class="form-label text-dark">Soyad</label>
                     <input asp-for="Soyisim" class="form-control shadow-sm" placeholder="Soyadınızı girin" />
                     <span asp-validation-for="Soyisim" class="text-danger"></span>
                 </div>
 
                 <!-- Telefon Alanı -->
-                <div class="form-group mb-4">
-                    <label asp-for="Telefon" class="form-label fw-bold text-white">Telefon</label>
+                <div class="form-group mb-3">
+                    <label asp-for="Telefon" class="form-label text-dark">Telefon</label>
                     <input asp-for="Telefon" class="form-control shadow-sm" placeholder="Telefon numaranızı girin" />
                     <span asp-validation-for="Telefon" class="text-danger"></span>
                 </div>
 
-                <!-- Araba Listeleme ve Düzenleme Butonları -->
+                <!-- Arabalar -->
                 @if (Model.Arabalar != null && Model.Arabalar.Any())
                 {
-                    <div class="form-group mb-4">
-                        <label class="form-label fw-bold text-white">Arabalar</label>
+                    <div class="form-group mb-3">
+                        <label class="form-label text-dark">Arabalar</label>
                         <ul class="list-group">
                             @foreach (var araba in Model.Arabalar)
                             {
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span>
-                                        <strong>@araba.Marka @araba.Model</strong> - @araba.Plaka
-                                    </span>
-                                    <a asp-action="EditAraba" asp-route-id="@araba.Id" class="btn btn-warning btn-sm">Düzenle</a>
+                                    <span class="fw-bold text-primary">@araba.Marka @araba.Model</span> - @araba.Plaka
+                                    <a asp-action="EditAraba" asp-route-id="@araba.Id" class="btn btn-outline-primary btn-sm">Düzenle</a>
                                 </li>
                             }
                         </ul>
@@ -56,26 +59,110 @@
                 }
                 else
                 {
-                    <div class="form-group mb-4">
+                    <div class="form-group mb-3">
                         <span class="text-danger">Bu müşterinin arabası yok!</span>
                     </div>
                 }
 
                 <!-- Save Button -->
-                <div class="form-group d-grid gap-2">
-                    <input type="submit" value="Kaydet" class="btn btn-success btn-lg shadow-sm rounded-pill" />
+                <div class="form-group d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-success btn-lg rounded-pill shadow-sm">Kaydet</button>
                 </div>
             </form>
         </div>
     </div>
+
     <!-- Geri Git Linki -->
     <div class="text-center mt-4">
-        <a asp-action="Index" class="btn btn-danger text-white rounded-pill px-4 py-2">Listeye Dön</a>
+        <a asp-action="Index" class="btn btn-danger btn-lg rounded-pill px-4 py-2">Listeye Dön</a>
     </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
+<style>
+    /* Sayfa Arka Planı ve Genel Tasarım */
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-}
+
+    /* Başlık */
+    .display-4 {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #343a40;
+    }
+
+    .lead {
+        font-size: 1.2rem;
+        color: #6c757d;
+    }
+
+    /* Form */
+    .form-group label {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #343a40;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-color: #ddd;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+    /* Button */
+    .btn {
+        font-weight: bold;
+        padding: 12px 20px;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary {
+        border-color: #007bff;
+        color: #007bff;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+    /* List Group */
+    .list-group-item {
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+        .list-group-item:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+</style>

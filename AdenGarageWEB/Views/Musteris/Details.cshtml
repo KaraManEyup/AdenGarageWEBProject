@@ -4,92 +4,122 @@
     ViewData["Title"] = "Müşteri Detayları";
 }
 
-<h1 class="text-center mb-4 text-warning">Müşteri Detayları</h1>
+<!-- Sayfa Başlıkları ve Arka Plan -->
+<div class="container mt-5">
+    <h1 class="text-center mb-5" style="font-size: 2.8rem; font-weight: 700; color: #3c3c3c; text-transform: uppercase; letter-spacing: 1px;">
+        Müşteri Detayları
+    </h1>
 
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card text-light bg-dark shadow-lg">
-            <div class="card-header text-center bg-warning text-dark fw-bold">
-                Müşteri Bilgileri
-            </div>
-            <div class="card-body">
-                <!-- Müşteri Bilgileri -->
-                <dl class="row mb-4">
-                    <dt class="col-sm-4 text-success" style="font-size: 1.2em;">İsim</dt>
-                    <dd class="col-sm-8"><strong style="font-size: 1.4em; color: #FFD700;">@Model.Isim</strong></dd>
-
-                    <dt class="col-sm-4 text-success" style="font-size: 1.2em;">Soyisim</dt>
-                    <dd class="col-sm-8"><strong style="font-size: 1.4em; color: #FFD700;">@Model.Soyisim</strong></dd>
-
-                    <dt class="col-sm-4 text-success" style="font-size: 1.2em;">Telefon</dt>
-                    <dd class="col-sm-8"><strong style="font-size: 1.4em; color: #FFD700;">@Model.Telefon</strong></dd>
-                </dl>
-
-                <!-- Kayitli Arabalar Bölümü -->
-                <h5 class="text-warning mt-4">Kayitli Arabalar</h5>
-                @if (Model.Arabalar != null && Model.Arabalar.Any())
-                {
-                    <!-- Arabalar Listesini Sıralı Göster -->
-                    <div class="accordion" id="arabalarAccordion">
-                        @foreach (var araba in Model.Arabalar.OrderBy(a => a.Tarih))
-                        {
-                            <div class="accordion-item bg-dark">
-                                <h2 class="accordion-header" id="heading@araba.Id">
-                                    <button class="accordion-button bg-warning text-body" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@araba.Id" aria-expanded="true" aria-controls="collapse@araba.Id">
-                                        @araba.Marka - @araba.Model (@araba.Plaka)
-                                    </button>
-                                </h2>
-                                <div id="collapse@araba.Id" class="accordion-collapse collapse" aria-labelledby="heading@araba.Id" data-bs-parent="#arabalarAccordion">
-                                    <div class="accordion-body">
-                                        <dl class="row">
-                                            <dt class="col-sm-4 text-primary">Marka</dt>
-                                            <dd class="col-sm-8"><strong>@araba.Marka</strong></dd>
-
-                                            <dt class="col-sm-4 text-primary">Model</dt>
-                                            <dd class="col-sm-8"><strong>@araba.Model</strong></dd>
-
-                                            <dt class="col-sm-4 text-primary">Plaka</dt>
-                                            <dd class="col-sm-8"><strong>@araba.Plaka</strong></dd>
-
-                                            <dt class="col-sm-4 text-primary">Km</dt>
-                                            <dd class="col-sm-8"><strong>@araba.Km</strong></dd>
-
-                                            <dt class="col-sm-4 text-primary">İşlem</dt>
-                                            <dd class="col-sm-8"><strong>@araba.Islem</strong></dd>
-
-                                            <dt class="col-sm-4 text-primary">Geliş Tarihi</dt>
-                                            <dd class="col-sm-8"><strong>@araba.Tarih?.ToString("dd-MM-yyyy")</strong></dd>
-                                        </dl>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <p class="text-muted">Bu müşteri için araba kaydı yok.</p>
-                }
-
-                <!-- Silme ve İptal Butonları -->
-                <div class="d-flex justify-content-between mt-4">
-                    <form asp-action="Delete" method="post">
-                        <input type="hidden" asp-for="Id" />
-                        <div class="text-center mt-4">
-                            
-                            <a asp-action="Index" class="btn btn-secondary btn-lg px-5 ms-3 shadow-sm">Listeye Don</a>
-                        </div>
-                    </form>
+    <!-- Müşteri Bilgileri Kartı -->
+    <div class="card shadow-lg rounded-lg border-0 hover-shadow-lg transition-all" style="background: #ffffff;">
+        <div class="card-header text-white" style="background: linear-gradient(90deg, #a6c1ee, #6fa3e4); border-radius: 10px 10px 0 0;">
+            <h3 class="text-center py-3">Müşteri Bilgileri</h3>
+        </div>
+        <div class="card-body" style="background-color: #f4f7fc;">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="font-weight-bold text-muted">İsim</h5>
+                    <p class="lead text-dark" style="font-size: 1.1rem; font-weight: 500;">@Model.Isim</p>
                 </div>
-            </div>
-            <div class="card-footer text-center text-muted">
-                © 2024 AdenGarage
+                <div class="col-md-4 mb-4">
+                    <h5 class="font-weight-bold text-muted">Soyisim</h5>
+                    <p class="lead text-dark" style="font-size: 1.1rem; font-weight: 500;">@Model.Soyisim</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="font-weight-bold text-muted">Telefon</h5>
+                    <p class="lead text-dark" style="font-size: 1.1rem; font-weight: 500;">@Model.Telefon</p>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Araba Detayları Kartı -->
+    <div class="card shadow-lg rounded-lg mt-5 border-0 hover-shadow-lg transition-all">
+        <div class="card-header text-white" style="background: linear-gradient(90deg, #f39c12, #e74c3c); border-radius: 10px 10px 0 0;">
+            <h3 class="text-center py-3">Kayıtlı Arabalar</h3>
+        </div>
+        <div class="card-body" style="background-color: #f7fafc;">
+            @if (Model.Arabalar != null && Model.Arabalar.Any())
+            {
+                <div class="row">
+                    @foreach (var araba in Model.Arabalar.OrderBy(a => a.Tarih))
+                    {
+                        <div class="col-md-6 mb-4">
+                            <div class="card border-0 shadow-lg rounded-lg" style="border-radius: 10px; overflow: hidden;">
+                                <div class="card-header" style="background-color: #f39c12; color: white; font-weight: bold; border-radius: 10px 10px 0 0; text-transform: uppercase;">
+                                    @araba.Marka - @araba.Model (@araba.Plaka)
+                                </div>
+                                <div class="card-body" style="background-color: #f9f9f9;">
+                                    <dl class="row">
+                                        <dt class="col-sm-4" style="color: #f39c12;">Marka</dt>
+                                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@araba.Marka</dd>
+
+                                        <dt class="col-sm-4" style="color: #f39c12;">Model</dt>
+                                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@araba.Model</dd>
+
+                                        <dt class="col-sm-4" style="color: #f39c12;">Plaka</dt>
+                                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@araba.Plaka</dd>
+
+                                        <dt class="col-sm-4" style="color: #f39c12;">Km</dt>
+                                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@araba.Km</dd>
+
+                                        <dt class="col-sm-4" style="color: #f39c12;">İşlem</dt>
+                                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@araba.Islem</dd>
+
+                                        <dt class="col-sm-4" style="color: #f39c12;">Geliş Tarihi</dt>
+                                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@araba.Tarih?.ToString("dd-MM-yyyy")</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-center text-muted">Bu müşteri için herhangi bir araba kaydı bulunmamaktadır.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Geri Dön Butonu -->
+    <div class="text-center mt-4">
+        <a asp-action="Index" class="btn btn-lg px-5 py-3" style="background-color: #28a745; color: white; font-weight: bold; border-radius: 30px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); transition: all 0.3s ease;">
+            Listeye Dön
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center mt-5" style="background-color: #212529; color: white; padding: 20px 0; font-size: 1rem;">
+        <p>&copy; 2024 AdenGarage | <span style="color: #6c757d;">Kaliteli Hizmet, Güvenli Sürüş</span></p>
+    </div>
 </div>
 
-<!-- Bootstrap Accordion için gerekli JS -->
+<!-- Bootstrap JS ve diğer gerekli scriptler -->
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 }
+
+<!-- Geçiş ve Hover Efektleri -->
+<style>
+    .hover-shadow-lg:hover {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+        transition: all 0.3s ease;
+    }
+
+    .card-header {
+        font-size: 1.3rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .card-body dl dt {
+        font-weight: 600;
+    }
+
+    .card-body dl dd {
+        color: #555;
+        font-size: 1.1rem;
+    }
+</style>

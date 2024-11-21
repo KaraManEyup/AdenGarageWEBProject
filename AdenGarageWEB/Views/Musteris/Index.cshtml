@@ -4,166 +4,202 @@
     ViewData["Title"] = "Müşteri Listesi";
 }
 
-<h1 class="text-center mb-5 text-warning">Müşteri Listesi</h1>
+<!-- Sayfa Başlığı -->
+<header class="text-center py-5 bg-gradient text-white border-bottom">
+    <h1 class="display-4 font-weight-bold animatedTitle">Müşteri Listesi</h1>
+    <p class="lead mb-4">Tüm müşterileriniz ve araçları hakkında bilgilere anında ulaşın. Daha fazlasını keşfedin!</p>
 
-<!-- Butonları Flexbox ile yerleştiriyoruz -->
-<div class="d-flex justify-content-between mb-4">
-    <!-- Sıralama linkleri sol tarafta -->
-    <div>
-        <a class="btn btn-outline-warning mx-2" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimAsc" })">İsim Artan |↑|</a>
-        <a class="btn btn-outline-warning mx-2" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimDesc" })">İsim Azalan |↓|</a>
+    <!-- İstatistik ve Heyecan Verici Bilgiler -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+            <div class="card shadow border-light rounded-lg">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Toplam Müşteri Sayısı</h5>
+                    <p class="card-text display-4 text-primary">@Model.Count()</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+            <div class="card shadow border-light rounded-lg">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Toplam Araç Sayısı</h5>
+                    <p class="card-text display-4 text-success">@Model.Sum(m => m.Arabalar?.Count() ?? 0)</p>
+                </div>
+            </div>
+        </div>
     </div>
+</header>
 
-    <!-- "Yeni Müşteri Ekle" butonu sağ tarafta -->
+<!-- Filtreleme ve Sıralama Butonları -->
+<div class="d-flex justify-content-between mb-4 align-items-center flex-wrap">
+    <!-- Sıralama ve Filtreleme -->
+    <div class="d-flex flex-wrap">
+        <a class="btn btn-outline-secondary mx-2" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimAsc" })">İsim Artan</a>
+        <a class="btn btn-outline-secondary mx-2" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimDesc" })">İsim Azalan</a>
+    </div>
+    <!-- Yeni Müşteri Ekle Butonu -->
     <div>
-        <a asp-action="Create" class="btn btn-warning px-4 py-2">Yeni Müşteri Ekle</a>
+        <a href="@Url.Action("Create", "Musteris")" class="btn btn-primary btn-lg">Yeni Müşteri Ekle</a>
     </div>
 </div>
 
-<!-- Müşteri tablosu -->
-<div class="table-responsive">
-    <table class="table table-hover kutu" style="background-color: rgba(0, 0, 0, 0.6)">
-        <thead>
-            <tr class="text-center" style="color: gold">
-                <th>#</th>
-                <th>İsim</th>
-                <th>Soyisim</th>
-                <th>Telefon</th>
-                <th>Arabalar</th>
-                <th>Plaka</th>
-                <th>İşlem</th>
-                <th>İşlemler</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Any())
-            {
-                int counter = 1;
-                foreach (var musteri in Model)
-                {
-                    <tr class="text-center" style="color:white">
-                        <td><strong>@counter</strong></td>
-                        <td><strong>@musteri.Isim</strong></td>
-                        <td><strong>@musteri.Soyisim</strong></td>
-                        <td><strong>@musteri.Telefon</strong></td>
-                        <td>
-                            @if (musteri.Arabalar != null && musteri.Arabalar.Any())
-                            {
-                                <ul class="list-unstyled">
-                                    @foreach (var araba in musteri.Arabalar)
-                                    {
-                                        <li><strong>@araba.Marka - @araba.Model</strong></li>
-                                    }
-                                </ul>
-                            }
-                            else
-                            {
-                                <span class="text-danger">Bu müşterinin arabası yok!</span>
-                            }
-                        </td>
-                        <td>
-                            @if (musteri.Arabalar != null && musteri.Arabalar.Any())
-                            {
-                                <ul class="list-unstyled">
-                                    @foreach (var araba in musteri.Arabalar)
-                                    {
-                                        <li><strong>@araba.Plaka</strong></li>
-                                    }
-                                </ul>
-                            }
-                        </td>
-                        <td>
-                            @if (musteri.Arabalar != null && musteri.Arabalar.Any())
-                            {
-                                <ul class="list-unstyled">
-                                    @foreach (var araba in musteri.Arabalar)
-                                    {
-                                        <li><strong>@araba.Islem</strong></li>
-                                    }
-                                </ul>
-                            }
-                        </td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@musteri.Id" class="btn btn-info btn-sm mx-1">Detay</a>
-                            <a asp-action="Edit" asp-route-id="@musteri.Id" class="btn btn-warning btn-sm mx-1">Düzenle</a>
-                            <a asp-action="Delete" asp-route-id="@musteri.Id" class="btn btn-danger btn-sm mx-1">Sil</a>
-                        </td>
-                    </tr>
-                    counter++;
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="8" class="text-center text-muted">Kayıtlı müşteri bulunmamaktadır.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<!-- Müşteri Listeleme -->
+<div class="row justify-content-center">
+    @if (Model.Any())
+    {
+        @foreach (var musteri in Model)
+        {
+            <!-- Müşteri Kartı -->
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card shadow-sm border-light rounded-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-center text-dark font-weight-bold">@musteri.Isim @musteri.Soyisim</h5>
+                        <p class="card-text text-muted"><strong>Telefon:</strong> @musteri.Telefon</p>
+                        <p><strong>Arabalar:</strong></p>
+                        @if (musteri.Arabalar != null && musteri.Arabalar.Any())
+                        {
+                            <ul class="list-unstyled">
+                                @foreach (var araba in musteri.Arabalar)
+                                {
+                                    <li class="text-dark">
+                                        <a href="@Url.Action("Details", "Arabas", new { id = araba.Id })" class="text-decoration-none">@araba.Marka - @araba.Model</a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Arabası yok.</span>
+                        }
+                    </div>
+                    <div class="card-footer d-flex justify-content-center">
+                        <a href="@Url.Action("Details", "Musteris", new { id = musteri.Id })" class="btn btn-info btn-sm mx-1">Detay</a>
+                        <a href="@Url.Action("Edit", "Musteris", new { id = musteri.Id })" class="btn btn-warning btn-sm mx-1">Düzenle</a>
+                        <a href="@Url.Action("Delete", "Musteris", new { id = musteri.Id })" class="btn btn-danger btn-sm mx-1">Sil</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12 text-center text-muted">Kayıtlı müşteri bulunmamaktadır.</div>
+    }
 </div>
 
-<!-- Stil kısmı -->
+<!-- Stil ve Javascript -->
 <style>
-    .table th, .table td {
-        text-align: center;
-        padding: 15px;
-        vertical-align: middle;
-        word-wrap: break-word;
-        max-width: 200px;
+    /* Sayfa Başlığı */
+    header {
+        background: linear-gradient(145deg, #6c757d, #343a40);
+        border-bottom: 1px solid #ddd;
+        animation: fadeIn 1.5s ease-out;
     }
 
-    .table th {
-        background-color: #333;
+    header h1 {
+        font-size: 3rem;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        animation: slideUp 1s ease-out;
     }
 
-    .table td {
-        background-color: rgba(0, 0, 0, 0.5);
+    header p {
+        font-size: 1.2rem;
+        color: #f8f9fa;
     }
 
-    .table-responsive {
-        overflow-x: auto;
+    .animatedTitle {
+        animation: bounceInLeft 1s ease-out;
     }
 
-    .btn-warning, .btn-info, .btn-danger {
-        padding: 8px 12px;
+   
+
+    /* İstatistik Kartları */
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     }
 
-    .btn-outline-warning {
-        border: 2px solid gold;
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
 
-    .table-hover tbody tr:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid #ddd;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #343a40;
+    }
+
+    .display-4 {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    /* Butonlar */
+    .btn {
+        font-size: 14px;
+        border-radius: 25px;
+        padding: 8px 15px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-outline-secondary {
+        color: #495057;
+        border: 2px solid #6c757d;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border: none;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border: none;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .text-muted {
+        color: #6c757d;
+    }
+
+    .text-dark {
+        color: #343a40;
     }
 
     .list-unstyled {
         padding-left: 0;
-        margin-bottom: 0;
     }
 
-        .list-unstyled li {
-            font-size: 14px;
-            color: #f0f0f0;
-        }
-
-    .btn {
-        transition: all 0.3s ease;
-    }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-        }
-
-    .btn-info:hover {
-        background-color: #17a2b8;
-    }
-
-    .btn-warning:hover {
-        background-color: #f0ad4e;
-    }
-
-    .btn-danger:hover {
-        background-color: #d9534f;
+    .list-unstyled li {
+        font-size: 14px;
+        margin-bottom: 5px;
     }
 </style>

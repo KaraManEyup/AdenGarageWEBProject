@@ -4,64 +4,182 @@
     ViewData["Title"] = "Araba Detayları";
 }
 
-<h1 class="text-center text-white my-4">Araba Detayları</h1>
+<!-- Başlık ve Sayfa Açıklamaları -->
+<section class="hero-section py-5 text-center" style="background-color: #f4f6f9;">
+    <div class="container">
+        <h1 class="display-4 text-dark mb-4 font-weight-bold">Araba Detayları</h1>
+        <p class="lead text-muted mb-5">Araba bilgilerinizi buradan görüntüleyebilirsiniz. Detaylar aşağıda yer almaktadır.</p>
+    </div>
+</section>
 
-<div class="container">
+<!-- Araba Bilgileri Kartı -->
+<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <table class="table table-bordered text-white" style="background-color: rgba(255, 255, 255, 0.2);">
-                <thead>
-                    <tr>
-                        <th class="text-center" colspan="2">
-                            <h4>Araba Bilgileri</h4>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Marka -->
-                    <tr>
-                        <th style="width: 30%;">Marka</th>
-                        <td>@Html.DisplayFor(model => model.Marka)</td>
-                    </tr>
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card shadow-lg border-0">
+                <div class="card-body">
+                    <h4 class="text-center text-dark mb-4 font-weight-bold">Araba Bilgileri</h4>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr class="table-primary text-center">
+                                <th>Özellik</th>
+                                <th>Değer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Marka -->
+                            <tr>
+                                <th class="text-muted">Marka</th>
+                                <td class="text-dark">@Html.DisplayFor(model => model.Marka)</td>
+                            </tr>
 
-                    <!-- Model -->
-                    <tr>
-                        <th>Model</th>
-                        <td>@Html.DisplayFor(model => model.Model)</td>
-                    </tr>
+                            <!-- Model -->
+                            <tr>
+                                <th class="text-muted">Model</th>
+                                <td class="text-dark">@Html.DisplayFor(model => model.Model)</td>
+                            </tr>
 
-                    <!-- Kilometre -->
-                    <tr>
-                        <th>Kilometre</th>
-                        <td>@Html.DisplayFor(model => model.Km)</td>
-                    </tr>
+                            <!-- Kilometre -->
+                            <tr>
+                                <th class="text-muted">Kilometre</th>
+                                <td class="text-dark">@Html.DisplayFor(model => model.Km)</td>
+                            </tr>
 
-                    <!-- İşlem -->
-                    <tr>
-                        <th>İşlem</th>
-                        <td>@Html.DisplayFor(model => model.Islem)</td>
-                    </tr>
+                            <!-- İşlem -->
+                            <tr>
+                                <th class="text-muted">İşlem</th>
+                                <td class="text-dark">@Html.DisplayFor(model => model.Islem)</td>
+                            </tr>
 
-                    <!-- Tarih -->
-                    <tr>
-                        <th>Tarih</th>
-                        <td>@Html.DisplayFor(model => model.Tarih)</td>
-                    </tr>
+                            <!-- Tarih -->
+                            <tr>
+                                <th class="text-muted">Tarih</th>
+                                <td class="text-dark">@Html.DisplayFor(model => model.Tarih)</td>
+                            </tr>
 
-                    <!-- Müşteri -->
-                    <tr>
-                        <th>Müşteri</th>
-                        <td>@Html.DisplayFor(model => model.Musteri.Isim)</td>
-                    </tr>
-                </tbody>
-            </table>
+                            <!-- Müşteri -->
+                            <tr>
+                                <th class="text-muted">Müşteri</th>
+                                <td class="text-dark">@Html.DisplayFor(model => model.Musteri.Isim)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="text-center mt-4">
-        <!-- Edit and Back Buttons -->
-        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning btn-sm shadow-sm rounded-pill">Düzenle</a>
-        <a asp-action="Index" class="btn btn-link text-white">Listeye Dön</a>
+    <!-- Butonlar -->
+    <div class="text-center mt-5">
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary btn-lg px-5 py-3 rounded-pill">Düzenle</a>
+        <a asp-action="Index" class="btn btn-secondary btn-lg px-5 py-3 rounded-pill">Listeye Dön</a>
     </div>
 </div>
 
+<!-- Önerilen Arabalar Slider (Kayar Pencere) -->
+@if (Model.Musteri.Arabalar.Count > 1)
+{
+    <div class="container py-5">
+        <h4 class="text-center text-dark mb-4 font-weight-bold">Bunları da Beğenebilirsiniz</h4>
+        <div class="car-slider">
+            @foreach (var araba in Model.Musteri.Arabalar.Where(a => a.Id != Model.Id))  
+            {
+                <div class="car-slide">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@araba.Marka @araba.Model</h5>
+                            <p class="card-text">Plaka: @araba.Plaka</p>
+                            <a href="@Url.Action("Details", "Araba", new { id = araba.Id })" class="btn btn-info">Detaylar</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<!-- Stil ve JavaScript -->
+<style>
+    .hero-section {
+        background-color: #ffffff;
+        padding: 60px 0;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .car-slider {
+        display: flex;
+        overflow-x: auto;
+        gap: 20px;
+        padding: 20px 0;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+    }
+
+    .car-slide {
+        flex: 0 0 auto;
+        width: 300px;
+        scroll-snap-align: center;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+
+    .btn-info:hover {
+        background-color: #138496;
+        border-color: #117a8b;
+    }
+
+    /* Kaydırma için özel stil */
+    .car-slider::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .car-slider::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 10px;
+    }
+
+    .car-slider::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
+    }
+</style>
+
+<script>
+    // JS ile slider kaydırma için ek ayarlamalar yapılabilir (Örn. otomatik kaydırma)
+    document.addEventListener('DOMContentLoaded', function () {
+        const slider = document.querySelector('.car-slider');
+        let isMouseDown = false;
+        let startX, scrollLeft;
+
+        slider.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        });
+
+        slider.addEventListener('mouseleave', () => {
+            isMouseDown = false;
+        });
+
+        slider.addEventListener('mouseup', () => {
+            isMouseDown = false;
+        });
+
+        slider.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return;
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 3; // Kaydırma hızı
+            slider.scrollLeft = scrollLeft - walk;
+        });
+    });
+</script>

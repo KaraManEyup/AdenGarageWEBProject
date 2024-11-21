@@ -12,21 +12,28 @@ html {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-    position: relative;
+html, body {
+    margin: 0;
+    padding: 0;
     min-height: 100%;
+    background-color: #f8f9fa;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
-body {
-    background-color: #f0f8ff; /* Açýk mavi arka plan rengi */
-    background-image: url('../adenlogoblack.jpg');
-    background-size: cover; /* Arka planýn tam sayfayý kaplamasýný saðlar */
-    background-position: center center; /* Resmin ortalanmasý */
-    background-repeat: no-repeat; /* Resmin tekrarlanmamasý */
-    height: 100%; /* Tam yükseklik saðlar */
-    margin: 0; /* Kenar boþluklarýný sýfýrlar */
-    display: flex;
-    flex-direction: column;
+.container-fluid {
+    flex-grow: 1;
+}
+
+.fixed-footer {
+    position: relative;
+    margin-top: auto; /* Footer'ý sayfanýn altýna yerleþtirir */
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 1000;
 }
 
 
@@ -37,19 +44,6 @@ body {
 
 .main {
     flex: 1;
-}
-
-
-.fixed-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #343a40; /* Koyu bir arka plan rengi */
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    z-index: 1000; /* Üstte olmasý için */
 }
 
 td, th {
@@ -63,4 +57,93 @@ th, td {
 }
 .table-responsive {
     overflow-x: auto;
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes bounceInLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    60% {
+        transform: translateX(30px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes bounceInLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    60% {
+        transform: translateX(30px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+.animatedTitle {
+    animation: fadeIn 2s ease-out; /* 'fadeIn' animasyonunu uygula */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }

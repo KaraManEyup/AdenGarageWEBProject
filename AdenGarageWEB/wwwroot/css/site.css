@@ -38,3 +38,16 @@ body {
 .main {
     flex: 1;
 }
+
+
+.fixed-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #343a40; /* Koyu bir arka plan rengi */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 1000; /* Üstte olmasý için */
+}

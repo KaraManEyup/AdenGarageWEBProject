@@ -7,39 +7,84 @@
 <h1 class="text-center mb-4 text-warning">Müşteri Detayları</h1>
 
 <div class="row justify-content-center">
-    <div class="col-md-6">
-        <dl class="row">
-            <dt class="col-sm-4 text-light">İsim</dt>
-            <dd class="col-sm-8 text-light">@Model.Isim</dd>
+    <div class="col-md-8">
+        <div class="card text-light bg-dark shadow-lg">
+            <div class="card-header text-center bg-warning text-dark fw-bold">
+                Müşteri Bilgileri
+            </div>
+            <div class="card-body">
+                <dl class="row mb-4">
+                    <dt class="col-sm-4">İsim</dt>
+                    <dd class="col-sm-8"><strong>@Model.Isim </strong></dd>
 
-            <dt class="col-sm-4 text-light">Soyisim</dt>
-            <dd class="col-sm-8 text-light">@Model.Soyisim</dd>
+                    <dt class="col-sm-4">Soyisim</dt>
+                    <dd class="col-sm-8"><strong>@Model.Soyisim </strong></dd>
 
-            <dt class="col-sm-4 text-light">Telefon</dt>
-            <dd class="col-sm-8 text-light">@Model.Telefon</dd>
+                    <dt class="col-sm-4">Telefon</dt>
+                    <dd class="col-sm-8"><strong>@Model.Telefon </strong></dd>
+                </dl>
 
-            <dt class="col-sm-4 text-light">Arabalar</dt>
-            <dd class="col-sm-8">
+                <h5 class="text-warning mt-4">Kayitli Araba</h5>
                 @if (Model.Arabalar != null && Model.Arabalar.Any())
                 {
-                    <ul>
+                    <div class="row">
                         @foreach (var araba in Model.Arabalar)
                         {
-                            <li class="text-light">
-                                @araba.Marka - @araba.Model (@araba.Km km, @araba.Islem)
-                            </li>
+                            <div class="col-md-6 mb-3">
+                                <div class="card-body">
+                                    <div class="card-body">
+                                        <dl class="row mb-4">
+                                            <dt class="col-sm-4">Marka</dt>
+                                            <dd class="col-sm-8"> <strong>@araba.Marka </strong></dd>
+
+                                            <dt class="col-sm-4">Model</dt>
+                                            <dd class="col-sm-8">
+                                                <strong>@araba.Model </strong>
+
+                                            </dd>
+
+                                            <dt class="col-sm-4">Plaka</dt>
+                                            <dd class="col-sm-8">
+                                                <strong>@araba.Plaka </strong>
+
+                                            </dd>
+
+                                            <dt class="col-sm-4">Km</dt>
+                                            <dd class="col-sm-8">
+                                                <strong>@araba.Km </strong>
+
+                                            </dd>
+
+                                            <dt class="col-sm-4">Islem</dt>
+                                            <dd class="col-sm-8">
+                                                <strong>@araba.Islem </strong>
+
+                                            </dd>
+                                        </dl>
+
+                                    </div>
+                                </div>
+                            </div>
                         }
-                    </ul>
+                    </div>
                 }
                 else
                 {
                     <p class="text-muted">Bu müşteri için araba kaydı yok.</p>
                 }
-            </dd>
-        </dl>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Düzenle</a>
-        <div class="text-center mt-4">
-            <a asp-action="Index" style="color:white" class="btn btn-danger">Listeye Dön</a>
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-sm px-4">Düzenle</a>
+                    <a asp-action="Index" class="btn btn-danger btn-sm px-4">Listeye Dön</a>
+                </div>
+            </div>
+            <div class="card-footer text-center text-muted">
+                © 2024 AdenGarage
+            </div>
         </div>
     </div>
 </div>
+@* <p><strong>Marka:</strong> @araba.Marka</p>
+<p><strong>Model:</strong> @araba.Model</p>
+<p><strong>Plaka:</strong> @araba.Plaka</p>
+<p><strong>İşlem:</strong> @araba.Islem</p>
+<p><strong>Km:</strong> @araba.Km km</p> *@

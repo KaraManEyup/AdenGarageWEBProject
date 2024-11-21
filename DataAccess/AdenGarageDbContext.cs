@@ -17,12 +17,11 @@ namespace AdenGarageWEB.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            // Müşteri-Araba ilişkisini konfigüre et
             modelBuilder.Entity<Araba>()
-                .HasOne(a => a.Musteri)
-                .WithMany(m => m.Arabalar)
-                .HasForeignKey(a => a.MusteriId)
-                .OnDelete(DeleteBehavior.Cascade); // Silme davranışı ayarı (isteğe bağlı)
+     .HasOne(a => a.Musteri)
+     .WithMany(m => m.Arabalar)
+     .HasForeignKey(a => a.MusteriId)
+     .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

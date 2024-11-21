@@ -1,32 +1,37 @@
-using AdenGarageWEB.Models;
+using AdenGarageWEB.DataAccess;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AdenGarageWEB.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly AdenGarageDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(AdenGarageDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchTerm)
         {
-            return View();
+            var musteriler = _context.Musteriler
+                .Include(m => m.Arabalar) // Arabalar iliþkisini dahil edin
+                .Where(m =>
+                    string.IsNullOrEmpty(searchTerm) || // Arama terimi yoksa tüm kayýtlarý getir
+                    m.Isim.Contains(searchTerm) ||
+                    m.Soyisim.Contains(searchTerm) ||
+                    m.Telefon.Contains(searchTerm) ||
+                    m.Arabalar.Any(a =>
+                        a.Marka.Contains(searchTerm) ||
+                        a.Model.Contains(searchTerm) ||
+                        a.Plaka.Contains(searchTerm)))
+                .ToList(); // Veritabanýndan veriyi çekin
+
+            return View(musteriler);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

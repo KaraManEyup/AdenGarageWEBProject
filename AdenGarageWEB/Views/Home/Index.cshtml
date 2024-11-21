@@ -1,4 +1,7 @@
-﻿@{
+﻿@model List<Core.Models.Musteri>
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -17,7 +20,65 @@
         </div>
     </div>
 </div>
+<h1 class="text-center mb-4 text-primary">Müşteri ve Araç Arama</h1>
 
+<!-- Arama Kutusu -->
+<div class="search-box mb-4">
+    <form asp-action="Index" method="get" class="d-flex justify-content-center">
+        <input type="text" name="searchTerm" class="form-control me-2" placeholder="Plaka, Marka, Model veya Müşteri bilgisi" value="@ViewData["SearchTerm"]">
+        <button type="submit" class="btn btn-primary">Ara</button>
+    </form>
+</div>
+
+<!-- Listeleme -->
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Müşteri Adı</th>
+                <th>Soyadı</th>
+                <th>Telefon</th>
+                <th>Araçlar</th>
+                <th>Plaka</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Count > 0) // Any() yerine Count > 0 kontrolü kullanabilirsiniz
+            {
+                foreach (var musteri in Model)
+                {
+                    <tr>
+                        <td>@musteri.Isim</td>
+                        <td>@musteri.Soyisim</td>
+                        <td>@musteri.Telefon</td>
+                        <td>
+                            @if (musteri.Arabalar != null && musteri.Arabalar.Count > 0)
+                            {
+                                <ul>
+                                    @foreach (var araba in musteri.Arabalar)
+                                    {
+                                        <li>@araba.Marka @araba.Model</li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span>Araba yok</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center">Kayıt bulunamadı</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 <!-- Özellikler Bölümü -->
 <div class="container py-5">
     <h2 class="text-center text-light mb-5 animate__animated animate__fadeIn animate__delay-3s">Neden AdenGarage?</h2>

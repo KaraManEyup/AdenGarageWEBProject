@@ -1,46 +1,78 @@
 ﻿@model Core.Models.Musteri
 
 @{
-    ViewData["Title"] = "Müşteri Sil";
+    ViewData["Title"] = "Müşteri Detayları";
 }
 
-<h1 class="text-center mb-4 text-danger">Müşteri Sil</h1>
+<h1 class="text-center mb-4 text-warning">Müşteri Detayları</h1>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg rounded">
-                <div class="card-header bg-danger text-white">
-                    <h4 class="m-0">Müşteri Silme İşlemi</h4>
-                </div>
-                <div class="card-body">
-                    <h3 class="text-center text-warning mb-4">Bu müşteriyi silmek istediğinizden emin misiniz?</h3>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card text-light bg-dark shadow-lg">
+            <div class="card-header text-center bg-warning text-dark fw-bold">
+                Müşteri Bilgileri
+            </div>
+            <div class="card-body">
+                <!-- Müşteri Bilgileri -->
+                <dl class="row mb-4">
+                    <dt class="col-sm-4 text-success" style="font-size: 1.2em;">İsim</dt>
+                    <dd class="col-sm-8"><strong style="font-size: 1.4em; color: #FFD700;">@Model.Isim</strong></dd>
 
-                    <!-- Müşteri Bilgileri Tablosu -->
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Bilgi Türü</th>
-                                <th>Değer</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="fw-bold">Ad</td>
-                                <td>@Html.DisplayFor(model => model.Isim)</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">Soyad</td>
-                                <td>@Html.DisplayFor(model => model.Soyisim)</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">Telefon</td>
-                                <td>@Html.DisplayFor(model => model.Telefon)</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <dt class="col-sm-4 text-success" style="font-size: 1.2em;">Soyisim</dt>
+                    <dd class="col-sm-8"><strong style="font-size: 1.4em; color: #FFD700;">@Model.Soyisim</strong></dd>
 
-                    <!-- Silme Formu -->
+                    <dt class="col-sm-4 text-success" style="font-size: 1.2em;">Telefon</dt>
+                    <dd class="col-sm-8"><strong style="font-size: 1.4em; color: #FFD700;">@Model.Telefon</strong></dd>
+                </dl>
+
+                <!-- Kayitli Arabalar Bölümü -->
+                <h5 class="text-warning mt-4">Kayitli Arabalar</h5>
+                @if (Model.Arabalar != null && Model.Arabalar.Any())
+                {
+                    <!-- Arabalar Listesini Sıralı Göster -->
+                    <div class="accordion" id="arabalarAccordion">
+                        @foreach (var araba in Model.Arabalar.OrderBy(a => a.Tarih))
+                        {
+                            <div class="accordion-item bg-dark">
+                                <h2 class="accordion-header" id="heading@araba.Id">
+                                    <button class="accordion-button bg-warning text-body" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@araba.Id" aria-expanded="true" aria-controls="collapse@araba.Id">
+                                        @araba.Marka - @araba.Model (@araba.Plaka)
+                                    </button>
+                                </h2>
+                                <div id="collapse@araba.Id" class="accordion-collapse collapse" aria-labelledby="heading@araba.Id" data-bs-parent="#arabalarAccordion">
+                                    <div class="accordion-body">
+                                        <dl class="row">
+                                            <dt class="col-sm-4 text-primary">Marka</dt>
+                                            <dd class="col-sm-8"><strong>@araba.Marka</strong></dd>
+
+                                            <dt class="col-sm-4 text-primary">Model</dt>
+                                            <dd class="col-sm-8"><strong>@araba.Model</strong></dd>
+
+                                            <dt class="col-sm-4 text-primary">Plaka</dt>
+                                            <dd class="col-sm-8"><strong>@araba.Plaka</strong></dd>
+
+                                            <dt class="col-sm-4 text-primary">Km</dt>
+                                            <dd class="col-sm-8"><strong>@araba.Km</strong></dd>
+
+                                            <dt class="col-sm-4 text-primary">İşlem</dt>
+                                            <dd class="col-sm-8"><strong>@araba.Islem</strong></dd>
+
+                                            <dt class="col-sm-4 text-primary">Geliş Tarihi</dt>
+                                            <dd class="col-sm-8"><strong>@araba.Tarih?.ToString("dd-MM-yyyy")</strong></dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">Bu müşteri için araba kaydı yok.</p>
+                }
+
+                <!-- Silme ve İptal Butonları -->
+                <div class="d-flex justify-content-between mt-4">
                     <form asp-action="Delete" method="post">
                         <input type="hidden" asp-for="Id" />
                         <div class="text-center mt-4">
@@ -50,7 +82,14 @@
                     </form>
                 </div>
             </div>
+            <div class="card-footer text-center text-muted">
+                © 2024 AdenGarage
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Bootstrap Accordion için gerekli JS -->
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+}

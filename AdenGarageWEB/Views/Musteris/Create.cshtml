@@ -1,7 +1,7 @@
 ﻿@model Core.Models.Musteri
 
 @{
-    ViewData["Title"] = "Yeni Müşteri Ekle";
+    ViewData["Title"] = "Create";
 }
 
 <h1 class="text-center mb-4 text-warning">Yeni Müşteri Ekle</h1>
@@ -60,51 +60,15 @@
                     <input type="date" name="Arabalar[0].Tarih" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                 </div>
             </div>
-            <span>
-            </span>
 
             <div class="form-group d-grid gap-2">
                 <input type="submit" value="Kaydet" class="btn btn-success btn-lg shadow-sm rounded-pill" />
             </div>
         </form>
-    </div>
-</div>
+        <div class="text-center mt-4">
+            <a asp-action="Index" style="color:white" class="btn btn-danger">Listeye Dön</a>
+        </div>
 
-<!-- Geri Git Linki -->
-<div class="text-center mt-4">
-    <a asp-action="Index" style="color:white" class="btn btn-danger">Listeye Dön</a>
-</div>
-
-<script>
-    let arabaIndex = 1;
-    document.getElementById('add-araba').addEventListener('click', function () {
-        const container = document.getElementById('arabalar-container');
-        const newAraba = `
-                <div class="form-group">
-                    <label>Marka</label>
-                    <input name="Arabalar[${arabaIndex}].Marka" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Model</label>
-                    <input name="Arabalar[${arabaIndex}].Model" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Kilometre</label>
-                    <input name="Arabalar[${arabaIndex}].Km" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>İşlem</label>
-                    <input name="Arabalar[${arabaIndex}].Islem" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Plaka</label>
-                    <input name="Arabalar[${arabaIndex}].Plaka" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Geliş Tarihi</label>
-                    <input type="date" name="Arabalar[${arabaIndex}].GelisTarihi" class="form-control" />
-                </div>`;
-        container.insertAdjacentHTML('beforeend', newAraba);
-        arabaIndex++;
-    });
-</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

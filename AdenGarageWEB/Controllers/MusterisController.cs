@@ -75,6 +75,14 @@ namespace AdenGarageWEB.Controllers
 
             if (ModelState.IsValid)
             {
+                if (musteri.Arabalar != null && musteri.Arabalar.Any())
+                {
+                    musteri.Arabalar = musteri.Arabalar
+           .Where(a => !string.IsNullOrEmpty(a.Marka) || !string.IsNullOrEmpty(a.Model))
+           .ToList();
+                }
+
+
                 // Arabaları filtrele (Boş olanları kaldır)
                 musteri.Arabalar = musteri.Arabalar?.Where(a =>
         !string.IsNullOrWhiteSpace(a.Marka) ||
@@ -188,16 +196,17 @@ namespace AdenGarageWEB.Controllers
         }
 
 
-        // GET: Musteris/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var musteri = await _context.Musteriler
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var musteri = _context.Musteriler
+                .Include(m => m.Arabalar) // Arabaları da dahil ediyoruz
+                .FirstOrDefault(m => m.Id == id);
+
             if (musteri == null)
             {
                 return NotFound();
@@ -206,25 +215,28 @@ namespace AdenGarageWEB.Controllers
             return View(musteri);
         }
 
-        // POST: Musteris/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var musteri = await _context.Musteriler.FindAsync(id);
+            var musteri = _context.Musteriler
+                .Include(m => m.Arabalar)
+                .FirstOrDefault(m => m.Id == id);
+
             if (musteri != null)
             {
+                // İlgili arabaları da silmek isterseniz
+                if (musteri.Arabalar != null && musteri.Arabalar.Any())
+                {
+                    _context.Arabalar.RemoveRange(musteri.Arabalar);
+                }
+
                 _context.Musteriler.Remove(musteri);
+                _context.SaveChanges();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        //private bool MusteriExists(int id)
-        //{
-        //    return _context.Musteriler.Any(e => e.Id == id);
-        //}
 
     }
 }

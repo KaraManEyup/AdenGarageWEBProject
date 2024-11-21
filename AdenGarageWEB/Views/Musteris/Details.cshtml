@@ -13,55 +13,53 @@
                 Müşteri Bilgileri
             </div>
             <div class="card-body">
+                <!-- Müşteri Bilgileri -->
                 <dl class="row mb-4">
-                    <dt class="col-sm-4">İsim</dt>
-                    <dd class="col-sm-8"><strong>@Model.Isim </strong></dd>
+                    <dt class="col-sm-4 text-success" style="font-size: 1.2em;">İsim</dt>
+                    <dd class="col-sm-8"><strong style="font-size: 1.4em; color: #FFD700;">@Model.Isim</strong></dd>
 
-                    <dt class="col-sm-4">Soyisim</dt>
-                    <dd class="col-sm-8"><strong>@Model.Soyisim </strong></dd>
+                    <dt class="col-sm-4 text-success" style="font-size: 1.2em;">Soyisim</dt>
+                    <dd class="col-sm-8"><strong style="font-size: 1.4em; color: #FFD700;">@Model.Soyisim</strong></dd>
 
-                    <dt class="col-sm-4">Telefon</dt>
-                    <dd class="col-sm-8"><strong>@Model.Telefon </strong></dd>
+                    <dt class="col-sm-4 text-success" style="font-size: 1.2em;">Telefon</dt>
+                    <dd class="col-sm-8"><strong style="font-size: 1.4em; color: #FFD700;">@Model.Telefon</strong></dd>
                 </dl>
 
-                <h5 class="text-warning mt-4">Kayitli Araba</h5>
+                <!-- Kayitli Arabalar Bölümü -->
+                <h5 class="text-warning mt-4">Kayitli Arabalar</h5>
                 @if (Model.Arabalar != null && Model.Arabalar.Any())
                 {
-                    <div class="row">
-                        @foreach (var araba in Model.Arabalar)
+                    <!-- Arabalar Listesini Sıralı Göster -->
+                    <div class="accordion" id="arabalarAccordion">
+                        @foreach (var araba in Model.Arabalar.OrderBy(a => a.Tarih))
                         {
-                            <div class="col-md-6 mb-3">
-                                <div class="card-body">
-                                    <div class="card-body">
-                                        <dl class="row mb-4">
-                                            <dt class="col-sm-4">Marka</dt>
-                                            <dd class="col-sm-8"> <strong>@araba.Marka </strong></dd>
+                            <div class="accordion-item bg-dark">
+                                <h2 class="accordion-header" id="heading@araba.Id">
+                                    <button class="accordion-button bg-warning text-body" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@araba.Id" aria-expanded="true" aria-controls="collapse@araba.Id">
+                                        @araba.Marka - @araba.Model (@araba.Plaka)
+                                    </button>
+                                </h2>
+                                <div id="collapse@araba.Id" class="accordion-collapse collapse" aria-labelledby="heading@araba.Id" data-bs-parent="#arabalarAccordion">
+                                    <div class="accordion-body">
+                                        <dl class="row">
+                                            <dt class="col-sm-4 text-primary">Marka</dt>
+                                            <dd class="col-sm-8"><strong>@araba.Marka</strong></dd>
 
-                                            <dt class="col-sm-4">Model</dt>
-                                            <dd class="col-sm-8">
-                                                <strong>@araba.Model </strong>
+                                            <dt class="col-sm-4 text-primary">Model</dt>
+                                            <dd class="col-sm-8"><strong>@araba.Model</strong></dd>
 
-                                            </dd>
+                                            <dt class="col-sm-4 text-primary">Plaka</dt>
+                                            <dd class="col-sm-8"><strong>@araba.Plaka</strong></dd>
 
-                                            <dt class="col-sm-4">Plaka</dt>
-                                            <dd class="col-sm-8">
-                                                <strong>@araba.Plaka </strong>
+                                            <dt class="col-sm-4 text-primary">Km</dt>
+                                            <dd class="col-sm-8"><strong>@araba.Km</strong></dd>
 
-                                            </dd>
+                                            <dt class="col-sm-4 text-primary">İşlem</dt>
+                                            <dd class="col-sm-8"><strong>@araba.Islem</strong></dd>
 
-                                            <dt class="col-sm-4">Km</dt>
-                                            <dd class="col-sm-8">
-                                                <strong>@araba.Km </strong>
-
-                                            </dd>
-
-                                            <dt class="col-sm-4">Islem</dt>
-                                            <dd class="col-sm-8">
-                                                <strong>@araba.Islem </strong>
-
-                                            </dd>
+                                            <dt class="col-sm-4 text-primary">Geliş Tarihi</dt>
+                                            <dd class="col-sm-8"><strong>@araba.Tarih?.ToString("dd-MM-yyyy")</strong></dd>
                                         </dl>
-
                                     </div>
                                 </div>
                             </div>
@@ -72,9 +70,16 @@
                 {
                     <p class="text-muted">Bu müşteri için araba kaydı yok.</p>
                 }
+
+                <!-- Silme ve İptal Butonları -->
                 <div class="d-flex justify-content-between mt-4">
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-sm px-4">Düzenle</a>
-                    <a asp-action="Index" class="btn btn-danger btn-sm px-4">Listeye Dön</a>
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="text-center mt-4">
+                            
+                            <a asp-action="Index" class="btn btn-secondary btn-lg px-5 ms-3 shadow-sm">Listeye Don</a>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="card-footer text-center text-muted">
@@ -83,8 +88,8 @@
         </div>
     </div>
 </div>
-@* <p><strong>Marka:</strong> @araba.Marka</p>
-<p><strong>Model:</strong> @araba.Model</p>
-<p><strong>Plaka:</strong> @araba.Plaka</p>
-<p><strong>İşlem:</strong> @araba.Islem</p>
-<p><strong>Km:</strong> @araba.Km km</p> *@
+
+<!-- Bootstrap Accordion için gerekli JS -->
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+}

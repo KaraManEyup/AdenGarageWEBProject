@@ -109,7 +109,7 @@ namespace AdenGarageWEB.Controllers
             }
 
             var musteri = await _context.Musteriler
-                .Include(m => m.Arabalar) // Arabalar da yüklensin
+                .Include(m => m.Arabalar)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (musteri == null)
@@ -118,6 +118,61 @@ namespace AdenGarageWEB.Controllers
             }
 
             return View(musteri);
+        }
+        public async Task<IActionResult> EditAraba(int id)
+        {
+            var araba = await _context.Arabalar.FindAsync(id);
+            if (araba == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["MusteriId"] = new SelectList(_context.Musteriler, "Id", "Isim", araba.MusteriId);
+            return View(araba);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAraba(int id, Araba araba)
+        {
+            if (id != araba.Id)
+            {
+                return NotFound();
+            }
+
+            var existingAraba = await _context.Arabalar
+                .AsNoTracking()  
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (existingAraba == null)
+            {
+                return NotFound();
+            }
+
+            _context.Arabalar.Update(araba);  // Bu, nesneyi güncelleyecektir
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ArabaExists(araba.Id))  // Burada ArabaExists metodunu kullanıyoruz
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            ViewData["MusteriId"] = new SelectList(_context.Musteriler, "Id", "Isim", araba.MusteriId);
+            // İşlem tamamlandıktan sonra, arabayı içeren müşteri detaylarına yönlendirme
+            return RedirectToAction("Details", new { id = araba.MusteriId });
+        }
+        private bool ArabaExists(int id)
+        {
+            return _context.Arabalar.Any(a => a.Id == id);
         }
 
         [HttpPost]

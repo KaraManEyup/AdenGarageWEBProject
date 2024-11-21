@@ -36,6 +36,31 @@
                     <span asp-validation-for="Telefon" class="text-danger"></span>
                 </div>
 
+                <!-- Araba Listeleme ve Düzenleme Butonları -->
+                @if (Model.Arabalar != null && Model.Arabalar.Any())
+                {
+                    <div class="form-group mb-4">
+                        <label class="form-label fw-bold text-white">Arabalar</label>
+                        <ul class="list-group">
+                            @foreach (var araba in Model.Arabalar)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>
+                                        <strong>@araba.Marka @araba.Model</strong> - @araba.Plaka
+                                    </span>
+                                    <a asp-action="EditAraba" asp-route-id="@araba.Id" class="btn btn-warning btn-sm">Düzenle</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group mb-4">
+                        <span class="text-danger">Bu müşterinin arabası yok!</span>
+                    </div>
+                }
+
                 <!-- Save Button -->
                 <div class="form-group d-grid gap-2">
                     <input type="submit" value="Kaydet" class="btn btn-success btn-lg shadow-sm rounded-pill" />
@@ -43,7 +68,6 @@
             </form>
         </div>
     </div>
-
     <!-- Geri Git Linki -->
     <div class="text-center mt-4">
         <a asp-action="Index" class="btn btn-danger text-white rounded-pill px-4 py-2">Listeye Dön</a>

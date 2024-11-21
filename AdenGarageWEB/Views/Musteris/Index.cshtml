@@ -4,104 +4,166 @@
     ViewData["Title"] = "Müşteri Listesi";
 }
 
+<h1 class="text-center mb-5 text-warning">Müşteri Listesi</h1>
+
 <!-- Butonları Flexbox ile yerleştiriyoruz -->
-
-<h1 class="text-center mb-4 text-warning">Müşteri Listesi</h1>
-
-<div class="d-flex justify-content-between mb-3">
+<div class="d-flex justify-content-between mb-4">
     <!-- Sıralama linkleri sol tarafta -->
     <div>
-        <a class="btn btn-outline-warning" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimAsc" })">Isim Artan |↑|</a>
-        <a class="btn btn-outline-warning" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimDesc" })">Isim Azalan |↓|</a>
+        <a class="btn btn-outline-warning mx-2" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimAsc" })">İsim Artan |↑|</a>
+        <a class="btn btn-outline-warning mx-2" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimDesc" })">İsim Azalan |↓|</a>
     </div>
 
-    <!-- "Araba Ile Yeni Müşteri Ekle" butonu sağ tarafta -->
+    <!-- "Yeni Müşteri Ekle" butonu sağ tarafta -->
     <div>
-        <a asp-action="Create" class="btn btn-warning">Yeni Müşteri Ekle</a>
+        <a asp-action="Create" class="btn btn-warning px-4 py-2">Yeni Müşteri Ekle</a>
     </div>
 </div>
 
 <!-- Müşteri tablosu -->
-<table style="background-color: rgba(0,0,0,0.6)" class="table table-hover kutu">
-    <thead style="font-size:large">
-        <tr style="color:gold">
-            <th>#</th>
-            <th>İsim</th>
-            <th>Soyisim</th>
-            <th>Telefon</th>
-            <th>Arabalar</th>
-            <th>İşlemler</th>
-            <th>Plaka</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Any())
-        {
-            int counter = 1;
-            foreach (var musteri in Model)
-            {
-                <tr style="color:white">
-                    <td>@counter</td>
-                    <td>@musteri.Isim</td>
-                    <td>@musteri.Soyisim</td>
-                    <td>@musteri.Telefon</td>
-                    <td>
-                        @if (musteri.Arabalar != null && musteri.Arabalar.Any())
-                        {
-                            <ul>
-                                @foreach (var araba in musteri.Arabalar)
-                                {
-                                    <li>
-                                        <strong>@araba.Marka - @araba.Model -</strong>
-                                    </li>
-                                }
-                            </ul>
-                        }
-                        else
-                        {
-                            <span class="text-warning">Bu müşterinin arabası yok!</span>
-                        }
-                    </td>
-                    <td>
-                        @if (musteri.Arabalar != null && musteri.Arabalar.Any())
-                        {
-                            <ul>
-                                @foreach (var araba in musteri.Arabalar)
-                                {
-                                    <li>
-                                        <strong> -@araba.Islem -</strong>
-                                    </li>
-                                }
-                            </ul>
-                        }
-                    </td>
-                    <td>
-                        @if (musteri.Arabalar != null && musteri.Arabalar.Any())
-                        {
-                            <ul>
-                                @foreach (var araba in musteri.Arabalar)
-                                {
-                                    <li>
-                                        <strong> -@araba.Plaka -</strong>
-                                    </li>
-                                }
-                            </ul>
-                        }
-                    </td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@musteri.Id" class="btn btn-info btn-sm">Detay</a>
-                        <a asp-action="Edit" asp-route-id="@musteri.Id" class="btn btn-warning btn-sm">Düzenle</a>
-                        <a asp-action="Delete" asp-route-id="@musteri.Id" class="btn btn-danger btn-sm">Sil</a>
-                    </td>
-                </tr>
-                counter++;
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="6" class="text-center text-muted">Kayıtlı müşteri bulunmamaktadır.</td>
+<div class="table-responsive">
+    <table class="table table-hover kutu" style="background-color: rgba(0, 0, 0, 0.6)">
+        <thead>
+            <tr class="text-center" style="color: gold">
+                <th>#</th>
+                <th>İsim</th>
+                <th>Soyisim</th>
+                <th>Telefon</th>
+                <th>Arabalar</th>
+                <th>Plaka</th>
+                <th>İşlem</th>
+                <th>İşlemler</th>
             </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                int counter = 1;
+                foreach (var musteri in Model)
+                {
+                    <tr class="text-center" style="color:white">
+                        <td><strong>@counter</strong></td>
+                        <td><strong>@musteri.Isim</strong></td>
+                        <td><strong>@musteri.Soyisim</strong></td>
+                        <td><strong>@musteri.Telefon</strong></td>
+                        <td>
+                            @if (musteri.Arabalar != null && musteri.Arabalar.Any())
+                            {
+                                <ul class="list-unstyled">
+                                    @foreach (var araba in musteri.Arabalar)
+                                    {
+                                        <li><strong>@araba.Marka - @araba.Model</strong></li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span class="text-danger">Bu müşterinin arabası yok!</span>
+                            }
+                        </td>
+                        <td>
+                            @if (musteri.Arabalar != null && musteri.Arabalar.Any())
+                            {
+                                <ul class="list-unstyled">
+                                    @foreach (var araba in musteri.Arabalar)
+                                    {
+                                        <li><strong>@araba.Plaka</strong></li>
+                                    }
+                                </ul>
+                            }
+                        </td>
+                        <td>
+                            @if (musteri.Arabalar != null && musteri.Arabalar.Any())
+                            {
+                                <ul class="list-unstyled">
+                                    @foreach (var araba in musteri.Arabalar)
+                                    {
+                                        <li><strong>@araba.Islem</strong></li>
+                                    }
+                                </ul>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@musteri.Id" class="btn btn-info btn-sm mx-1">Detay</a>
+                            <a asp-action="Edit" asp-route-id="@musteri.Id" class="btn btn-warning btn-sm mx-1">Düzenle</a>
+                            <a asp-action="Delete" asp-route-id="@musteri.Id" class="btn btn-danger btn-sm mx-1">Sil</a>
+                        </td>
+                    </tr>
+                    counter++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8" class="text-center text-muted">Kayıtlı müşteri bulunmamaktadır.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Stil kısmı -->
+<style>
+    .table th, .table td {
+        text-align: center;
+        padding: 15px;
+        vertical-align: middle;
+        word-wrap: break-word;
+        max-width: 200px;
+    }
+
+    .table th {
+        background-color: #333;
+    }
+
+    .table td {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .btn-warning, .btn-info, .btn-danger {
+        padding: 8px 12px;
+    }
+
+    .btn-outline-warning {
+        border: 2px solid gold;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .list-unstyled {
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+
+        .list-unstyled li {
+            font-size: 14px;
+            color: #f0f0f0;
         }
-    </tbody>
-</table>
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+    .btn-info:hover {
+        background-color: #17a2b8;
+    }
+
+    .btn-warning:hover {
+        background-color: #f0ad4e;
+    }
+
+    .btn-danger:hover {
+        background-color: #d9534f;
+    }
+</style>

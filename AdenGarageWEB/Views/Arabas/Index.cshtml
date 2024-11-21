@@ -15,9 +15,9 @@
         <a asp-action="Create" class="btn btn-warning">Yeni Araba Ekle</a>
     </div>
 </div>
-<table style="background-color:rgba(0,0,0,0.8) " class="table table-hover kutu">
-    <thead class="text-center" style="font-size:large">
-        <tr class="text-center" style="color:gold">
+<table class="table table-hover kutu" style="background-color: rgba(0,0,0,0.6)">
+    <thead style="font-size:large">
+        <tr style="color:gold">
             <th class="text-center">Marka</th>
             <th class="text-center">Model</th>
             <th class="text-center">Plaka</th>
@@ -71,3 +71,36 @@
     </tbody>
 </table>
 
+<style>
+    .table th, .table td {
+        text-align: center;
+        padding: 10px;
+        vertical-align: middle;
+        word-wrap: break-word;
+        max-width: 200px;
+    }
+
+    .table th {
+        background-color: #333;
+    }
+
+    .table td {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .btn-warning, .btn-info, .btn-danger {
+        padding: 5px 10px;
+    }
+
+    .btn-outline-warning {
+        border: 2px solid gold;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+</style>

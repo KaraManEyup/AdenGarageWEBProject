@@ -52,3 +52,15 @@ body {
     z-index: 1000; /* Üstte olmasý için */
 }
 
+td, th {
+    word-wrap: break-word;
+    max-width: 200px; /* Ýstediðiniz geniþlikte sýnýrlayýn */
+}
+th, td {
+    text-align: center; /* Metinleri ortalar */
+    padding: 10px;
+    vertical-align: middle;
+}
+.table-responsive {
+    overflow-x: auto;
+}

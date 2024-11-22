@@ -4,202 +4,249 @@
     ViewData["Title"] = "Müşteri Listesi";
 }
 
-<!-- Sayfa Başlığı -->
-<header class="text-center py-5 bg-gradient text-white border-bottom">
-    <h1 class="display-4 font-weight-bold animatedTitle">Müşteri Listesi</h1>
-    <p class="lead mb-4">Tüm müşterileriniz ve araçları hakkında bilgilere anında ulaşın. Daha fazlasını keşfedin!</p>
+<div class="header bg-dark text-white py-5">
+    <div class="container text-center">
+        <h1 class="display-4 font-weight-bold animated-text">
+            AdenGarage Müşteri Listesi
+        </h1>
+        <p class="lead text-light fade-in">
+            Arabalarınız ve bakımlarınız bizimle güvende! Müşteri bilgilerinizi buradan kontrol edebilirsiniz.
+        </p>
+        <hr class="my-4 fade-in" />
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
 
-    <!-- İstatistik ve Heyecan Verici Bilgiler -->
-    <div class="row justify-content-center mb-5">
-        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="card shadow border-light rounded-lg">
-                <div class="card-body text-center">
+                <div class="card-body bg-dark text-center">
                     <h5 class="card-title">Toplam Müşteri Sayısı</h5>
                     <p class="card-text display-4 text-primary">@Model.Count()</p>
                 </div>
             </div>
+
+            <div class="card-body bg-dark text-center">
+                <h5 class="card-title">Toplam Araç Sayısı</h5>
+                <p class="card-text display-4 text-success">@Model.Sum(m => m.Arabalar?.Count() ?? 0)</p>
+            </div>
+
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-            <div class="card shadow border-light rounded-lg">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Toplam Araç Sayısı</h5>
-                    <p class="card-text display-4 text-success">@Model.Sum(m => m.Arabalar?.Count() ?? 0)</p>
-                </div>
+        <p class="mb-0 fade-in" style="font-size: 1rem; color: #f8f9fa;">
+            AdenGarage | Kaliteli Hizmet, Güvenli Sürüş
+        </p>
+    </div>
+    <a href="#features" class="btn btn-light btn-lg mt-4 shadow">Hizmetlerimizi Keşfedin</a>
+</div>
+
+
+<div class="container my-4">
+    <div class="row align-items-center mb-4">
+        <!-- Sıralama ve Filtreleme Butonları -->
+        <div class="col-md-8 d-flex flex-wrap justify-content-start gap-2">
+            <div class="btn-group" role="group" aria-label="Sıralama Seçenekleri">
+                <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimAsc" })">
+                    <i class="fas fa-sort-alpha-down"></i> İsim Artan
+                </a>
+                <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimDesc" })">
+                    <i class="fas fa-sort-alpha-up"></i> İsim Azalan
+                </a>
             </div>
         </div>
-    </div>
-</header>
 
-<!-- Filtreleme ve Sıralama Butonları -->
-<div class="d-flex justify-content-between mb-4 align-items-center flex-wrap">
-    <!-- Sıralama ve Filtreleme -->
-    <div class="d-flex flex-wrap">
-        <a class="btn btn-outline-secondary mx-2" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimAsc" })">İsim Artan</a>
-        <a class="btn btn-outline-secondary mx-2" href="@Url.Action("Index", "Musteris", new { sortOrder = "IsimDesc" })">İsim Azalan</a>
+        <!-- Yeni Müşteri Ekle Butonu -->
+        <div class="col-md-4 text-end">
+            <a href="@Url.Action("Create", "Musteris")" class="btn btn-primary btn-lg px-4 shadow">
+                <i class="fas fa-user-plus"></i> Yeni Müşteri Ekle
+            </a>
+        </div>
     </div>
-    <!-- Yeni Müşteri Ekle Butonu -->
-    <div>
-        <a href="@Url.Action("Create", "Musteris")" class="btn btn-primary btn-lg">Yeni Müşteri Ekle</a>
+
+    <!-- Görünüm Seçimi Butonu -->
+    <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-outline-dark shadow-sm px-4 py-2" id="toggleViewBtn">
+            <i class="fas fa-th"></i> Kart Görünümü
+        </button>
     </div>
 </div>
 
-<!-- Müşteri Listeleme -->
-<div class="row justify-content-center">
-    @if (Model.Any())
+
+<!-- Kart Görünümü -->
+<div id="kartView" class="row" style="display:none;">
+    @foreach (var musteri in Model)
     {
-        @foreach (var musteri in Model)
-        {
-            <!-- Müşteri Kartı -->
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="card shadow-sm border-light rounded-3">
-                    <div class="card-body">
-                        <h5 class="card-title text-center text-dark font-weight-bold">@musteri.Isim @musteri.Soyisim</h5>
-                        <p class="card-text text-muted"><strong>Telefon:</strong> @musteri.Telefon</p>
-                        <p><strong>Arabalar:</strong></p>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card shadow-lg rounded-lg border-0 hover-shadow-lg transition-all" style="background: #ffffff;">
+                <div class="card-header text-white" style="background: linear-gradient(90deg, #a6c1ee, #6fa3e4); border-radius: 10px 10px 0 0;">
+                    <h5 class="text-center py-3">@musteri.Isim @musteri.Soyisim</h5>
+                </div>
+                <div class="card-body" style="background-color: #f4f7fc;">
+                    <dl class="row">
+                        <dt class="col-sm-4 text-center" style="color: #f39c12;">Telefon</dt>
+                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@musteri.Telefon</dd>
+
                         @if (musteri.Arabalar != null && musteri.Arabalar.Any())
                         {
-                            <ul class="list-unstyled">
-                                @foreach (var araba in musteri.Arabalar)
-                                {
-                                    <li class="text-dark">
-                                        <a href="@Url.Action("Details", "Arabas", new { id = araba.Id })" class="text-decoration-none">@araba.Marka - @araba.Model</a>
-                                    </li>
-                                }
-                            </ul>
+                            <dt class="col-sm-4 text-center" style="color: #f39c12;">Arabalar</dt>
+                            <dd class="col-sm-8">
+                                <ul class="list-unstyled">
+                                    @foreach (var araba in musteri.Arabalar)
+                                    {
+                                        <li class="text-dark">
+                                            <a href="@Url.Action("Details", "Arabas", new { id = araba.Id })" class="btn btn-outline-primary">@araba.Marka - @araba.Model</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </dd>
                         }
                         else
                         {
-                            <span class="text-muted">Arabası yok.</span>
+                            <dt class="col-sm-4 text-center" style="color: #f39c12;">Arabalar</dt>
+                            <dd class="col-sm-8">
+                                <b class="text-muted">Arabası yok.</b>
+                            </dd>
                         }
-                    </div>
-                    <div class="card-footer d-flex justify-content-center">
+                    </dl>
+
+                    <div class="card-footer d-flex justify-content-center mt-auto">
                         <a href="@Url.Action("Details", "Musteris", new { id = musteri.Id })" class="btn btn-info btn-sm mx-1">Detay</a>
                         <a href="@Url.Action("Edit", "Musteris", new { id = musteri.Id })" class="btn btn-warning btn-sm mx-1">Düzenle</a>
                         <a href="@Url.Action("Delete", "Musteris", new { id = musteri.Id })" class="btn btn-danger btn-sm mx-1">Sil</a>
                     </div>
                 </div>
             </div>
-        }
-    }
-    else
-    {
-        <div class="col-12 text-center text-muted">Kayıtlı müşteri bulunmamaktadır.</div>
+        </div>
     }
 </div>
 
-<!-- Stil ve Javascript -->
+<!-- Tablo Görünümü -->
+<div class="container">
+    <h2 class="text-center mb-4 text-dark">Müşteri ve Araç Bilgileri</h2>
+    <div class="table-responsive shadow rounded">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>İsim Soyisim</th>
+                    <th>Telefon</th>
+                    <th>Arabalar</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var musteri in Model)
+                {
+                    <tr>
+                        <td>@musteri.Isim @musteri.Soyisim</td>
+                        <td>@musteri.Telefon</td>
+                        <td>
+                            @if (musteri.Arabalar != null && musteri.Arabalar.Count > 0)
+                            {
+                                <ul class="list-unstyled">
+                                    @foreach (var araba in musteri.Arabalar)
+                                    {
+                                        <li>@araba.Marka @araba.Model <span>-</span> (@araba.Plaka)</li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Araç kaydı yok</span>
+                            }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Details", "Musteris", new { id = musteri.Id })" class="btn btn-outline-info btn-sm">Detay</a>
+                        <a href="@Url.Action("Edit", "Musteris", new { id = musteri.Id })" class="btn btn-outline-warning btn-sm">Düzenle</a>
+                        <a href="@Url.Action("Delete", "Musteris", new { id = musteri.Id })" class="btn btn-outline-danger btn-sm mx-1">Sil</a>
+                    </td>
+                </tr>
+                    }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="features" class="container py-5">
+    <h2 class="text-center mb-5">Neden AdenGarage?</h2>
+    <div class="row g-4">
+        @foreach (var feature in new[]
+        {
+        new { Icon = "bi-tools", Title = "Uzman Hizmet", Description = "Deneyimli ekibimizle aracınıza gereken tüm bakımı profesyonelce sağlıyoruz." },
+        new { Icon = "bi-alarm", Title = "Zamanında Teslim", Description = "Tamir ve bakım hizmetlerinde söz verdiğimiz sürede teslimat." },
+        new { Icon = "bi-currency-dollar", Title = "Uygun Fiyat", Description = "Kaliteden ödün vermeden bütçenize uygun fiyatlarla hizmet sunuyoruz." },
+        new { Icon = "bi-shield-check", Title = "Garanti", Description = "Yapılan işlemler için müşteri memnuniyeti garantisi sağlıyoruz." }
+        })
+{
+        <div class="col-md-6 col-lg-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi @feature.Icon display-3 text-primary mb-3"></i>
+                    <h5 class="card-title fw-bold">@feature.Title</h5>
+                    <p class="card-text text-muted">@feature.Description</p>
+                </div>
+            </div>
+        </div>
+}
+    </div>
+</div>
+<!-- Quick Access Section -->
+<div class="container-fluid bg-light py-5">
+    <h2 class="text-center mb-4">Hızlı Erişim</h2>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="@Url.Action("Index", "Musteris")" class="btn btn-primary btn-lg">Müşteri Listele</a>
+        <a href="@Url.Action("Create", "Musteris")" class="btn btn-secondary btn-lg">Yeni Müşteri Ekle</a>
+        <a href="@Url.Action("Index", "Arabas")" class="btn btn-success btn-lg">Araç Listele</a>
+        <a href="@Url.Action("Create", "Arabas")" class="btn btn-danger btn-lg">Yeni Araç Ekle</a>
+    </div>
+</div>
+
+
 <style>
-    /* Sayfa Başlığı */
-    header {
-        background: linear-gradient(145deg, #6c757d, #343a40);
-        border-bottom: 1px solid #ddd;
-        animation: fadeIn 1.5s ease-out;
+    .card-footer {
+        display: flex;
+        justify-content: center;
+        padding: 0.5rem;
+        background-color: #f8f9fa;
+        border-top: 1px solid #ddd;
+        margin-top: auto; /* Keeps footer at the bottom of the card */
     }
 
-    header h1 {
-        font-size: 3rem;
-        color: #fff;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        animation: slideUp 1s ease-out;
-    }
-
-    header p {
-        font-size: 1.2rem;
-        color: #f8f9fa;
-    }
-
-    .animatedTitle {
-        animation: bounceInLeft 1s ease-out;
-    }
-
-   
-
-    /* İstatistik Kartları */
-    .card {
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    .hover-shadow-lg:hover {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+        transition: all 0.3s ease;
     }
 
     .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+        transition: all 0.3s ease;
     }
 
     .card-body {
-        padding: 20px;
+        background-color: #f4f7fc;
+        padding: 1rem;
+        flex-grow: 1;
     }
 
-    .card-footer {
-        background-color: #f8f9fa;
-        border-top: 1px solid #ddd;
+
+
+    #kartView .col-lg-3, #kartView .col-md-4, #kartView .col-sm-6 {
+        flex: 1 1 23%; /* Adjusts for a responsive grid layout */
+        display: flex;
+        flex-direction: column;
     }
 
-    .card-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #343a40;
-    }
-
-    .display-4 {
-        font-size: 3rem;
-        font-weight: bold;
-        color: #007bff;
-    }
-
-    /* Butonlar */
-    .btn {
-        font-size: 14px;
-        border-radius: 25px;
-        padding: 8px 15px;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-outline-secondary {
-        color: #495057;
-        border: 2px solid #6c757d;
-    }
-
-    .btn-outline-secondary:hover {
-        background-color: #6c757d;
-        color: white;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-        border: none;
-    }
-
-    .btn-info {
-        background-color: #17a2b8;
-        border: none;
-    }
-
-    .btn-warning {
-        background-color: #ffc107;
-        border: none;
-    }
-
-    .btn-danger {
-        background-color: #dc3545;
-        border: none;
-    }
-
-    .text-muted {
-        color: #6c757d;
-    }
-
-    .text-dark {
-        color: #343a40;
-    }
-
-    .list-unstyled {
-        padding-left: 0;
-    }
-
-    .list-unstyled li {
-        font-size: 14px;
-        margin-bottom: 5px;
-    }
 </style>
+<script>
+    document.getElementById("toggleViewBtn").onclick = function () {
+        var kartView = document.getElementById("kartView");
+        var tabloView = document.getElementById("tabloView");
+
+        // Toggle between card and table views
+        if (kartView.style.display === "none") {
+            kartView.style.display = "flex"; // Flex ensures proper grid layout for cards
+            tabloView.style.display = "none";
+            document.getElementById("toggleViewBtn").textContent = "Tablo Görünümü";
+        } else {
+            kartView.style.display = "none";
+            tabloView.style.display = "block";
+            document.getElementById("toggleViewBtn").textContent = "Kart Görünümü";
+        }
+    };
+</script>

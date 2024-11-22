@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdenGarageWEB", "AdenGarageWEB\AdenGarageWEB.csproj", "{AA01DF43-16A4-46AE-86A1-83A2DF8CF0D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdenGarageWEB", "AdenGarageWEB\AdenGarageWEB.csproj", "{AA01DF43-16A4-46AE-86A1-83A2DF8CF0D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{2360BEE3-1117-4AEB-A002-87B042E3AE91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{2360BEE3-1117-4AEB-A002-87B042E3AE91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{9966D06A-9AD3-4BFB-830B-124169659AA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{9966D06A-9AD3-4BFB-830B-124169659AA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

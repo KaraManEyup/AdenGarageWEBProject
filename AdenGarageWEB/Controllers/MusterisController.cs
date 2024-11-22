@@ -19,7 +19,6 @@ namespace AdenGarageWEB.Controllers
             _context = context;
         }
 
-        // GET: Musteris
         public async Task<IActionResult> Index(string sortOrder)
         {
             // Varsayılan sıralama
@@ -47,9 +46,8 @@ namespace AdenGarageWEB.Controllers
 
             // Listeyi döndürüyoruz
             var musterilerList = await musteriler.ToListAsync();
-            return View(musterilerList);
+            return View(musterilerList); // Burada modelin bir koleksiyon olduğundan emin olun
         }
-
 
         public IActionResult Create()
         {
@@ -57,46 +55,39 @@ namespace AdenGarageWEB.Controllers
         }
 
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Musteri musteri)
         {
-            if (musteri.Arabalar != null)
+
+            // Eğer arabalar yoksa veya tamamen boşsa, listeyi temizle
+            if (musteri.Arabalar == null || !musteri.Arabalar.Any(a =>
+                !string.IsNullOrWhiteSpace(a.Marka) ||
+                !string.IsNullOrWhiteSpace(a.Model) ||
+                !string.IsNullOrWhiteSpace(a.Plaka) ||
+                a.Tarih != default))
             {
-                foreach (var araba in musteri.Arabalar)
-                {
-                    if (araba.Tarih == default)
-                    {
-                        araba.Tarih = DateTime.Now;  // Tarih boşsa, bugünün tarihi atanır
-                    }
-                }
+                musteri.Arabalar = new List<Araba>(); // Arabalar boş bırakılabilir
             }
 
+            // ModelState doğrulamasını kontrol et
             if (ModelState.IsValid)
             {
-                if (musteri.Arabalar != null && musteri.Arabalar.Any())
-                {
-                    musteri.Arabalar = musteri.Arabalar
-           .Where(a => !string.IsNullOrEmpty(a.Marka) || !string.IsNullOrEmpty(a.Model))
-           .ToList();
-                }
 
-
-                // Arabaları filtrele (Boş olanları kaldır)
-                musteri.Arabalar = musteri.Arabalar?.Where(a =>
-        !string.IsNullOrWhiteSpace(a.Marka) ||
-        !string.IsNullOrWhiteSpace(a.Model) ||
-        !string.IsNullOrWhiteSpace(a.Plaka) ||
-        a.Tarih != default).ToList();
-
-                // Müşteriyi ve arabalarını veritabanına ekle
                 _context.Musteriler.Add(musteri);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
 
+            // ModelState hataları varsa logla
+            var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                           .Select(e => e.ErrorMessage);
+            foreach (var error in errors)
+            {
+                Console.WriteLine(error);
+            }
+
+            // Model hatalıysa tekrar formu döndür
             return View(musteri);
         }
 

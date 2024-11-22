@@ -4,14 +4,14 @@
     ViewData["Title"] = "Araba Düzenle";
 }
 
-<h1 class="text-center mb-4 text-warning">Araba Düzenle</h1>
+<h1 class="text-center mb-5 text-info font-weight-bold">Araba Düzenleme İşlemi</h1>
 
-<div class="container">
+<div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <!-- Formu kart olarak ayarladık -->
-            <div class="card shadow-lg" style="background-color: #f8f9fa;">
-                <div class="card-body">
+            <!-- Araba Düzenleme Formu -->
+            <div class="card shadow-lg rounded-4 border-0" style="background-color: #f1f7fb;">
+                <div class="card-body p-4">
                     <form asp-action="EditAraba" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
@@ -20,57 +20,57 @@
 
                         <!-- Marka Alanı -->
                         <div class="form-group mb-4">
-                            <label asp-for="Marka" class="form-label fw-bold text-dark">Marka</label>
-                            <input asp-for="Marka" class="form-control shadow-sm" placeholder="Marka girin" style="border-radius: 10px;" />
+                            <label asp-for="Marka" class="form-label fw-bold text-secondary">Marka</label>
+                            <input asp-for="Marka" class="form-control shadow-sm border-light" placeholder="Marka girin" />
                             <span asp-validation-for="Marka" class="text-danger"></span>
                         </div>
 
                         <!-- Model Alanı -->
                         <div class="form-group mb-4">
-                            <label asp-for="Model" class="form-label fw-bold text-dark">Model</label>
-                            <input asp-for="Model" class="form-control shadow-sm" placeholder="Model girin" style="border-radius: 10px;" />
+                            <label asp-for="Model" class="form-label fw-bold text-secondary">Model</label>
+                            <input asp-for="Model" class="form-control shadow-sm border-light" placeholder="Model girin" />
                             <span asp-validation-for="Model" class="text-danger"></span>
                         </div>
 
                         <!-- Plaka Alanı -->
                         <div class="form-group mb-4">
-                            <label asp-for="Plaka" class="form-label fw-bold text-dark">Plaka</label>
-                            <input asp-for="Plaka" class="form-control shadow-sm" placeholder="Plaka girin" style="border-radius: 10px;" />
+                            <label asp-for="Plaka" class="form-label fw-bold text-secondary">Plaka</label>
+                            <input asp-for="Plaka" class="form-control shadow-sm border-light" placeholder="Plaka girin" />
                             <span asp-validation-for="Plaka" class="text-danger"></span>
                         </div>
 
                         <!-- Kilometre Alanı -->
                         <div class="form-group mb-4">
-                            <label asp-for="Km" class="form-label fw-bold text-dark">Kilometre</label>
-                            <input asp-for="Km" class="form-control shadow-sm" placeholder="Kilometre girin" style="border-radius: 10px;" />
+                            <label asp-for="Km" class="form-label fw-bold text-secondary">Kilometre</label>
+                            <input asp-for="Km" class="form-control shadow-sm border-light" placeholder="Kilometre girin" />
                             <span asp-validation-for="Km" class="text-danger"></span>
                         </div>
 
                         <!-- İşlem Alanı -->
                         <div class="form-group mb-4">
-                            <label asp-for="Islem" class="form-label fw-bold text-dark">İşlem</label>
-                            <input asp-for="Islem" class="form-control shadow-sm" placeholder="Yapılacak işlemi girin" style="border-radius: 10px;" />
+                            <label asp-for="Islem" class="form-label fw-bold text-secondary">Yapılacak İşlem</label>
+                            <input asp-for="Islem" class="form-control shadow-sm border-light" placeholder="Yapılacak işlemi girin" />
                             <span asp-validation-for="Islem" class="text-danger"></span>
                         </div>
 
                         <!-- Tarih Alanı -->
                         <div class="form-group mb-4">
-                            <label asp-for="Tarih" class="form-label fw-bold text-dark">Tarih</label>
-                            <input asp-for="Tarih" class="form-control shadow-sm" type="date" style="border-radius: 10px;" />
+                            <label asp-for="Tarih" class="form-label fw-bold text-secondary">Tarih</label>
+                            <input asp-for="Tarih" class="form-control shadow-sm border-light" type="date" />
                             <span asp-validation-for="Tarih" class="text-danger"></span>
                         </div>
 
                         <!-- Müşteri Alanı -->
                         <div class="form-group mb-4">
-                            <label for="MusteriId" class="fw-bold text-dark">Müşteri</label>
-                            <select asp-for="MusteriId" class="form-control" asp-items="@(ViewData["MusteriId"] as SelectList)" style="border-radius: 10px;">
+                            <label for="MusteriId" class="form-label fw-bold text-secondary">Müşteri</label>
+                            <select asp-for="MusteriId" class="form-control shadow-sm border-light" asp-items="@(ViewData["MusteriId"] as SelectList)">
                                 <option value="">Seçiniz</option> <!-- "Seçiniz" opsiyonu -->
                             </select>
                         </div>
 
                         <!-- Kaydet Butonu -->
                         <div class="form-group d-grid gap-2 mt-4">
-                            <input type="submit" value="Kaydet" class="btn btn-success btn-sm shadow-sm rounded-pill" style="font-weight: bold;" />
+                            <input type="submit" value="Kaydet" class="btn btn-primary btn-lg shadow-sm rounded-pill" />
                         </div>
                     </form>
                 </div>
@@ -80,12 +80,84 @@
 
     <!-- Geri Git Linki -->
     <div class="text-center mt-4">
-        <a asp-action="Details" asp-route-id="@Model.MusteriId" class="btn btn-danger text-white rounded-pill px-4 py-2 btn-sm">Geri Dön</a>
+        <a asp-action="Details" asp-route-id="@Model.MusteriId" class="btn btn-danger text-white rounded-pill px-5 py-3 btn-lg">Geri Dön</a>
     </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
+<!-- Tasarım için CSS -->
+<style>
+    body {
+        background-color: #e9eff1;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-}
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #3399ff;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border: none;
+        background-color: #ffffff;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #cfd8dc;
+        padding: 12px;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #3399ff;
+            box-shadow: 0 0 12px rgba(51, 153, 255, 0.5);
+        }
+
+    .btn {
+        font-weight: 700;
+        padding: 14px 20px;
+        border-radius: 50px;
+        transition: all 0.4s ease;
+    }
+
+    .btn-primary {
+        background-color: #3399ff;
+        border-color: #3399ff;
+    }
+
+        .btn-primary:hover {
+            background-color: #2680d1;
+            border-color: #2680d1;
+        }
+
+    .btn-danger {
+        background-color: #e74c3c;
+        border-color: #e74c3c;
+    }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+        }
+
+    .form-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .form-group {
+        margin-bottom: 30px;
+    }
+
+    .text-center a {
+        font-weight: 600;
+    }
+</style>

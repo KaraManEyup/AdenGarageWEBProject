@@ -6,67 +6,67 @@
 
 <div class="container py-5">
     <!-- Sayfa Başlığı -->
-    <div class="text-center mb-4">
-        <h1 class="display-4 text-dark font-weight-bold">Müşteri Düzenle</h1>
-        <p class="lead text-muted">Bilgileri güncellemek için formu doldurun.</p>
+    <div class="text-center mb-5">
+        <h1 class="display-4 font-weight-bold text-dark">Müşteri Bilgilerini Düzenle</h1>
+        <p class="lead text-muted">Lütfen güncellemek istediğiniz bilgileri aşağıdaki formda düzenleyin.</p>
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-lg-8 col-md-10">
             <!-- Form Başlangıcı -->
-            <form asp-action="Edit" class="bg-light p-5 rounded shadow-lg">
+            <form asp-action="Edit" class="bg-white p-5 rounded-lg shadow-lg border-0 position-relative overflow-hidden">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                 <!-- Hidden Input for Id -->
                 <input type="hidden" asp-for="Id" />
 
                 <!-- Ad Alanı -->
-                <div class="form-group mb-3">
-                    <label asp-for="Isim" class="form-label text-dark">Ad</label>
-                    <input asp-for="Isim" class="form-control shadow-sm" placeholder="Adınızı girin" />
+                <div class="form-group mb-4">
+                    <label asp-for="Isim" class="form-label font-weight-semibold text-dark">Ad</label>
+                    <input asp-for="Isim" class="form-control shadow-lg" placeholder="Adınızı girin" />
                     <span asp-validation-for="Isim" class="text-danger"></span>
                 </div>
 
                 <!-- Soyad Alanı -->
-                <div class="form-group mb-3">
-                    <label asp-for="Soyisim" class="form-label text-dark">Soyad</label>
-                    <input asp-for="Soyisim" class="form-control shadow-sm" placeholder="Soyadınızı girin" />
+                <div class="form-group mb-4">
+                    <label asp-for="Soyisim" class="form-label font-weight-semibold text-dark">Soyad</label>
+                    <input asp-for="Soyisim" class="form-control shadow-lg" placeholder="Soyadınızı girin" />
                     <span asp-validation-for="Soyisim" class="text-danger"></span>
                 </div>
 
                 <!-- Telefon Alanı -->
-                <div class="form-group mb-3">
-                    <label asp-for="Telefon" class="form-label text-dark">Telefon</label>
-                    <input asp-for="Telefon" class="form-control shadow-sm" placeholder="Telefon numaranızı girin" />
+                <div class="form-group mb-4">
+                    <label asp-for="Telefon" class="form-label font-weight-semibold text-dark">Telefon</label>
+                    <input asp-for="Telefon" class="form-control shadow-lg" placeholder="Telefon numaranızı girin" />
                     <span asp-validation-for="Telefon" class="text-danger"></span>
                 </div>
 
                 <!-- Arabalar -->
                 @if (Model.Arabalar != null && Model.Arabalar.Any())
                 {
-                    <div class="form-group mb-3">
-                        <label class="form-label text-dark">Arabalar</label>
-                        <ul class="list-group">
+                    <div class="form-group mb-4">
+                        <label class="form-label font-weight-semibold text-dark">Arabalar</label>
+                        <div class="list-group shadow-lg">
                             @foreach (var araba in Model.Arabalar)
                             {
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="list-group-item d-flex justify-content-between align-items-center p-3 mb-2 shadow-sm bg-gradient rounded">
                                     <span class="fw-bold text-primary">@araba.Marka @araba.Model</span> - @araba.Plaka
-                                    <a asp-action="EditAraba" asp-route-id="@araba.Id" class="btn btn-outline-primary btn-sm">Düzenle</a>
-                                </li>
+                                    <a asp-action="EditAraba" asp-route-id="@araba.Id" class="btn btn-outline-info btn-sm">Düzenle</a>
+                                </div>
                             }
-                        </ul>
+                        </div>
                     </div>
                 }
                 else
                 {
-                    <div class="form-group mb-3">
+                    <div class="form-group mb-4">
                         <span class="text-danger">Bu müşterinin arabası yok!</span>
                     </div>
                 }
 
-                <!-- Save Button -->
+                <!-- Kaydet Butonu -->
                 <div class="form-group d-grid gap-2 mt-4">
-                    <button type="submit" class="btn btn-success btn-lg rounded-pill shadow-sm">Kaydet</button>
+                    <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-lg transform-hover">Kaydet</button>
                 </div>
             </form>
         </div>
@@ -78,91 +78,118 @@
     </div>
 </div>
 
-
-
+<!-- CSS Tasarımı -->
 <style>
     /* Sayfa Arka Planı ve Genel Tasarım */
     body {
-        background-color: #f8f9fa;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f1f4f8;
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        margin: 0;
+        padding: 0;
     }
 
     /* Başlık */
     .display-4 {
         font-size: 3rem;
-        font-weight: bold;
-        color: #343a40;
+        font-weight: 600;
+        color: #222;
     }
 
     .lead {
-        font-size: 1.2rem;
-        color: #6c757d;
+        font-size: 1.1rem;
+        color: #777;
     }
 
     /* Form */
     .form-group label {
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-weight: 600;
-        color: #343a40;
+        color: #444;
     }
 
     .form-control {
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        border-color: #ddd;
+        border-radius: 12px;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+        padding: 12px;
+        border: 1px solid #ccc;
+        transition: 0.3s ease;
     }
 
-        .form-control:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        outline: none;
+    }
 
-    /* Button */
+    /* Butonlar */
     .btn {
         font-weight: bold;
-        padding: 12px 20px;
-        border-radius: 25px;
-        transition: all 0.3s ease;
+        padding: 12px 24px;
+        border-radius: 50px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .btn-outline-primary {
+    .btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-outline-info {
+        border-color: #17a2b8;
+        color: #17a2b8;
+    }
+
+    .btn-outline-info:hover {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
         border-color: #007bff;
-        color: #007bff;
     }
 
-        .btn-outline-primary:hover {
-            background-color: #007bff;
-            color: #fff;
-        }
-
-    .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
     }
-
-        .btn-success:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
-        }
 
     .btn-danger {
         background-color: #dc3545;
         border-color: #dc3545;
     }
 
-        .btn-danger:hover {
-            background-color: #c82333;
-            border-color: #bd2130;
-        }
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
 
     /* List Group */
     .list-group-item {
-        border-radius: 5px;
+        border-radius: 10px;
+        background-color: #f8f9fa;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
     }
 
-        .list-group-item:hover {
-            background-color: #f1f1f1;
-            cursor: pointer;
-        }
+    .list-group-item:hover {
+        background-color: #e9ecef;
+        cursor: pointer;
+    }
+
+    /* Form Group */
+    .form-group {
+        margin-bottom: 1.8rem;
+    }
+
+    /* Transition Effects for Button Hover */
+    .transform-hover:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Design */
+   
+    }
 </style>

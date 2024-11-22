@@ -4,41 +4,43 @@
     ViewData["Title"] = "Araba Listesi";
 }
 
-<!-- Sayfa Başlığı -->
-<header class="text-center py-5 bg-gradient text-white border-bottom">
-    <h1 class="display-4 font-weight-bold animatedTitle">Araba Listesi</h1>
-    <p class="lead mb-4">Tüm araçlar hakkında bilgilere anında ulaşın. Daha fazlasını keşfedin!</p>
+<div class="header bg-dark text-white py-5">
+    <div class="container text-center">
+        <h1 class="display-4 font-weight-bold animated-text">
+            AdenGarage Müşteri Listesi
+        </h1>
+        <p class="lead text-light fade-in">
+            Arabalarınız ve bakımlarınız bizimle güvende! Müşteri bilgilerinizi buradan kontrol edebilirsiniz.
+        </p>
+        <hr class="my-4 fade-in" />
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
 
-    <!-- İstatistik ve Heyecan Verici Bilgiler -->
-    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-        <div class="card shadow border-light rounded-lg">
+                <div class="card-body bg-dark text-center">
+                    <h5 class="card-title">Toplam Müşteri Sayısı</h5>
+                    <p class="card-text display-4 text-primary">@Model.Count()</p>
+                </div>
+            </div>
+
             <div class="card-body text-center">
                 <h5 class="card-title">Toplam Araç Sayısı</h5>
                 <p class="card-text display-4 text-success">@ViewData["ToplamArabaSayisi"]</p>
             </div>
+
         </div>
+        <p class="mb-0 fade-in" style="font-size: 1rem; color: #f8f9fa;">
+            AdenGarage | Kaliteli Hizmet, Güvenli Sürüş
+        </p>
     </div>
-</header>
+    <a href="#features" class="btn btn-light btn-lg mt-4 shadow">Hizmetlerimizi Keşfedin</a>
+</div>
 
-
-<!-- Araba Listeleme Bölümü -->
-<div class="container mt-5">
-    <div class="d-flex justify-content-between mb-4">
-        <!-- Sıralama Butonları -->
-        <div>
-            <a class="btn btn-custom" asp-action="Index" asp-route-sortOrder="MarkaAsc">Marka Artan |↑|</a>
-            <a class="btn btn-custom" asp-action="Index" asp-route-sortOrder="MarkaDesc">Marka Azalan |↓|</a>
-        </div>
-        <!-- Yeni Araba Ekle Butonu -->
-        <div>
-            <a asp-action="Create" class="btn btn-create">Yeni Araba Ekle</a>
-        </div>
-    </div>
-
-    <!-- Araba Listesi Tablosu -->
-    <div class="table-wrapper fadeIn">
-        <table class="table table-striped table-hover">
-            <thead>
+<!-- Araba Listesi Tablosu -->
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Kayıtlı Araçlar</h2>
+    <div class="table-wrapper">
+        <table class="table table-striped table-hover shadow-sm">
+            <thead class="table-dark">
                 <tr>
                     <th>Marka</th>
                     <th>Model</th>
@@ -51,155 +53,130 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var araba in Model)
+                @if (!Model.Any())
                 {
                     <tr>
-                        <td>@araba.Marka</td>
-                        <td>@araba.Model</td>
-                        <td>@araba.Plaka</td>
-                        <td>@araba.Km</td>
-                        <td>@araba.Islem</td>
-                        <td>
-                            @if (araba.Tarih.HasValue)
-                            {
-                                @araba.Tarih.Value.ToString("dd/MM/yyyy")
-                            }
-                        </td>
-                        <td>
-                            @if (araba.MusteriId != null)
-                            {
-                                <span>@araba.Musteri.Isim @araba.Musteri.Soyisim</span>
-                            }
-                            else
-                            {
-                                <span class="text-warning">Müşteri Bilgisi Yok</span>
-                            }
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@araba.Id" class="btn btn-edit">Düzenle</a>
-                            <a asp-action="Details" asp-route-id="@araba.Id" class="btn btn-info">Detaylar</a>
-                            <a asp-action="Delete" asp-route-id="@araba.Id" class="btn btn-danger">Sil</a>
-                        </td>
+                        <td colspan="8" class="text-center text-muted">Henüz kayıtlı araç yok.</td>
                     </tr>
+                }
+                else
+                {
+                    foreach (var araba in Model)
+                    {
+                        <tr>
+                            <td>@araba.Marka</td>
+                            <td>@araba.Model</td>
+                            <td>@araba.Plaka</td>
+                            <td>@araba.Km</td>
+                            <td>@araba.Islem</td>
+                            <td>
+                                @if (araba.Tarih.HasValue)
+                                {
+                                    @araba.Tarih.Value.ToString("dd/MM/yyyy")
+                                }
+                            </td>
+                            <td>
+                                @if (araba.MusteriId != null)
+                                {
+                                    <span>@araba.Musteri.Isim @araba.Musteri.Soyisim</span>
+                                }
+                                else
+                                {
+                                    <span class="text-warning">Müşteri Bilgisi Yok</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@araba.Id" class="btn btn-info btn-sm">Detaylar</a>
+                                <a asp-action="Edit" asp-route-id="@araba.Id" class="btn btn-warning btn-sm">Düzenle</a>
+                                <a asp-action="Delete" asp-route-id="@araba.Id" class="btn btn-danger btn-sm">Sil</a>
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
     </div>
 </div>
-
-<!-- Stil ve Tasarım -->
+<div id="features" class="container py-5">
+    <h2 class="text-center mb-5">Neden AdenGarage?</h2>
+    <div class="row g-4">
+        @foreach (var feature in new[]
+        {
+        new { Icon = "bi-tools", Title = "Uzman Hizmet", Description = "Deneyimli ekibimizle aracınıza gereken tüm bakımı profesyonelce sağlıyoruz." },
+        new { Icon = "bi-alarm", Title = "Zamanında Teslim", Description = "Tamir ve bakım hizmetlerinde söz verdiğimiz sürede teslimat." },
+        new { Icon = "bi-currency-dollar", Title = "Uygun Fiyat", Description = "Kaliteden ödün vermeden bütçenize uygun fiyatlarla hizmet sunuyoruz." },
+        new { Icon = "bi-shield-check", Title = "Garanti", Description = "Yapılan işlemler için müşteri memnuniyeti garantisi sağlıyoruz." }
+        })
+        {
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi @feature.Icon display-3 text-primary mb-3"></i>
+                        <h5 class="card-title fw-bold">@feature.Title</h5>
+                        <p class="card-text text-muted">@feature.Description</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<!-- Quick Access Section -->
+<div class="container-fluid bg-light py-5">
+    <h2 class="text-center mb-4">Hızlı Erişim</h2>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="@Url.Action("Index", "Musteris")" class="btn btn-primary btn-lg">Müşteri Listele</a>
+        <a href="@Url.Action("Create", "Musteris")" class="btn btn-secondary btn-lg">Yeni Müşteri Ekle</a>
+        <a href="@Url.Action("Index", "Arabas")" class="btn btn-success btn-lg">Araç Listele</a>
+        <a href="@Url.Action("Create", "Arabas")" class="btn btn-danger btn-lg">Yeni Araç Ekle</a>
+    </div>
+</div>
+<!-- Stil -->
 <style>
-    /* Sayfa Başlığı */
-    header {
-        background: linear-gradient(145deg, #6c757d, #343a40);
-        border-bottom: 1px solid #ddd;
-        animation: fadeIn 1.5s ease-out;
+    .btn-create {
+        background-color: #28a745;
+        color: #fff;
+        padding: 12px 20px;
+        font-size: 1.2rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
     }
 
-        header h1 {
-            font-size: 3rem;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            animation: slideUp 1s ease-out;
+        .btn-create:hover {
+            background-color: #218838;
+            color: white;
         }
 
-        header p {
-            font-size: 1.2rem;
-            color: #f8f9fa;
-        }
-
-    .animatedTitle {
-        animation: bounceInLeft 1s ease-out;
-    }
-
-
-
-    /* İstatistik Kartları */
-    .card {
+    .table-wrapper {
+        overflow-x: auto;
+        border: 1px solid #ddd;
         border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table-striped tbody tr:hover {
+        background-color: #e9ecef;
+    }
+
+    .card {
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
-
-    .card-body {
-        padding: 20px;
-    }
-
-    .card-footer {
-        background-color: #f8f9fa;
-        border-top: 1px solid #ddd;
-    }
 
     .card-title {
         font-size: 1.5rem;
         font-weight: bold;
-        color: #343a40;
     }
 
     .display-4 {
-        font-size: 3rem;
-        font-weight: bold;
-        color: #007bff;
+        font-size: 2.5rem;
+        margin: 0;
     }
-
-    /* Butonlar */
-    .btn {
-        font-size: 14px;
-        border-radius: 25px;
-        padding: 8px 15px;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-outline-secondary {
-        color: #495057;
-        border: 2px solid #6c757d;
-    }
-
-        .btn-outline-secondary:hover {
-            background-color: #6c757d;
-            color: white;
-        }
-
-    .btn-primary {
-        background-color: #007bff;
-        border: none;
-    }
-
-    .btn-info {
-        background-color: #17a2b8;
-        border: none;
-    }
-
-    .btn-warning {
-        background-color: #ffc107;
-        border: none;
-    }
-
-    .btn-danger {
-        background-color: #dc3545;
-        border: none;
-    }
-
-    .text-muted {
-        color: #6c757d;
-    }
-
-    .text-dark {
-        color: #343a40;
-    }
-
-    .list-unstyled {
-        padding-left: 0;
-    }
-
-        .list-unstyled li {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
 </style>

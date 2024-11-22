@@ -1,125 +1,214 @@
 ﻿@model Core.Models.Musteri
 
 @{
-    ViewData["Title"] = "Müşteri Detayları";
+    ViewData["Title"] = "Müşteri Detayları - AdenGarage";
 }
 
-<!-- Sayfa Başlıkları ve Arka Plan -->
-<div class="container mt-5">
-    <h1 class="text-center mb-5" style="font-size: 2.8rem; font-weight: 700; color: #3c3c3c; text-transform: uppercase; letter-spacing: 1px;">
-        Müşteri Detayları
-    </h1>
+<!-- Hero Section -->
+<<div class="container-fluid bg-dark text-white text-center py-5">
+    <!-- Hero Section -->
+    <h1 class="display-3 fw-bold">AdenGarage'a Hoş Geldiniz</h1>
+    <p class="lead mt-3">Profesyonel araç bakım ve tamir hizmetleri ile tanışın</p>
+    <a href="#features" class="btn btn-light btn-lg mt-4 shadow">Hizmetlerimizi Keşfedin</a>
+</div>
 
-    <!-- Müşteri Bilgileri Kartı -->
-    <div class="card shadow-lg rounded-lg border-0 hover-shadow-lg transition-all" style="background: #ffffff;">
-        <div class="card-header text-white" style="background: linear-gradient(90deg, #a6c1ee, #6fa3e4); border-radius: 10px 10px 0 0;">
-            <h3 class="text-center py-3">Müşteri Bilgileri</h3>
-        </div>
-        <div class="card-body" style="background-color: #f4f7fc;">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <h5 class="font-weight-bold text-muted">İsim</h5>
-                    <p class="lead text-dark" style="font-size: 1.1rem; font-weight: 500;">@Model.Isim</p>
+<!-- Müşteri Bilgileri -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-lg">
+                <div class="card-header text-center bg-primary text-white">
+                    <h4 class="mb-0">Müşteri Bilgileri</h4>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <h5 class="font-weight-bold text-muted">Soyisim</h5>
-                    <p class="lead text-dark" style="font-size: 1.1rem; font-weight: 500;">@Model.Soyisim</p>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h5 class="font-weight-bold text-muted">Telefon</h5>
-                    <p class="lead text-dark" style="font-size: 1.1rem; font-weight: 500;">@Model.Telefon</p>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- İsim ve Soyisim -->
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-person-circle fs-2 me-3 text-primary"></i>
+                                <div>
+                                    <strong>İsim:</strong>
+                                    <p class="fs-5 text-muted">@Model.Isim</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-person-fill fs-2 me-3 text-primary"></i>
+                                <div>
+                                    <strong>Soyisim:</strong>
+                                    <p class="fs-5 text-muted">@Model.Soyisim</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Telefon Numarası -->
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-telephone-fill fs-2 me-3 text-primary"></i>
+                                <div>
+                                    <strong>Telefon:</strong>
+                                    <p class="fs-5 text-muted">@Model.Telefon</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Düzenle Butonu -->
+                    <div class="text-center">
+                        <a href="@Url.Action("Edit", "Musteris", new { id = Model.Id })" class="btn btn-primary btn-lg">Bilgileri Düzenle</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Araba Detayları Kartı -->
-    <div class="card shadow-lg rounded-lg mt-5 border-0 hover-shadow-lg transition-all">
-        <div class="card-header text-white" style="background: linear-gradient(90deg, #f39c12, #e74c3c); border-radius: 10px 10px 0 0;">
-            <h3 class="text-center py-3">Kayıtlı Arabalar</h3>
-        </div>
-        <div class="card-body" style="background-color: #f7fafc;">
-            @if (Model.Arabalar != null && Model.Arabalar.Any())
-            {
-                <div class="row">
-                    @foreach (var araba in Model.Arabalar.OrderBy(a => a.Tarih))
+
+<!-- Kayıtlı Arabalar -->
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-0 rounded-xl">
+                <div class="card-header bg-dark text-white text-center">
+                    <h5 class="mb-0">Kayıtlı Arabalar</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Arabalar != null && Model.Arabalar.Any())
                     {
-                        <div class="col-md-6 mb-4">
-                            <div class="card border-0 shadow-lg rounded-lg" style="border-radius: 10px; overflow: hidden;">
-                                <div class="card-header" style="background-color: #f39c12; color: white; font-weight: bold; border-radius: 10px 10px 0 0; text-transform: uppercase;">
-                                    @araba.Marka - @araba.Model (@araba.Plaka)
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                            @foreach (var araba in Model.Arabalar.OrderBy(a => a.Tarih))
+                            {
+                                <div class="col mb-4">
+                                    <div class="car-card bg-light shadow-sm rounded-lg position-relative overflow-hidden">
+                                        <a href="@Url.Action("Details", "Arabas", new { id = araba.Id })" class="text-decoration-none">
+                                        <div class="car-image position-relative">
+                                            <img src="~/car icon.jpg" alt="Araba Fotoğrafı" class="img-fluid w-100 h-100 object-fit-cover">
+                                        </div>
+                                        <div class="car-details p-4 position-absolute bottom-0 start-0 w-100 bg-gradient-to-t from-dark text-black">
+                                            <h5 class="fw-bold"><strong>@araba.Marka - @araba.Model</strong></h5>
+                                            <p><strong>Plaka:</strong> @araba.Plaka</p>
+                                            <p><strong>Km:</strong> @araba.Km</p>
+                                            <p><strong>İşlem:</strong> @araba.Islem</p>
+                                            <p><strong>Geliş Tarihi:</strong> @araba.Tarih?.ToString("dd-MM-yyyy")</p>
+                                        </div>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="card-body" style="background-color: #f9f9f9;">
-                                    <dl class="row">
-                                        <dt class="col-sm-4" style="color: #f39c12;">Marka</dt>
-                                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@araba.Marka</dd>
-
-                                        <dt class="col-sm-4" style="color: #f39c12;">Model</dt>
-                                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@araba.Model</dd>
-
-                                        <dt class="col-sm-4" style="color: #f39c12;">Plaka</dt>
-                                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@araba.Plaka</dd>
-
-                                        <dt class="col-sm-4" style="color: #f39c12;">Km</dt>
-                                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@araba.Km</dd>
-
-                                        <dt class="col-sm-4" style="color: #f39c12;">İşlem</dt>
-                                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@araba.Islem</dd>
-
-                                        <dt class="col-sm-4" style="color: #f39c12;">Geliş Tarihi</dt>
-                                        <dd class="col-sm-8" style="color: #333333; font-size: 1.1rem;">@araba.Tarih?.ToString("dd-MM-yyyy")</dd>
-                                    </dl>
-                                </div>
-                            </div>
+                            }
                         </div>
                     }
+                    else
+                    {
+                        <p class="text-center text-muted">Bu müşteri için herhangi bir araba kaydı bulunmamaktadır.</p>
+                    }
                 </div>
-            }
-            else
-            {
-                <p class="text-center text-muted">Bu müşteri için herhangi bir araba kaydı bulunmamaktadır.</p>
-            }
+            </div>
         </div>
-    </div>
-
-    <!-- Geri Dön Butonu -->
-    <div class="text-center mt-4">
-        <a asp-action="Index" class="btn btn-lg px-5 py-3" style="background-color: #28a745; color: white; font-weight: bold; border-radius: 30px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); transition: all 0.3s ease;">
-            Listeye Dön
-        </a>
-    </div>
-
-    <!-- Footer -->
-    <div class="text-center mt-5" style="background-color: #212529; color: white; padding: 20px 0; font-size: 1rem;">
-        <p>&copy; 2024 AdenGarage | <span style="color: #6c757d;">Kaliteli Hizmet, Güvenli Sürüş</span></p>
     </div>
 </div>
 
-<!-- Bootstrap JS ve diğer gerekli scriptler -->
-@section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-}
 
-<!-- Geçiş ve Hover Efektleri -->
+
+
+<!-- Geri Dön Butonu -->
+<div class="container py-5 text-center">
+    <a asp-action="Index" class="btn btn-lg btn-outline-primary" style="padding: 12px 30px; border-radius: 25px;">
+        Listeye Dön
+    </a>
+</div>
+
+<!-- Stil ve Animasyonlar -->
+<!-- Stil ve Animasyonlar -->
 <style>
-    .hover-shadow-lg:hover {
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        transform: scale(1.05);
-        transition: all 0.3s ease;
+    /* Araba Kartı */
+    .car-card {
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); /* Hafif gölge */
+        width: 100%; /* Varsayılan genişlik */
+        max-width: 300px; /* Kartın sabit maksimum genişliği */
+        height: 400px; /* Kartın sabit yüksekliği */
+        margin: auto; /* Ortalamayı sağlar */
+    }
+
+        .car-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25); /* Hover sırasında daha fazla gölge */
+        }
+
+    /* Araba Görselleri */
+    .car-image img {
+        object-fit: cover;
+        width: 100%; /* Görsel genişliği tam kapsayıcı */
+        height: 60%; /* Kartın %60'ı kadar yükseklik */
+    }
+
+    /* Araba Bilgileri */
+    .car-details {
+        padding: 15px;
+        background: none;
+        color: #fff;
+        position: relative;
+        height: 40%; /* Kartın %40'ı kadar yükseklik */
+        overflow: hidden;
+        .car-details h5, .car-details p
+
+    {
+        background: rgba(0, 0, 0, 0.6); /* Transparan arka plan */
+        display: inline-block; /* Yazıya özel genişlik */
+        padding: 5px 10px;
+        border-radius: 8px;
+        margin: 5px 0;
+    }
+
+    .car-details h5 {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .car-details p {
+        font-size: 1rem;
+    }
+
+    /* Buton Stili */
+    .btn-outline-light {
+        border-color: #fff;
+        color: #fff;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+        .btn-outline-light:hover {
+            background-color: #fff;
+            color: #333;
+        }
+
+    /* Responsive Kart Düzeni */
+    .row-cols-md-2 .col {
+        flex: 1;
+    }
+
+    .col-md-4 {
+        flex: 0 0 auto;
     }
 
     .card-header {
-        font-size: 1.3rem;
-        font-weight: bold;
-        text-transform: uppercase;
+        background-color: #343a40; /* Daha koyu bir arka plan */
+        color: #fff; /* Beyaz yazılar */
     }
 
-    .card-body dl dt {
-        font-weight: 600;
+    .btn-outline-light:hover {
+        background-color: #333; /* Koyu gri */
+        color: #fff; /* Beyaz yazılar */
     }
 
-    .card-body dl dd {
-        color: #555;
-        font-size: 1.1rem;
+    .btn-outline-light {
+        color: #333; /* Koyu yazılar */
+        border-color: #333; /* Koyu kenar */
     }
 </style>
+

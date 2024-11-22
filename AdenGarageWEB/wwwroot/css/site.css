@@ -1,15 +1,13 @@
+/* Temel stil ayarlarý */
 html {
     font-size: 14px;
+    scroll-behavior: smooth; /* Sayfa geçiþlerinde yumuþak kayma */
 }
 
 @media (min-width: 768px) {
     html {
         font-size: 16px;
     }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html, body {
@@ -20,15 +18,18 @@ html, body {
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+    font-family: 'Arial', sans-serif; /* Genel font */
 }
 
+/* Container geniþliði */
 .container-fluid {
     flex-grow: 1;
 }
 
+/* Footer */
 .fixed-footer {
     position: relative;
-    margin-top: auto; /* Footer'ý sayfanýn altýna yerleþtirir */
+    margin-top: auto;
     background-color: #343a40;
     color: white;
     text-align: center;
@@ -36,114 +37,370 @@ html, body {
     z-index: 1000;
 }
 
-
+/* Sayfanýn genel kutu stili */
 .kutu {
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
 
+/* Ana içerik alaný */
 .main {
     flex: 1;
 }
 
+/* Tablo düzeni */
 td, th {
     word-wrap: break-word;
-    max-width: 200px; /* Ýstediðiniz geniþlikte sýnýrlayýn */
-}
-th, td {
-    text-align: center; /* Metinleri ortalar */
+    max-width: 200px; /* Geniþlik sýnýrý */
+    text-align: center; /* Metin ortalamak */
     padding: 10px;
     vertical-align: middle;
 }
+
 .table-responsive {
-    overflow-x: auto;
+    overflow-x: auto; /* Tablo taþmasý için */
 }
 
-@-webkit-keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+/* Buton odak ve etkileþim */
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+/* Animasyonlar */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes slideUp {
-    from {
-        transform: translateY(30px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(30px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes bounceInLeft {
     0% {
-        transform: translateX(-100%);
         opacity: 0;
-    }
-
-    60% {
-        transform: translateX(30px);
-        opacity: 1;
     }
 
     100% {
-        transform: translateX(0);
+        opacity: 1;
     }
 }
 
-@keyframes bounceInLeft {
+@keyframes fadeInUp {
     0% {
-        transform: translateX(-100%);
         opacity: 0;
-    }
-
-    60% {
-        transform: translateX(30px);
-        opacity: 1;
+        transform: translateY(30px);
     }
 
     100% {
-        transform: translateX(0);
+        opacity: 1;
+        transform: translateY(0);
     }
 }
-.animatedTitle {
-    animation: fadeIn 2s ease-out; /* 'fadeIn' animasyonunu uygula */
-}
 
-@keyframes fadeIn {
-    from {
+@keyframes fadeInCard {
+    0% {
         opacity: 0;
     }
 
+    100% {
+        opacity: 1;
+    }
+}
+
+.container .btn-group .btn {
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+    .container .btn-group .btn:hover {
+        background-color: #6c757d; /* Daha koyu bir hover efekti */
+        color: white;
+    }
+
+.btn-primary {
+    border-radius: 30px;
+    font-weight: bold;
+}
+
+    .btn-primary i {
+        margin-right: 8px;
+    }
+
+#toggleViewBtn i {
+    margin-right: 5px;
+}
+
+#toggleViewBtn {
+    border-radius: 20px;
+    font-size: 16px;
+    padding: 8px 20px;
+}
+
+    #toggleViewBtn:hover {
+        background-color: #5a6268;
+        color: white;
+    }
+
+
+.header {
+    background-color: #007bff; /* Mavi renk */
+    color: white;
+    padding: 50px 0;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .header .display-4 {
+        font-size: 3.5rem;
+        letter-spacing: 2px;
+        font-weight: 700;
+    }
+
+    .header .lead {
+        font-size: 1.2rem;
+        font-weight: 300;
+        color: #f8f9fa;
+    }
+
+    .header hr {
+        border-top: 2px solid #fff;
+        width: 50%;
+        margin: 20px auto;
+    }
+
+    .header p {
+        font-size: 1rem;
+        color: #f8f9fa;
+    }
+/* Header Tasarýmý */
+.header {
+    background-color: #007bff; /* Mavi arka plan */
+    color: white;
+    padding: 50px 0;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: slideIn 1s ease-out;
+}
+
+/* Animasyonlu Baþlýk */
+.animated-text {
+    font-size: 3.5rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    opacity: 0;
+    animation: fadeInUp 1.5s ease-in-out forwards;
+}
+
+/* Animasyonlu Yazý */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+}
+
+/* Yazý Fade-In Animasyonu */
+@keyframes fadeIn {
     to {
         opacity: 1;
+    }
+}
+
+/* Baþlýk Fade-In ve Yukarý Kayma */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header Alt Çizgisi Animasyonu */
+hr {
+    border-top: 2px solid #fff;
+    width: 50%;
+    margin: 20px auto;
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out 0.5s forwards; /* Alt çizgi fade-in */
+}
+
+/* Hover Efekti ile Baþlýk */
+.header:hover .display-4 {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Yumuþak Geçiþler */
+.header .fade-in {
+    transition: opacity 2s ease-in-out;
+}
+
+.header .display-4 {
+    font-size: 3.5rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+/* Responsive uyum için baþlýk boyutu */
+@media (max-width: 768px) {
+    .header .display-4 {
+        font-size: 2.5rem;
+    }
+}
+/* Toplam Müþteri Kutusu */
+.CountKutu2 {
+    background-color: #007bff; /* Mavi arka plan */
+    color: white; /* Beyaz metin */
+    border-color: #0056b3; /* Daha koyu mavi kenarlýk */
+}
+.CountKutu {
+    background-color: #28a745; /* Yeþil arka plan */
+    color: white; /* Beyaz metin */
+    border-color: #19692c; /* Daha koyu yeþil kenarlýk */
+}
+
+.badge {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .badge:hover {
+        transform: scale(1.05);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        background-color: #000000; /* Hover rengi */
+    }
+
+.d-flex.flex-wrap.gap-1 {
+    gap: 0.5rem; /* Etiketler arasý boþluk */
+}
+.table-striped tbody tr {
+    border-bottom: 1px solid #dee2e6; /* Ýnce çizgi rengi */
+}
+
+    .table-striped tbody tr:last-child {
+        border-bottom: none; /* Son satýrda çizgi istemiyorsanýz */
+    }
+.table-hover tbody tr {
+    position: relative;
+}
+
+    .table-hover tbody tr:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px; /* Çizgi kalýnlýðý */
+        background: #000; /* Siyah renk */
+        opacity: 0.7; /* Hafif saydamlýk */
+        transform: scaleX(0); /* Animasyon için baþlangýç */
+        transition: transform 0.3s ease;
+    }
+
+    .table-hover tbody tr:hover::after {
+        transform: scaleX(1); /* Çizgiyi tam geniþlikte göster */
+        opacity: 1; /* Çizgi tamamen siyah görünür */
+    }
+
+
+/* Genel Stil */
+.custom-navbar {
+    background-color: #2c3e50; /* Koyu mavi tonunda arkaplan */
+    padding: 1rem 0;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+}
+
+/* Logo Stili */
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #ecf0f1; /* Açýk gri yazý */
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 0.5rem;
+    border-radius: 50%;
+    border: 2px solid #ecf0f1;
+}
+
+.logo-text {
+    text-transform: uppercase;
+}
+
+/* Menü Stili */
+.nav-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.5rem;
+}
+
+    .nav-menu .nav-link {
+        text-decoration: none;
+        color: #ecf0f1;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border-radius: 4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .nav-menu .nav-link:hover {
+            background-color: #34495e;
+            color: #f1c40f; /* Sarý hover rengi */
+        }
+
+    .nav-menu .btn-add {
+        background-color: #f1c40f;
+        color: #2c3e50;
+        font-weight: bold;
+        border-radius: 50px;
+        padding: 0.5rem 1.5rem;
+        transition: background-color 0.3s ease;
+    }
+
+        .nav-menu .btn-add:hover {
+            background-color: #d4ac0d;
+        }
+
+/* Mobil Menü Toggler */
+.menu-toggler {
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+    .menu-toggler .bar {
+        width: 25px;
+        height: 3px;
+        background-color: #ecf0f1;
+    }
+
+/* Mobil Stil */
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: #2c3e50;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        padding: 1rem 0;
+    }
+
+    .menu-toggler {
+        display: flex;
+    }
+
+    .nav-menu.active {
+        display: flex;
     }
 }

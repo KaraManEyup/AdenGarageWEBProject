@@ -10,38 +10,27 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-            <div class="container-fluid">
-                <!-- Logo ve Ana Başlık -->
-                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
-                    <img src="~/logo.png" alt="Aden Garage" class="img-fluid" style="max-height: 40px;" />
-                    <span class="ms-2 fw-bold">Aden Garage</span>
+        <nav class="custom-navbar shadow-lg">
+            <div class="container d-flex align-items-center justify-content-between">
+                <!-- Logo -->
+                <a href="@Url.Action("Index", "Home")" class="logo d-flex align-items-center">
+                    <img src="~/logo.png" alt="Aden Garage Logo" class="logo-img" />
+                    <span class="logo-text">Aden Garage</span>
                 </a>
 
-                <!-- Navbar Toggler (Mobil Görünüm İçin) -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"><img src="~/logo.png" /></span>
-                </button>
-
                 <!-- Navbar Menüsü -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="@Url.Action("Index", "Home")" style="font-weight: 500;">Anasayfa</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "Musteris")" style="font-weight: 500;">Müşteriler</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "Arabas")" style="font-weight: 500;">Arabalar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-primary text-white rounded-pill px-4 py-2" href="@Url.Action("Create", "Musteris")" style="font-weight: 500;">
-                                Yeni Müşteri Ekle
-                            </a>
-                        </li>
-                    </ul>
+                <ul class="nav-menu d-flex align-items-center">
+                    <li><a href="@Url.Action("Index", "Home")" class="nav-link">Anasayfa</a></li>
+                    <li><a href="@Url.Action("Index", "Musteris")" class="nav-link">Müşteriler</a></li>
+                    <li><a href="@Url.Action("Index", "Arabas")" class="nav-link">Arabalar</a></li>
+                    <li><a href="@Url.Action("Create", "Musteris")" class="nav-link btn-add">+ Müşteri Ekle</a></li>
+                </ul>
+
+                <!-- Mobil Menü Toggler -->
+                <div class="menu-toggler">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
                 </div>
             </div>
         </nav>
@@ -95,3 +84,7 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<!-- Bootstrap & Icons -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">

@@ -13,15 +13,15 @@
                 <p class="text-muted" style="font-size: 1.1rem;">Müşteri bilgilerini ve araba bilgilerini girerek, yeni kaydınızı oluşturun.</p>
             </div>
 
-            <!-- Kartlar (Müşteri ve Araba Bilgileri) -->
-            <div class="row">
-                <!-- Müşteri Kartı -->
-                <div class="col-md-6">
-                    <div class="card shadow-lg mb-4" style="border-radius: 15px;">
-                        <div class="card-body">
-                            <h5 class="card-title text-center text-dark font-weight-bold mb-4">Müşteri Bilgileri</h5>
-                            <form asp-action="Create">
-                                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <!-- Form Başlangıcı -->
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <div class="row">
+                    <!-- Müşteri Bilgileri Kartı -->
+                    <div class="col-md-6">
+                        <div class="card shadow-lg mb-4" style="border-radius: 15px;">
+                            <div class="card-body">
+                                <h5 class="card-title text-center text-dark font-weight-bold mb-4">Müşteri Bilgileri</h5>
 
                                 <!-- İsim -->
                                 <div class="form-group mb-4">
@@ -40,20 +40,19 @@
                                 <!-- Telefon -->
                                 <div class="form-group mb-4">
                                     <label for="Telefon" class="font-weight-bold text-dark">Telefon</label>
-                                    <input asp-for="Telefon" class="form-control form-control-lg" style="border-radius: 10px;" placeholder="Telefon numaranızı girin" />
+                                    <input asp-for="Telefon" class="form-control form-control-lg"
+                                           id="telefon" style="border-radius: 10px;" placeholder="(536) 123-4567" />
                                     <span asp-validation-for="Telefon" class="text-danger"></span>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Araba Kartı -->
-                <div class="col-md-6">
-                    <div class="card shadow-lg mb-4" style="border-radius: 15px;">
-                        <div class="card-body">
-                            <h5 class="card-title text-center text-dark font-weight-bold mb-4">Araba Bilgileri</h5>
-                            <form asp-action="Create">
+                    <!-- Araba Bilgileri Kartı -->
+                    <div class="col-md-6">
+                        <div class="card shadow-lg mb-4" style="border-radius: 15px;">
+                            <div class="card-body">
+                                <h5 class="card-title text-center text-dark font-weight-bold mb-4">Araba Bilgileri</h5>
                                 <div id="arabalar-container" class="mt-4">
                                     <!-- Marka -->
                                     <div class="form-group mb-3">
@@ -88,25 +87,38 @@
                                     <!-- Geliş Tarihi -->
                                     <div class="form-group mb-3">
                                         <label class="font-weight-bold text-dark">Geliş Tarihi</label>
-                                        <input type="date" name="Arabalar[0].Tarih" class="form-control form-control-lg" style="border-radius: 10px;" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                        <input type="date" name="Arabalar[0].Tarih" class="form-control form-control-lg" style="border-radius: 10px;" value="@DateTime.Now.ToString("dd-MM-yyyyy")" />
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Kaydet Butonu -->
-            <div class="form-group text-center mt-4">
-                <input type="submit" value="Kaydet" class="btn btn-success btn-sm w-50" style="border-radius: 10px; font-weight: bold;" />
-            </div>
+                <!-- Kaydet Butonu -->
+                <div class="form-group text-center mt-4">
+                    <input type="submit" value="Kaydet" class="btn btn-success btn-sm w-50" style="border-radius: 10px; font-weight: bold;" />
+                </div>
 
-            <!-- Listeye Dön Butonu -->
-            <div class="text-center mt-3">
-                <a asp-action="Index" class="btn btn-outline-danger btn-sm w-50" style="border-radius: 10px; font-weight: bold;">Listeye Dön</a>
-            </div>
+                <!-- Listeye Dön Butonu -->
+                <div class="text-center mt-3">
+                    <a asp-action="Index" class="btn btn-outline-danger btn-sm w-50" style="border-radius: 10px; font-weight: bold;">Listeye Dön</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/inputmask.min.js"></script>
+<!-- Inputmask Kütüphanesini Yükleyin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.7-beta.16/inputmask.min.js"></script>
 
+<script>
+    $(document).ready(function () {
+        // Telefon numarasını (XXX) XXX-XXXX formatında maskeleme
+        Inputmask({
+            "mask": "(999) 999-9999", // Kullanıcıya gösterilen format
+            "removeMaskOnSubmit": true // Backend'e maskesiz gönderim
+        }).mask("#telefon");
+    });
+</script>

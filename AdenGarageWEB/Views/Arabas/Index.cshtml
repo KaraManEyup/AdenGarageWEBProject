@@ -12,22 +12,7 @@
         <p class="lead text-light fade-in">
             Arabalarınız ve bakımlarınız bizimle güvende! Müşteri bilgilerinizi buradan kontrol edebilirsiniz.
         </p>
-        <hr class="my-4 fade-in" />
-        <div class="row justify-content-center mb-5">
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-
-                <div class="card-body bg-dark text-center">
-                    <h5 class="card-title">Toplam Müşteri Sayısı</h5>
-                    <p class="card-text display-4 text-primary">@Model.Count()</p>
-                </div>
-            </div>
-
-            <div class="card-body text-center">
-                <h5 class="card-title">Toplam Araç Sayısı</h5>
-                <p class="card-text display-4 text-success">@ViewData["ToplamArabaSayisi"]</p>
-            </div>
-
-        </div>
+   
         <p class="mb-0 fade-in" style="font-size: 1rem; color: #f8f9fa;">
             AdenGarage | Kaliteli Hizmet, Güvenli Sürüş
         </p>
@@ -97,6 +82,16 @@
         </table>
     </div>
 </div>
+@* <div class="col-md-8 d-flex bg-dark flex-wrap justify-content-start gap-2">
+<h5 class="card-title" style="color:white">Toplam Müşteri Sayısı</h5>
+<p class="card-text display-4 text-primary">@Model.Count()</p>
+
+<h5 class="card-title" style="color:white">Toplam Araç Sayısı</h5>
+<p class="card-text display-4 text-success">@ViewData["ToplamArabaSayisi"]</p>
+
+</div> *@
+
+
 <div id="features" class="container py-5">
     <h2 class="text-center mb-5">Neden AdenGarage?</h2>
     <div class="row g-4">

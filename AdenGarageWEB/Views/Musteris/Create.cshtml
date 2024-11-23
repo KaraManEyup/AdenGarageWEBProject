@@ -40,8 +40,7 @@
                                 <!-- Telefon -->
                                 <div class="form-group mb-4">
                                     <label for="Telefon" class="font-weight-bold text-dark">Telefon</label>
-                                    <input asp-for="Telefon" class="form-control form-control-lg"
-                                           id="telefon" style="border-radius: 10px;" placeholder="(536) 123-4567" />
+                                    <input asp-for="Telefon" class="form-control form-control-lg" style="border-radius: 10px;" placeholder="Telefon numaranızı girin" />
                                     <span asp-validation-for="Telefon" class="text-danger"></span>
                                 </div>
                             </div>
@@ -87,7 +86,7 @@
                                     <!-- Geliş Tarihi -->
                                     <div class="form-group mb-3">
                                         <label class="font-weight-bold text-dark">Geliş Tarihi</label>
-                                        <input type="date" name="Arabalar[0].Tarih" class="form-control form-control-lg" style="border-radius: 10px;" value="@DateTime.Now.ToString("dd-MM-yyyyy")" />
+                                        <input type="date" name="Arabalar[0].Tarih" class="form-control form-control-lg" style="border-radius: 10px;" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                                     </div>
                                 </div>
                             </div>
@@ -108,17 +107,3 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/inputmask.min.js"></script>
-<!-- Inputmask Kütüphanesini Yükleyin -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.7-beta.16/inputmask.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        // Telefon numarasını (XXX) XXX-XXXX formatında maskeleme
-        Inputmask({
-            "mask": "(999) 999-9999", // Kullanıcıya gösterilen format
-            "removeMaskOnSubmit": true // Backend'e maskesiz gönderim
-        }).mask("#telefon");
-    });
-</script>

@@ -5,21 +5,32 @@
 }
 
 <!-- Başlık ve Sayfa Açıklamaları -->
-<section class="hero-section py-5 text-center" style="background-color: #f4f6f9;">
-    <div class="container">
-        <h1 class="display-4 text-dark mb-4 font-weight-bold">Araba Detayları</h1>
-        <p class="lead text-muted mb-5">Araba bilgilerinizi buradan görüntüleyebilirsiniz. Detaylar aşağıda yer almaktadır.</p>
+<section class="hero-section py-5 text-center" style="background-image: linear-gradient(135deg, #f4f6f9, #ffffff);">
+    <div class="header bg-dark text-white py-5">
+        <div class="container text-center">
+            <h1 class="display-4 font-weight-bold animated-text">
+                AdenGarage Müşteri Listesi
+            </h1>
+            <p class="lead text-light fade-in">
+                Arabalarınız ve bakımlarınız bizimle güvende! Müşteri bilgilerinizi buradan kontrol edebilirsiniz.
+            </p>
+
+            <p class="mb-0 fade-in" style="font-size: 1rem; color: #f8f9fa;">
+                AdenGarage | Kaliteli Hizmet, Güvenli Sürüş
+            </p>
+        </div>
+        <a href="#features" class="btn btn-light btn-lg mt-4 shadow">Hizmetlerimizi Keşfedin</a>
     </div>
 </section>
 
 <!-- Araba Bilgileri Kartı -->
-<div class="container py-5">
+<div class="container py-5" style="position: relative;">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10 col-sm-12">
-            <div class="card shadow-lg border-0">
+            <div class="card shadow-lg border-0 rounded-lg hover-zoom">
                 <div class="card-body">
-                    <h4 class="text-center text-dark mb-4 font-weight-bold">Araba Bilgileri</h4>
-                    <table class="table table-bordered table-striped">
+                    <h4 class="text-center text-dark mb-4 font-weight-bold" style="font-size: 1.5rem;">Araba Bilgileri</h4>
+                    <table class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr class="table-primary text-center">
                                 <th>Özellik</th>
@@ -71,8 +82,8 @@
 
     <!-- Butonlar -->
     <div class="text-center mt-5">
-        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary btn-lg px-5 py-3 rounded-pill">Düzenle</a>
-        <a asp-action="Index" class="btn btn-secondary btn-lg px-5 py-3 rounded-pill">Listeye Dön</a>
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary btn-lg px-5 py-3 rounded-pill hover-effect">Düzenle</a>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-lg px-5 py-3 rounded-pill hover-effect">Listeye Dön</a>
     </div>
 </div>
 
@@ -80,16 +91,16 @@
 @if (Model.Musteri.Arabalar.Count > 1)
 {
     <div class="container py-5">
-        <h4 class="text-center text-dark mb-4 font-weight-bold">Bunları da Beğenebilirsiniz</h4>
+        <h4 class="text-center text-dark mb-4 font-weight-bold" style="font-size: 1.5rem;">Bunları da Beğenebilirsiniz</h4>
         <div class="car-slider">
-            @foreach (var araba in Model.Musteri.Arabalar.Where(a => a.Id != Model.Id))  
+            @foreach (var araba in Model.Musteri.Arabalar.Where(a => a.Id != Model.Id))
             {
                 <div class="car-slide">
-                    <div class="card border-0 shadow-sm">
+                    <div class="card border-0 shadow-lg hover-zoom">
                         <div class="card-body text-center">
                             <h5 class="card-title">@araba.Marka @araba.Model</h5>
                             <p class="card-text">Plaka: @araba.Plaka</p>
-                            <a href="@Url.Action("Details", "Araba", new { id = araba.Id })" class="btn btn-info">Detaylar</a>
+                            <a href="@Url.Action("Details", "Araba", new { id = araba.Id })" class="btn btn-info hover-effect">Detaylar</a>
                         </div>
                     </div>
                 </div>
@@ -100,20 +111,55 @@
 
 <!-- Stil ve JavaScript -->
 <style>
+    /* Hero Section */
     .hero-section {
-        background-color: #ffffff;
+        background-color: #f4f6f9;
         padding: 60px 0;
+        background-size: cover;
     }
 
+    /* Card Hover Effects */
     .card {
-        border-radius: 10px;
-        box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
     }
 
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        }
+
+    /* Table */
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Button Hover Effects */
+    .hover-effect {
+        transition: all 0.3s ease;
+    }
+
+        .hover-effect:hover {
+            background-color: #0056b3;
+            color: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+    .hover-zoom {
+        transition: all 0.3s ease-in-out;
+    }
+
+        .hover-zoom:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    /* Car Slider */
     .car-slider {
         display: flex;
-        overflow-x: auto;
         gap: 20px;
+        overflow-x: auto;
         padding: 20px 0;
         scroll-snap-type: x mandatory;
         scrollbar-width: thin;
@@ -125,21 +171,6 @@
         scroll-snap-align: center;
     }
 
-    .card-body {
-        padding: 15px;
-    }
-
-    .btn-info {
-        background-color: #17a2b8;
-        border-color: #17a2b8;
-    }
-
-    .btn-info:hover {
-        background-color: #138496;
-        border-color: #117a8b;
-    }
-
-    /* Kaydırma için özel stil */
     .car-slider::-webkit-scrollbar {
         height: 8px;
     }
@@ -149,13 +180,22 @@
         border-radius: 10px;
     }
 
-    .car-slider::-webkit-scrollbar-thumb:hover {
-        background-color: #555;
+        .car-slider::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
     }
+
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
 </style>
 
 <script>
-    // JS ile slider kaydırma için ek ayarlamalar yapılabilir (Örn. otomatik kaydırma)
     document.addEventListener('DOMContentLoaded', function () {
         const slider = document.querySelector('.car-slider');
         let isMouseDown = false;
@@ -178,7 +218,7 @@
         slider.addEventListener('mousemove', (e) => {
             if (!isMouseDown) return;
             const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 3; // Kaydırma hızı
+            const walk = (x - startX) * 3;
             slider.scrollLeft = scrollLeft - walk;
         });
     });

@@ -12,22 +12,7 @@
         <p class="lead text-light fade-in">
             Arabalarınız ve bakımlarınız bizimle güvende! Müşteri bilgilerinizi buradan kontrol edebilirsiniz.
         </p>
-        <hr class="my-4 fade-in" />
-        <div class="row justify-content-center mb-5">
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-
-                <div class="card-body bg-dark text-center">
-                    <h5 class="card-title">Toplam Müşteri Sayısı</h5>
-                    <p class="card-text display-4 text-primary">@Model.Count()</p>
-                </div>
-            </div>
-
-            <div class="card-body bg-dark text-center">
-                <h5 class="card-title">Toplam Araç Sayısı</h5>
-                <p class="card-text display-4 text-success">@Model.Sum(m => m.Arabalar?.Count() ?? 0)</p>
-            </div>
-
-        </div>
+    
         <p class="mb-0 fade-in" style="font-size: 1rem; color: #f8f9fa;">
             AdenGarage | Kaliteli Hizmet, Güvenli Sürüş
         </p>
@@ -148,14 +133,14 @@
                             {
                                 <span class="text-muted">Araç kaydı yok</span>
                             }
-                    </td>
-                    <td>
-                        <a href="@Url.Action("Details", "Musteris", new { id = musteri.Id })" class="btn btn-outline-info btn-sm">Detay</a>
-                        <a href="@Url.Action("Edit", "Musteris", new { id = musteri.Id })" class="btn btn-outline-warning btn-sm">Düzenle</a>
-                        <a href="@Url.Action("Delete", "Musteris", new { id = musteri.Id })" class="btn btn-outline-danger btn-sm mx-1">Sil</a>
-                    </td>
-                </tr>
-                    }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Details", "Musteris", new { id = musteri.Id })" class="btn btn-outline-info btn-sm">Detay</a>
+                            <a href="@Url.Action("Edit", "Musteris", new { id = musteri.Id })" class="btn btn-outline-warning btn-sm">Düzenle</a>
+                            <a href="@Url.Action("Delete", "Musteris", new { id = musteri.Id })" class="btn btn-outline-danger btn-sm mx-1">Sil</a>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -171,17 +156,17 @@
         new { Icon = "bi-currency-dollar", Title = "Uygun Fiyat", Description = "Kaliteden ödün vermeden bütçenize uygun fiyatlarla hizmet sunuyoruz." },
         new { Icon = "bi-shield-check", Title = "Garanti", Description = "Yapılan işlemler için müşteri memnuniyeti garantisi sağlıyoruz." }
         })
-{
-        <div class="col-md-6 col-lg-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi @feature.Icon display-3 text-primary mb-3"></i>
-                    <h5 class="card-title fw-bold">@feature.Title</h5>
-                    <p class="card-text text-muted">@feature.Description</p>
+        {
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi @feature.Icon display-3 text-primary mb-3"></i>
+                        <h5 class="card-title fw-bold">@feature.Title</h5>
+                        <p class="card-text text-muted">@feature.Description</p>
+                    </div>
                 </div>
             </div>
-        </div>
-}
+        }
     </div>
 </div>
 <!-- Quick Access Section -->

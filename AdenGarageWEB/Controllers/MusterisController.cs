@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AdenGarageWEB.DataAccess;
 using Core.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AdenGarageWEB.Controllers
 {
@@ -19,97 +17,117 @@ namespace AdenGarageWEB.Controllers
             _context = context;
         }
 
+        // GET: Musteris
         public async Task<IActionResult> Index(string sortOrder)
         {
-            // Varsayılan sıralama
-            if (string.IsNullOrEmpty(sortOrder))
-            {
-                sortOrder = "IsimAsc"; // Default sıralama
-            }
+            ViewData["SortOrder"] = sortOrder ?? "IsimAsc";
 
-            // Müşteri verilerini arabalarla birlikte getiriyoruz
             var musteriler = _context.Musteriler
-                .Include(m => m.Arabalar) // Arabaları dahil et
+                .Include(m => m.Arabalar)
                 .AsQueryable();
 
-            // Sıralama işlemleri
-            switch (sortOrder)
+            musteriler = sortOrder switch
             {
-                case "IsimDesc":
-                    musteriler = musteriler.OrderByDescending(m => m.Isim);
-                    break;
-                case "IsimAsc":
-                default:
-                    musteriler = musteriler.OrderBy(m => m.Isim);
-                    break;
-            }
+                "IsimDesc" => musteriler.OrderByDescending(m => m.Isim),
+                _ => musteriler.OrderBy(m => m.Isim),
+            };
 
-            // Listeyi döndürüyoruz
-            var musterilerList = await musteriler.ToListAsync();
-            return View(musterilerList); // Burada modelin bir koleksiyon olduğundan emin olun
+            return View(await musteriler.ToListAsync());
         }
 
+        // GET: Musteris/Create
         public IActionResult Create()
         {
-            return View(new Musteri()); // Arabalar boş olarak dönebilir
+            return View(new Musteri { Arabalar = new List<Araba>() });
         }
 
-
+        // POST: Musteris/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Musteri musteri)
         {
-
-            // Eğer arabalar yoksa veya tamamen boşsa, listeyi temizle
-            if (musteri.Arabalar == null || !musteri.Arabalar.Any(a =>
-                !string.IsNullOrWhiteSpace(a.Marka) ||
-                !string.IsNullOrWhiteSpace(a.Model) ||
-                !string.IsNullOrWhiteSpace(a.Plaka) ||
-                a.Tarih != default))
+            if (musteri.Arabalar != null)
             {
-                musteri.Arabalar = new List<Araba>(); // Arabalar boş bırakılabilir
+                // Boş araba bilgilerini temizle
+                musteri.Arabalar = musteri.Arabalar
+                    .Where(a => !string.IsNullOrWhiteSpace(a.Marka) ||
+                                !string.IsNullOrWhiteSpace(a.Model) ||
+                                !string.IsNullOrWhiteSpace(a.Plaka) ||
+                                a.Tarih != default)
+                    .ToList();
             }
 
-            // ModelState doğrulamasını kontrol et
             if (ModelState.IsValid)
             {
-
                 _context.Musteriler.Add(musteri);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            // ModelState hataları varsa logla
-            var errors = ModelState.Values.SelectMany(v => v.Errors)
-                                           .Select(e => e.ErrorMessage);
-            foreach (var error in errors)
-            {
-                Console.WriteLine(error);
-            }
-
-            // Model hatalıysa tekrar formu döndür
             return View(musteri);
         }
 
-
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Musteris/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var musteri = await _context.Musteriler
                 .Include(m => m.Arabalar)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (musteri == null)
-            {
                 return NotFound();
+
+            return View(musteri);
+        }
+
+        // GET: Musteris/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var musteri = await _context.Musteriler
+                .Include(m => m.Arabalar)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (musteri == null)
+                return NotFound();
+
+            return View(musteri);
+        }
+
+        // POST: Musteris/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Musteri musteri)
+        {
+            if (id != musteri.Id)
+                return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(musteri);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MusteriExists(musteri.Id))
+                        return NotFound();
+                    else
+                        throw;
+                }
+
+                return RedirectToAction(nameof(Index));
             }
 
             return View(musteri);
         }
+
         public async Task<IActionResult> EditAraba(int id)
         {
             var araba = await _context.Arabalar.FindAsync(id);
@@ -132,7 +150,7 @@ namespace AdenGarageWEB.Controllers
             }
 
             var existingAraba = await _context.Arabalar
-                .AsNoTracking()  
+                .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.Id == id);
 
             if (existingAraba == null)
@@ -166,123 +184,45 @@ namespace AdenGarageWEB.Controllers
             return _context.Arabalar.Any(a => a.Id == id);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Musteri musteri)
-        {
-            if (id != musteri.Id)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // Arabalar ilişkilendirilmişse güncelle
-                    foreach (var araba in musteri.Arabalar)
-                    {
-                        if (araba.Id == 0) // Yeni araba eklenmişse
-                        {
-                            _context.Arabalar.Add(araba);
-                        }
-                        else // Mevcut araba güncelleniyorsa
-                        {
-                            _context.Arabalar.Update(araba);
-                        }
-                    }
-
-                    // Müşteriyi güncelle
-                    _context.Update(musteri);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MusteriExists(musteri.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(musteri);
-        }
-
-
-
-        private bool MusteriExists(int id)
-        {
-            return _context.Musteriler.Any(e => e.Id == id);
-        }
-
-        // GET: Musteris/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Musteris/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var musteri = await _context.Musteriler
                 .Include(m => m.Arabalar)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (musteri == null)
-            {
                 return NotFound();
-            }
 
             return View(musteri);
         }
 
-
-        public IActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var musteri = _context.Musteriler
-                .Include(m => m.Arabalar) // Arabaları da dahil ediyoruz
-                .FirstOrDefault(m => m.Id == id);
-
-            if (musteri == null)
-            {
-                return NotFound();
-            }
-
-            return View(musteri);
-        }
-
+        // POST: Musteris/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var musteri = _context.Musteriler
+            var musteri = await _context.Musteriler
                 .Include(m => m.Arabalar)
-                .FirstOrDefault(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (musteri != null)
             {
-                // İlgili arabaları da silmek isterseniz
-                if (musteri.Arabalar != null && musteri.Arabalar.Any())
-                {
-                    _context.Arabalar.RemoveRange(musteri.Arabalar);
-                }
-
+                _context.Arabalar.RemoveRange(musteri.Arabalar);
                 _context.Musteriler.Remove(musteri);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Index));
         }
 
+        private bool MusteriExists(int id)
+        {
+            return _context.Musteriler.Any(e => e.Id == id);
+        }
     }
 }

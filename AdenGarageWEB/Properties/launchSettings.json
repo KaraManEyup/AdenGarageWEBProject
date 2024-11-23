@@ -33,6 +33,13 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "AdenGarageWEB": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:5000", // Bu satır doğru
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

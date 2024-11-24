@@ -1,42 +1,52 @@
-﻿@model ApplicationUser
+﻿@model EditProfileViewModel
 
-@{
-    ViewData["Title"] = "Profili Düzenle";
-}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg">
+                <div class="card-header text-center bg-gradient-to-r from-indigo-600 to-pink-500 text-white">
+                    <h2>Profil Düzenle</h2>
+                    <p class="lead">Bilgilerinizi güncelleyin</p>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("EditProfile", "Account", FormMethod.Post, new { @class = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
 
-<div class="container mt-4">
-    <h2 class="mb-4">Profili Düzenle</h2>
+                        <div class="form-group">
+                            <label for="FullName">Ad ve Soyad</label>
+                            @Html.TextBoxFor(model => model.FullName, new { @class = "form-control", placeholder = "Adınız ve Soyadınız" })
+                        </div>
 
-    <!-- ModelState hatalarını göstermek için ValidationSummary kullanabilirsiniz -->
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <div class="alert alert-danger">
-            <strong>Hata!</strong> Lütfen formu kontrol edin.
+                        <div class="form-group">
+                            <label for="Email">E-posta Adresi</label>
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Email adresinizi girin" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for="PhoneNumber">Telefon Numarası</label>
+                            @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Telefon numaranızı girin" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for="DateOfBirth">Doğum Tarihi</label>
+                            @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "form-control", type = "date" })
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Gender">Cinsiyet</label>
+                            <select asp-for="Gender" class="form-control">
+                                <option value="">Seçiniz</option>
+                                <option value="Male">Erkek</option>
+                                <option value="Female">Kadın</option>
+                                <option value="Other">Diğer</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Profili Güncelle</button>
+                    }
+                </div>
+            </div>
         </div>
-    }
-
-    <form method="post">
-        <div class="form-group">
-            <label for="FullName">Ad Soyad</label>
-            <input type="text" class="form-control" id="FullName" name="FullName" value="@Model.FullName" required />
-            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-            <label for="Email">Email</label>
-            <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" required />
-            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-            <label for="PhoneNumber">Telefon</label>
-            <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" />
-            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group mt-3">
-            <button type="submit" class="btn btn-success">Kaydet</button>
-            <a href="@Url.Action("Profile", "Account")" class="btn btn-secondary">Geri</a>
-        </div>
-    </form>
+    </div>
 </div>

@@ -1,129 +1,144 @@
 ﻿@model ApplicationUser
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10 col-lg-8">
-            <!-- Profil Kartı -->
-            <div class="card shadow-lg border-0 rounded-xl">
-                <div class="card-header text-center bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500 text-white">
-                    <h2 class="mb-0 font-weight-bold">Profil Bilgileriniz</h2>
-                </div>
-                <div class="card-body p-5">
-                    <div class="d-flex flex-column align-items-center">
-                        <!-- Profil İkonu -->
-                        <div class="mb-4">
-                            <i class="fas fa-user-circle fa-6x profile-icon"></i>
-                        </div>
-                        
-                        <!-- Kullanıcı Adı -->
-                        <h3 class="font-weight-bold mb-2 text-dark">@Model.FullName</h3>
-                        
-                        <!-- Kullanıcı Bilgileri -->
-                        <div class="row w-100">
-                            <div class="col-md-6">
-                                <p class="lead"><i class="fas fa-envelope"></i> <strong>Email:</strong> @Model.Email</p>
-                                <p class="lead"><i class="fas fa-birthday-cake"></i> <strong>Doğum Tarihi:</strong> @Model.UserName</p>
-                            </div>
-                            <div class="col-md-6">
-           @*                      <p class="lead"><i class="fas fa-id-card"></i> <strong>Kullanıcı ID:</strong> @Model.Id</p>
-                                <p class="lead"><i class="fas fa-calendar-alt"></i> <strong>Üyelik Tarihi:</strong> @Model.RegistrationDate.ToString("dd/MM/yyyy")</p>
-                                <p class="lead"><i class="fas fa-cogs"></i> <strong>Rol:</strong> @Model.Role</p>
-                                <p class="lead"><i class="fas fa-globe"></i> <strong>Websitesi:</strong> @Model.Website</p> *@
-                            </div>
-                        </div>
+@{
+    ViewData["Title"] = "Profil";
+}
 
-                        <!-- Profil Düzenle Butonu -->
-                        <div class="mt-4">
-                            <a href="@Url.Action("EditProfile", "Account")" class="btn btn-primary btn-lg btn-hover">Profil Düzenle</a>
-                        </div>
-                    </div>
-                </div>
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="avatar">@Model.FullName.Substring(0, 1).ToUpper()</div>
+            <div class="profile-info">
+                <h2>@Model.FullName</h2>
             </div>
+        </div>
+
+        <div class="profile-body">
+            <div class="info-item">
+                <strong>Telefon:</strong> @Model.PhoneNumber
+            </div>
+            <div class="info-item">
+                <strong>Cinsiyet:</strong> @Model.Gender
+            </div>
+            <div class="info-item">
+                <strong>Doğum Tarihi:</strong> @Model.DateOfBirth?.ToString("dd/MM/yyyy")
+            </div>
+        </div>
+
+        <div class="profile-footer">
+            <a href="@Url.Action("EditProfile", "Account")" class="btn">Profil Düzenle</a>
         </div>
     </div>
 </div>
 
-<!-- Font Awesome CDN -->
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
-<!-- Extra Styling -->
+<!-- Custom CSS -->
 <style>
-    /* Profil İkonu */
-    .profile-icon {
-        color: #6c757d; /* Gri renk */
-        border-radius: 50%;
-        background: #fff;
-        padding: 25px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Genel Stil */
+    body {
+        background-color: #ffffff; /* Beyaz arka plan */
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
     }
 
-    /* Profil Kartı - Modern Tasarım */
-    .card {
+    .profile-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 40px;
+    }
+
+    .profile-card {
+        background-color: #ffffff;
+        width: 100%;
+        max-width: 600px;
         border-radius: 20px;
-        background: #fff;
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .card:hover {
-        transform: scale(1.05);
-    }
-
-    /* Gradient Header */
-    .card-header {
-        background: linear-gradient(to right, #6a11cb, #2575fc);
-        color: white;
-    }
-
-    /* Button Hover Efekti */
-    .btn-hover {
+        box-shadow: 0px 12px 40px rgba(0, 0, 0, 0.1);
+        padding: 40px;
         transition: all 0.3s ease;
     }
 
-    .btn-hover:hover {
-        background: linear-gradient(to right, #ff7e5f, #feb47b);
-        color: #fff;
-        transform: scale(1.1);
+        .profile-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 30px;
     }
 
-    /* Kartı Gölgelendirme */
-    .shadow-lg {
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
     }
 
-    /* Genel Düzen */
-    .card-body {
-        background-color: #f7f8fa;
-        border-radius: 20px;
-    }
+        .avatar:hover {
+            transform: scale(1.1);
+        }
 
-    /* Yazı ve Buton Stilleri */
-    h2, h3, p {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .lead {
-        font-size: 1.1rem;
-        font-weight: 400;
-    }
-
-    .font-weight-bold {
+    .profile-info h2 {
+        font-size: 2rem;
         font-weight: 600;
+        color: #333;
+        margin: 0;
     }
 
-    /* Mobil uyumluluk */
-  
-
-    /* Bilgiler Arasındaki Mesafe */
-    .lead {
-        margin-bottom: 10px;
+    .profile-info p {
+        font-size: 1.1rem;
+        font-weight: 300;
+        color: #777;
     }
 
-    /* İkon Renkleri */
-    .fas {
-        color: #6c757d;
+    .profile-body {
+        margin-top: 20px;
     }
 
-    .fas:hover {
-        color: #007bff;
+    .info-item {
+        font-size: 1.1rem;
+        color: #444;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #e2e2e2;
     }
+
+        .info-item strong {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+    .profile-footer {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .btn {
+        background-color: #4CAF50; /* Yeşil buton */
+        color: white;
+        padding: 15px 30px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+        .btn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
 </style>

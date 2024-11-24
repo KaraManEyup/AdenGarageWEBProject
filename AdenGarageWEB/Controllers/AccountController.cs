@@ -4,173 +4,190 @@ using AdenGarageWEB.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 
-public class AccountController : Controller
+namespace AdenGarageWEB.Controllers
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
-
-    public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+    public class AccountController : Controller
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
-    }
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-    // Register GET
-    [HttpGet]
-    public IActionResult Register()
-    {
-        if (User.Identity.IsAuthenticated) // Eğer kullanıcı zaten giriş yaptıysa, başka bir sayfaya yönlendir
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
-            return RedirectToAction("Index", "Musteris");
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        // Sayfa başlığını ViewData'ya ayarla
-        ViewData["Title"] = "Register";
-
-        return View(); // Register view'ını döndür
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Register(RegisterViewModel model)
-    {
-        if (ModelState.IsValid)
+        // Register GET
+        [HttpGet]
+        public IActionResult Register()
         {
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName };
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
+            if (User.Identity.IsAuthenticated) // Eğer kullanıcı zaten giriş yaptıysa, başka bir sayfaya yönlendir
             {
-                await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Musteris");
             }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
+            ViewData["Title"] = "Register";
+            return View(); // Register view'ını döndür
         }
-
-        return View(model);
-    }
-
-
-    // Login GET
-    [HttpGet]
-    public IActionResult Login()
-    {
-        if (User.Identity.IsAuthenticated) // Eğer kullanıcı zaten giriş yaptıysa, başka bir sayfaya yönlendir
-        {
-            return RedirectToAction("Index", "Musteris");
-        }
-        return View();
-    }
-
-    // Login POST
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Login(LoginViewModel model)
-    {
-        if (ModelState.IsValid)
-        {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null)
-            {
-                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
-                {
-                    // Giriş başarılı ise ana sayfaya yönlendiriyoruz
-                    return RedirectToAction("Index", "Home");
-                }
-                ModelState.AddModelError(string.Empty, "Geçersiz giriş.");
-            }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "Kullanıcı bulunamadı.");
-            }
-        }
-
-        // Hata varsa formu tekrar gösteriyoruz
-        return View(model);
-    }
-
-    [Authorize]
-    public async Task<IActionResult> Profile()
-    {
-        var user = await _userManager.GetUserAsync(User); // Giriş yapan kullanıcıyı alıyoruz
-        if (user == null)
-        {
-            return RedirectToAction("Login", "Account"); // Eğer kullanıcı yoksa giriş sayfasına yönlendiriyoruz
-        }
-        return View(user); // Kullanıcıyı Profile view'ına gönderiyoruz
-    }
-
-
-    // Profil düzenleme sayfası
-    [Authorize]
-    public async Task<IActionResult> EditProfile()
-    {
-        var user = await _userManager.GetUserAsync(User); // Giriş yapan kullanıcıyı alıyoruz
-        if (user == null)
-        {
-            return RedirectToAction("Login", "Account");
-        }
-        var model = new EditProfileViewModel
-        {
-            FullName = user.FullName,
-            Email = user.Email,
-            PhoneNumber = user.PhoneNumber
-        };
-        return View(model); // Kullanıcıyı düzenleme formuna gönderiyoruz
-    }
-
-    // Profil düzenleme işlemi
-    [HttpPost]
-    [Authorize]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditProfile(EditProfileViewModel model)
-    {
-        if (ModelState.IsValid)
+        [Authorize]
+        public async Task<IActionResult> Profile()
         {
             var user = await _userManager.GetUserAsync(User); // Giriş yapan kullanıcıyı alıyoruz
             if (user == null)
             {
-                return View(model); // Eğer kullanıcı bulunamadıysa, düzenleme formunu tekrar göster
+                return RedirectToAction("Login", "Account"); // Kullanıcı bulunamazsa login sayfasına yönlendir
             }
 
-            // Kullanıcı bilgilerini güncelliyoruz
-            user.FullName = model.FullName;
-            user.Email = model.Email;
-            user.PhoneNumber = model.PhoneNumber;
+            // Kullanıcı bilgilerini Profile view'ına gönderiyoruz
+            return View(user);
+        }
 
-            // Bilgileri kaydediyoruz
-            var result = await _userManager.UpdateAsync(user);
 
-            if (result.Succeeded)
+
+        // Register POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
             {
-                // Profil güncelleme başarılı ise, profil sayfasına yönlendiriyoruz
-                return RedirectToAction("Profile");
-            }
-            else
-            {
-                // Profil güncellenirken bir hata oluştuysa, hata mesajını göster
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FullName = model.FullName,
+                    PhoneNumber = model.PhoneNumber,
+                    Gender = model.Gender
+                };
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Musteris");
+                }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-        }
-        // Hata varsa düzenleme formunu yeniden göster
-        return View(model);
-    }
 
-    // Kullanıcı çıkışı
-    [Authorize]
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Logout()
-    {
-        await _signInManager.SignOutAsync();  // Kullanıcıyı çıkart
-        return RedirectToAction("Index", "Home");  // Anasayfaya yönlendir
+            return View(model); // Hata varsa formu tekrar döndür
+        }
+
+        // Login GET
+        [HttpGet]
+        public IActionResult Login()
+        {
+            if (User.Identity.IsAuthenticated) // Eğer kullanıcı zaten giriş yaptıysa, başka bir sayfaya yönlendir
+            {
+                return RedirectToAction("Index", "Musteris");
+            }
+            return View();
+        }
+
+        // Login POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+                    if (result.Succeeded)
+                    {
+                        // Giriş başarılı ise, ana sayfaya yönlendiriyoruz
+                        return RedirectToAction("Index", "Home");
+                    }
+                    ModelState.AddModelError(string.Empty, "Geçersiz giriş.");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Kullanıcı bulunamadı.");
+                }
+            }
+
+            return View(model); // Hata varsa formu tekrar gösteriyoruz
+        }
+
+
+        // EditProfile Action
+        [Authorize]
+        public async Task<IActionResult> EditProfile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var model = new EditProfileViewModel
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                DateOfBirth = user.DateOfBirth
+            };
+
+            return View(model);
+        }
+
+
+        // Profil Düzenleme POST
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(EditProfileViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User); // Giriş yapan kullanıcıyı alıyoruz
+                if (user == null)
+                {
+                    return View(model); // Eğer kullanıcı bulunamadıysa, düzenleme formunu tekrar göster
+                }
+
+                // Kullanıcı bilgilerini güncelliyoruz
+                user.FullName = model.FullName;
+                user.Email = model.Email;
+                user.PhoneNumber = model.PhoneNumber;
+                user.DateOfBirth = model.DateOfBirth;
+                user.Gender = model.Gender;
+
+                // Bilgileri kaydediyoruz
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    // Profil güncelleme başarılı ise, profil sayfasına yönlendiriyoruz
+                    return RedirectToAction("Profile");
+                }
+                else
+                {
+                    // Profil güncellenirken bir hata oluştuysa, hata mesajını göster
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+            return View(model); // Hata varsa düzenleme formunu yeniden göster
+        }
+
+        // Kullanıcı Çıkışı
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home"); // Çıkış yaptıktan sonra anasayfaya yönlendiriyoruz
+        }
     }
 }

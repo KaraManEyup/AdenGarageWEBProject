@@ -21,6 +21,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 8;
     options.Password.RequiredUniqueChars = 1;
+
 })
     .AddEntityFrameworkStores<AdenGarageDbContext>()
     .AddDefaultTokenProviders();

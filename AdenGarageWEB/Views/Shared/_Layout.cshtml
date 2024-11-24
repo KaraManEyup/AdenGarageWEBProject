@@ -9,7 +9,48 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
     <style>
-        /* Yan Menü (Sidebar) */
+        /* Navbar Styling */
+        .nav-link {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .btn-custom {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-login {
+            background-color: #007bff;
+            color: white;
+        }
+
+            .btn-login:hover {
+                background-color: #0056b3;
+            }
+
+        .btn-register {
+            background-color: #28a745;
+            color: white;
+        }
+
+            .btn-register:hover {
+                background-color: #218838;
+            }
+
+        .btn-profile {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+            .btn-profile:hover {
+                background-color: #138496;
+            }
+
+        /* Sidebar Styling */
         .sidebar {
             position: fixed;
             top: 0;
@@ -85,6 +126,30 @@
                     <li><a href="@Url.Action("Index", "Musteris")" class="nav-link">Müşteriler</a></li>
                     <li><a href="@Url.Action("Index", "Arabas")" class="nav-link">Arabalar</a></li>
                     <li><a href="@Url.Action("Create", "Musteris")" class="nav-link btn-add">+ Müşteri Ekle</a></li>
+
+                    <!-- Giriş ve Kayıt Butonları veya Profil -->
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>
+                            <a href="@Url.Action("Profile", "Account")" class="nav-link btn-custom btn-profile">Profil</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="document.getElementById('logoutForm').submit();" class="nav-link btn-custom btn-profile">Çıkış Yap</a>
+
+                            <form id="logoutForm" action="@Url.Action("Logout", "Account")" method="post" style="display: none;">
+                                @Html.AntiForgeryToken()
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="@Url.Action("Login", "Account")" class="nav-link btn-custom btn-login">Giriş Yap</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Register", "Account")" class="nav-link btn-custom btn-register">Kayıt Ol</a>
+                        </li>
+                    }
                 </ul>
 
                 <!-- Mobil Menü Toggler -->
@@ -95,6 +160,7 @@
                 </div>
             </div>
         </nav>
+
     </header>
 
     <!-- Yan Menü (Sidebar) -->

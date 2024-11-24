@@ -1,0 +1,129 @@
+﻿@model ApplicationUser
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <!-- Profil Kartı -->
+            <div class="card shadow-lg border-0 rounded-xl">
+                <div class="card-header text-center bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500 text-white">
+                    <h2 class="mb-0 font-weight-bold">Profil Bilgileriniz</h2>
+                </div>
+                <div class="card-body p-5">
+                    <div class="d-flex flex-column align-items-center">
+                        <!-- Profil İkonu -->
+                        <div class="mb-4">
+                            <i class="fas fa-user-circle fa-6x profile-icon"></i>
+                        </div>
+                        
+                        <!-- Kullanıcı Adı -->
+                        <h3 class="font-weight-bold mb-2 text-dark">@Model.FullName</h3>
+                        
+                        <!-- Kullanıcı Bilgileri -->
+                        <div class="row w-100">
+                            <div class="col-md-6">
+                                <p class="lead"><i class="fas fa-envelope"></i> <strong>Email:</strong> @Model.Email</p>
+                                <p class="lead"><i class="fas fa-birthday-cake"></i> <strong>Doğum Tarihi:</strong> @Model.UserName</p>
+                            </div>
+                            <div class="col-md-6">
+           @*                      <p class="lead"><i class="fas fa-id-card"></i> <strong>Kullanıcı ID:</strong> @Model.Id</p>
+                                <p class="lead"><i class="fas fa-calendar-alt"></i> <strong>Üyelik Tarihi:</strong> @Model.RegistrationDate.ToString("dd/MM/yyyy")</p>
+                                <p class="lead"><i class="fas fa-cogs"></i> <strong>Rol:</strong> @Model.Role</p>
+                                <p class="lead"><i class="fas fa-globe"></i> <strong>Websitesi:</strong> @Model.Website</p> *@
+                            </div>
+                        </div>
+
+                        <!-- Profil Düzenle Butonu -->
+                        <div class="mt-4">
+                            <a href="@Url.Action("EditProfile", "Account")" class="btn btn-primary btn-lg btn-hover">Profil Düzenle</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome CDN -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+<!-- Extra Styling -->
+<style>
+    /* Profil İkonu */
+    .profile-icon {
+        color: #6c757d; /* Gri renk */
+        border-radius: 50%;
+        background: #fff;
+        padding: 25px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Profil Kartı - Modern Tasarım */
+    .card {
+        border-radius: 20px;
+        background: #fff;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    /* Gradient Header */
+    .card-header {
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        color: white;
+    }
+
+    /* Button Hover Efekti */
+    .btn-hover {
+        transition: all 0.3s ease;
+    }
+
+    .btn-hover:hover {
+        background: linear-gradient(to right, #ff7e5f, #feb47b);
+        color: #fff;
+        transform: scale(1.1);
+    }
+
+    /* Kartı Gölgelendirme */
+    .shadow-lg {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Genel Düzen */
+    .card-body {
+        background-color: #f7f8fa;
+        border-radius: 20px;
+    }
+
+    /* Yazı ve Buton Stilleri */
+    h2, h3, p {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .lead {
+        font-size: 1.1rem;
+        font-weight: 400;
+    }
+
+    .font-weight-bold {
+        font-weight: 600;
+    }
+
+    /* Mobil uyumluluk */
+  
+
+    /* Bilgiler Arasındaki Mesafe */
+    .lead {
+        margin-bottom: 10px;
+    }
+
+    /* İkon Renkleri */
+    .fas {
+        color: #6c757d;
+    }
+
+    .fas:hover {
+        color: #007bff;
+    }
+</style>

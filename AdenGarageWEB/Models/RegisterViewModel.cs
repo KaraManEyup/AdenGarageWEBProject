@@ -2,31 +2,35 @@
 
 public class RegisterViewModel
 {
-    [Required(ErrorMessage = "Ad Soyad gereklidir.")]
-    [StringLength(100, ErrorMessage = "Ad Soyad en fazla 100 karakter olabilir.")]
-    public string FullName { get; set; }
-
-    [Required(ErrorMessage = "Email gereklidir.")]
-    [EmailAddress(ErrorMessage = "Geçerli bir email adresi girin.")]
+    [Required]
+    [Display(Name = "Email")]
     public string Email { get; set; }
 
-    [Required(ErrorMessage = "Telefon numarası gereklidir.")]
-    [Phone(ErrorMessage = "Geçerli bir telefon numarası girin.")]
-    public string PhoneNumber { get; set; }
-
-    [DataType(DataType.Date)]
-    public DateTime? DateOfBirth { get; set; }
-
-    [Required(ErrorMessage = "Cinsiyet seçimi gereklidir.")]
-    public string Gender { get; set; } 
-
-    [Required(ErrorMessage = "Şifre gereklidir.")]
-    [StringLength(100, ErrorMessage = "Şifre en az {2} ve en fazla {1} karakter olabilir.", MinimumLength = 6)]
+    [Required]
     [DataType(DataType.Password)]
+    [Display(Name = "Password")]
     public string Password { get; set; }
 
-    [Required(ErrorMessage = "Şifre doğrulama gereklidir.")]
     [DataType(DataType.Password)]
-    [Compare("Password", ErrorMessage = "Şifreler uyuşmuyor.")]
+    [Display(Name = "Confirm Password")]
+    [Compare("Password", ErrorMessage = "Passwords do not match.")]
     public string ConfirmPassword { get; set; }
+
+    [Required]
+    [Display(Name = "First Name")]
+    public string FirstName { get; set; }
+
+    [Required]
+    [Display(Name = "Last Name")]
+    public string LastName { get; set; }
+
+    [DataType(DataType.Date)]
+    [Display(Name = "Date of Birth")]
+    public DateTime? DateOfBirth { get; set; }
+
+    [Display(Name = "Address")]
+    public string Address { get; set; }
+
+    [Display(Name = "Gender")]
+    public string Gender { get; set; }
 }

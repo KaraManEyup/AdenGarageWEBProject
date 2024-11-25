@@ -7,7 +7,7 @@ namespace AdenGarageWEB.DataAccess
     public class AdenGarageDbContext : IdentityDbContext<ApplicationUser>
     {
         public AdenGarageDbContext(DbContextOptions<AdenGarageDbContext> options)
-            : base(options)
+          : base(options)
         {
         }
 

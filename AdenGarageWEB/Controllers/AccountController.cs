@@ -1,15 +1,22 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;  // IEmailSender arayüzü
 using Microsoft.AspNetCore.Mvc;
+using MimeKit.Encodings; 
+using System.Text.Encodings.Web; // URL kodlaması için
+
 
 public class AccountController : Controller
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
-
-    public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+    private readonly IEmailSender _emailSender;
+    private readonly UrlEncoder _urlEncoder;
+    public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender, UrlEncoder urlEncoder)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _emailSender = emailSender;
+        _urlEncoder = urlEncoder;
     }
 
     [HttpGet]
@@ -22,8 +29,8 @@ public class AccountController : Controller
         {
             var user = new ApplicationUser
             {
-                UserName = model.FirstName, // Kullanıcı Adı
-                Email = model.Email,      // E-posta
+                UserName = model.Email,
+                Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 DateOfBirth = model.DateOfBirth,
@@ -32,12 +39,24 @@ public class AccountController : Controller
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
+
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Home");
+                // E-posta doğrulama token'ını oluştur
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodedToken = _urlEncoder.Encode(token); // Token'ı URL'ye güvenli hale getir
+                var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = encodedToken }, Request.Scheme);
+
+                // E-posta gönder
+                await _emailSender.SendEmailAsync(model.Email, "E-posta Doğrulama",
+                    $"Hesabınızı doğrulamak için <a href='{confirmationLink}'>bu bağlantıyı</a> tıklayın.");
+
+                TempData["EmailSent"] = "E-posta adresinize doğrulama linki gönderildi.";
+
+                return RedirectToAction("RegisterConfirmation");
             }
 
+            // Hata varsa
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
@@ -46,6 +65,44 @@ public class AccountController : Controller
 
         return View(model);
     }
+
+    public IActionResult RegisterConfirmation()
+    {
+        return View();  // Bu, RegisterConfirmation.cshtml view'ini döndürecektir
+    }
+
+    public async Task<IActionResult> ConfirmEmail(string userId, string token)
+    {
+        if (userId == null || token == null)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        var result = await _userManager.ConfirmEmailAsync(user, token);
+        if (result.Succeeded)
+        {
+            return RedirectToAction("ConfirmEmailSuccess");
+        }
+
+        return RedirectToAction("ConfirmEmailFailed");
+    }
+
+    public IActionResult ConfirmEmailSuccess()
+    {
+        return View(); // Başarılı e-posta doğrulama mesajı
+    }
+
+    public IActionResult ConfirmEmailFailed()
+    {
+        return View(); // Hatalı doğrulama mesajı
+    }
+
 
     [HttpGet]
     public IActionResult Login() => View();

@@ -1,36 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 public class RegisterViewModel
 {
     [Required]
-    [Display(Name = "Email")]
+    [EmailAddress]
     public string Email { get; set; }
 
     [Required]
-    [DataType(DataType.Password)]
-    [Display(Name = "Password")]
+    [StringLength(100, ErrorMessage = "Şifre en az {2} karakter olmalıdır.", MinimumLength = 6)]
     public string Password { get; set; }
 
-    [DataType(DataType.Password)]
-    [Display(Name = "Confirm Password")]
-    [Compare("Password", ErrorMessage = "Passwords do not match.")]
+    [Required]
+    [Compare("Password", ErrorMessage = "Şifreler uyuşmuyor.")]
     public string ConfirmPassword { get; set; }
 
     [Required]
-    [Display(Name = "First Name")]
     public string FirstName { get; set; }
 
     [Required]
-    [Display(Name = "Last Name")]
     public string LastName { get; set; }
 
-    [DataType(DataType.Date)]
-    [Display(Name = "Date of Birth")]
-    public DateTime? DateOfBirth { get; set; }
+    [Required]
+    public DateTime DateOfBirth { get; set; }
 
-    [Display(Name = "Address")]
+    [Required]
     public string Address { get; set; }
 
-    [Display(Name = "Gender")]
+    [Required]
     public string Gender { get; set; }
 }

@@ -185,7 +185,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
-                            <a href="@Url.Action("Profile", "Account")" class="nav-link">Profil</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="Profile">Profil</a>
                         </li>
                         <li class="nav-item">
                             <a href="@Url.Action("Logout", "Account")" class="nav-link">Çıkış Yap</a>

@@ -1,0 +1,177 @@
+﻿@model ProfileViewModel
+
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <img src="https://via.placeholder.com/150" alt="Profil Fotoğrafı">
+        </div>
+        <div class="profile-info">
+            <h1>@Model.FirstName @Model.LastName</h1>
+            <p><i class="fa fa-envelope"></i> @Model.Email</p>
+            <p><i class="fa fa-car"></i> Araç Sahibi</p>
+        </div>
+    </div>
+
+    <div class="profile-details">
+        <div class="card">
+            <h3><i class="fa fa-cogs"></i> Profil Bilgileri</h3>
+            <div class="info-group">
+                <div class="info-item">
+                    <strong>Doğum Tarihi:</strong>
+                    <p>@Model.DateOfBirth?.ToString("dd-MM-yyyy")</p>
+                </div>
+                <div class="info-item">
+                    <strong>Adres:</strong>
+                    <p>@Model.Address</p>
+                </div>
+                <div class="info-item">
+                    <strong>Cinsiyet:</strong>
+                    <p>@Model.Gender</p>
+                </div>
+              @*   <div class="info-item">
+                    <strong>İlgi Alanları:</strong>
+                    <p>Otomotiv, Yedek Parça, Tamir</p>
+                </div> *@
+            </div>
+            <a href="@Url.Action("EditProfile", "Account")" class="btn-edit">Profili Düzenle</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Genel Sayfa Stili */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #F2F4F8;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    /* Profil Konteyneri */
+    .profile-container {
+        max-width: 1200px;
+        margin: 50px auto;
+        background-color: #FFFFFF;
+        border-radius: 20px;
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* Profil Başlık ve Avatar */
+    .profile-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #00b4d8, #2e8b57);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        margin-bottom: 30px;
+    }
+
+    .profile-avatar img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 5px solid #fff;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-info {
+        margin-left: 25px;
+        color: #fff;
+        text-align: center;
+    }
+
+    .profile-info h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .profile-info p {
+        font-size: 1.2rem;
+        margin: 5px 0;
+    }
+
+    .profile-info i {
+        margin-right: 8px;
+        font-size: 1.3rem;
+    }
+
+    /* Profil Detayları */
+    .profile-details {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+        color: #555;
+    }
+
+    .card h3 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #2e8b57;
+        display: flex;
+        align-items: center;
+    }
+
+    .card h3 i {
+        margin-right: 10px;
+    }
+
+    .info-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .info-item {
+        background-color: #f4f7fb;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .info-item strong {
+        font-size: 1.1rem;
+        color: #333;
+    }
+
+    .info-item p {
+        font-size: 1.1rem;
+        color: #777;
+    }
+
+    /* Düzenle Butonu */
+    .btn-edit {
+        display: inline-block;
+        background-color: #2e8b57;
+        color: #fff;
+        padding: 12px 30px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        text-align: center;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        margin-top: 30px;
+    }
+
+    .btn-edit:hover {
+        background-color: #219150;
+        transform: translateY(-2px);
+    }
+
+  
+</style>

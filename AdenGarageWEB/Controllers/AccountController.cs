@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;  // IEmailSender arayüzü
 using Microsoft.AspNetCore.Mvc;
-using MimeKit.Encodings; 
+using MimeKit.Encodings;
 using System.Text.Encodings.Web; // URL kodlaması için
 
 
@@ -119,6 +119,131 @@ public class AccountController : Controller
 
             ModelState.AddModelError("", "Geçersiz giriş denemesi.");
         }
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Profile()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+        {
+            return RedirectToAction("Login");
+        }
+
+
+
+        var model = new ProfileViewModel
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            DateOfBirth = user.DateOfBirth,
+            Address = user.Address,
+            Gender = user.Gender
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Profile(ProfileViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        // Şu an giriş yapan kullanıcıyı alıyoruz
+        var user = await _userManager.GetUserAsync(User);
+
+        if (user == null)
+        {
+            return RedirectToAction("Login");
+        }
+
+        // Kullanıcı bilgilerini güncelliyoruz
+        user.FirstName = model.FirstName;
+        user.LastName = model.LastName;
+        user.DateOfBirth = model.DateOfBirth;
+        user.Address = model.Address;
+        user.Gender = model.Gender;
+        user.Email = model.Email;
+
+        var result = await _userManager.UpdateAsync(user);
+
+        if (result.Succeeded)
+        {
+            ViewBag.SuccessMessage = "Profiliniz başarıyla güncellendi.";
+            return View(model);
+        }
+
+        // Güncelleme sırasında hata varsa, bunları gösteriyoruz
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+
+        return View(model);
+    }
+
+    public async Task<IActionResult> EditProfile()
+    {
+        var userId = _userManager.GetUserId(User); 
+        var user = await _userManager.FindByIdAsync(userId); 
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        var model = new EditProfileViewModel
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            DateOfBirth = user.DateOfBirth,  
+            Address = user.Address,
+            Gender = user.Gender
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditProfile(EditProfileViewModel model)
+    {
+
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+        {
+            return RedirectToAction("Login");
+        }
+
+        user.FirstName = model.FirstName;
+        user.LastName = model.LastName;
+        user.Email = model.Email;
+        user.DateOfBirth = model.DateOfBirth;
+        user.Address = model.Address;
+        user.Gender = model.Gender;
+
+        var result = await _userManager.UpdateAsync(user);
+        if (result.Succeeded)
+        {
+            TempData["SuccessMessage"] = "Profiliniz başarıyla güncellendi.";
+            return RedirectToAction("Profile");
+        }
+
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+
         return View(model);
     }
 

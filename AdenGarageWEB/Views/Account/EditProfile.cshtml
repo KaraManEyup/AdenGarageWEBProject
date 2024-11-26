@@ -1,0 +1,118 @@
+﻿@model EditProfileViewModel
+
+@{
+    ViewData["Title"] = "Profil Düzenle";
+}
+
+<!-- Profil Düzenle Sayfası -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <!-- Profil Kartı -->
+            <div class="card shadow-sm border-0 rounded-4" style="background-color: #ffffff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+                <div class="card-header text-center p-4" style="background-color: #4CAF50; color: white; border-radius: 10px 10px 0 0;">
+                    <h3 class="mb-0">Profilinizi Düzenleyin</h3>
+                </div>
+                <div class="card-body p-5">
+                    <form asp-action="EditProfile" method="post">
+                        
+                        <!-- Ad -->
+                        <div class="form-group mb-3">
+                            <label for="FirstName" class="form-label">Ad</label>
+                            <input type="text" class="form-control form-control-lg" id="FirstName" name="FirstName" value="@Model.FirstName" required />
+                        </div>
+
+                        <!-- Soyad -->
+                        <div class="form-group mb-3">
+                            <label for="LastName" class="form-label">Soyad</label>
+                            <input type="text" class="form-control form-control-lg" id="LastName" name="LastName" value="@Model.LastName" required />
+                        </div>
+
+                        <!-- E-posta -->
+                        <div class="form-group mb-3">
+                            <label for="Email" class="form-label">E-posta</label>
+                            <input type="email" class="form-control form-control-lg" id="Email" name="Email" value="@Model.Email" readonly />
+                        </div>
+
+                        <!-- Doğum Tarihi -->
+                        <div class="form-group mb-3">
+                            <label for="DateOfBirth" class="form-label">Doğum Tarihi</label>
+                            <input type="date" class="form-control form-control-lg" id="DateOfBirth" name="DateOfBirth" value="@Model.DateOfBirth?.ToString("yyyy-MM-dd")" />
+                        </div>
+
+                        <!-- Adres -->
+                        <div class="form-group mb-3">
+                            <label for="Address" class="form-label">Adres</label>
+                            <input type="text" class="form-control form-control-lg" id="Address" name="Address" value="@Model.Address" required />
+                        </div>
+
+                        <!-- Cinsiyet -->
+                        <div class="form-group">
+                            <label for="Gender">Cinsiyet</label>
+                            <select class="form-control" id="Gender" name="Gender" required>
+                                <option value="">Seçiniz</option>
+                                <option value="Male">Erkek</option>
+                                <option value="Female">Kadın</option>
+                                <option value="Other">Diğer</option>
+                            </select>
+                        </div>
+
+                        <!-- Güncelle Butonu -->
+                        <button type="submit" class="btn btn-success btn-lg w-100" style="transition: all 0.3s ease;">
+                            Profil Güncelle
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS Animasyonları ve Etkileşimler -->
+<style>
+    /* Kart Hover Efekti */
+    .card {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Buton Hover Efekti */
+    .btn:hover {
+        background-color: #45a049;
+        border-color: #45a049;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Input ve Select Elementleri */
+    .form-control, .form-select {
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        border-color: #28a745;
+    }
+
+    /* Başlık Stil */
+    .card-header h3 {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+
+    /* Form Alanları */
+    .form-group label {
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    /* Genel Stil */
+    .container {
+        max-width: 1200px;
+    }
+</style>

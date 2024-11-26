@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class v3 : Migration
+    public partial class v2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +30,11 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -48,6 +53,21 @@ namespace DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Musteriler",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Isim = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Soyisim = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Telefon = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Musteriler", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,6 +176,36 @@ namespace DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Arabalar",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Marka = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Plaka = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Km = table.Column<int>(type: "int", nullable: false),
+                    Islem = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tarih = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    MusteriId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Arabalar", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Arabalar_Musteriler_MusteriId",
+                        column: x => x.MusteriId,
+                        principalTable: "Musteriler",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Arabalar_MusteriId",
+                table: "Arabalar",
+                column: "MusteriId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -200,6 +250,9 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Arabalar");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -213,6 +266,9 @@ namespace DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Musteriler");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

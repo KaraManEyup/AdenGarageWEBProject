@@ -25,7 +25,17 @@ html, body {
 .container-fluid {
     flex-grow: 1;
 }
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
 
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 /* Footer */
 .fixed-footer {
     position: relative;
@@ -425,5 +435,16 @@ hr {
 
     .nav-menu.active {
         display: flex;
+    }
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

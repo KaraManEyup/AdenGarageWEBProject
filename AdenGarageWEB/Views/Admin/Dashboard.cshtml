@@ -1,0 +1,72 @@
+﻿@model IEnumerable<UserWithRolesViewModel>
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Admin Dashboard</h1>
+
+    <!-- Kullanıcı Tablosu -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Ad</th>
+                    <th>Soyad</th>
+                    <th>Email</th>
+                    <th>Doğum Tarihi</th>
+                    <th>Adres</th>
+                    <th>Cinsiyet</th>
+                    <th>Roller</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    int counter = 1;
+                    foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@counter</td>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>@user.Email</td>
+                            <td>@user.DateOfBirth</td>
+                            <td>@user.Address</td>
+                            <td>@user.Gender</td>
+                            <td>
+                                @foreach (var role in user.Roles)
+                                {
+                                    <span class="badge bg-primary">@role</span>
+                                }
+                            </td>
+                            <td>
+                                <!-- Kullanıcıyı Düzenleme -->
+                                <a asp-action="EditUser" asp-route-userId="@user.UserId" class="btn btn-sm btn-warning">
+                                    <i class="fa fa-edit"></i> Düzenle
+                                </a>
+
+                                <!-- Kullanıcıyı Silme -->
+                                <form asp-action="DeleteUser" asp-route-userId="@user.UserId" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?');">
+                                        <i class="fa fa-trash"></i> Sil
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        counter++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" class="text-center">Hiç kullanıcı bulunamadı.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

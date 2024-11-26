@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AdenGarageDbContext))]
-    [Migration("20241126174506_v1")]
+    [Migration("20241126212816_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -34,7 +34,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -107,6 +106,48 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "admin-id",
+                            AccessFailedCount = 0,
+                            Address = "Admin Address",
+                            ConcurrencyStamp = "6f93316a-799e-45e4-b0cc-7d1dda8ce74b",
+                            DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@adengarage.com",
+                            EmailConfirmed = true,
+                            FirstName = "Admin",
+                            Gender = "Male",
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@ADENGARAGE.COM",
+                            NormalizedUserName = "ADMIN@ADENGARAGE.COM",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "e84c604e-3cdd-4e65-8089-97919d768142",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@adengarage.com"
+                        },
+                        new
+                        {
+                            Id = "user-id",
+                            AccessFailedCount = 0,
+                            Address = "User Address",
+                            ConcurrencyStamp = "64d29656-6473-4bca-8864-ba9664a8fea7",
+                            DateOfBirth = new DateTime(1995, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "user@adengarage.com",
+                            EmailConfirmed = true,
+                            FirstName = "User",
+                            Gender = "Female",
+                            LastName = "Example",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "USER@ADENGARAGE.COM",
+                            NormalizedUserName = "USER@ADENGARAGE.COM",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "54b259d9-595a-4fbf-a972-c5577b78c8e7",
+                            TwoFactorEnabled = false,
+                            UserName = "user@adengarage.com"
+                        });
                 });
 
             modelBuilder.Entity("Core.Models.Araba", b =>
@@ -199,6 +240,20 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -286,6 +341,18 @@ namespace DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "admin-id",
+                            RoleId = "1"
+                        },
+                        new
+                        {
+                            UserId = "user-id",
+                            RoleId = "2"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

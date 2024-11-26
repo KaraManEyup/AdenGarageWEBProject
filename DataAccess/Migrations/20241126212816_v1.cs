@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class v2 : Migration
+    public partial class v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,7 +35,7 @@ namespace DataAccess.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -199,6 +201,33 @@ namespace DataAccess.Migrations
                         principalTable: "Musteriler",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "1", null, "Admin", "ADMIN" },
+                    { "2", null, "User", "USER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "Gender", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "admin-id", 0, "Admin Address", "6f93316a-799e-45e4-b0cc-7d1dda8ce74b", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@adengarage.com", true, "Admin", "Male", "User", false, null, "ADMIN@ADENGARAGE.COM", "ADMIN@ADENGARAGE.COM", null, null, false, "e84c604e-3cdd-4e65-8089-97919d768142", false, "admin@adengarage.com" },
+                    { "user-id", 0, "User Address", "64d29656-6473-4bca-8864-ba9664a8fea7", new DateTime(1995, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "user@adengarage.com", true, "User", "Female", "Example", false, null, "USER@ADENGARAGE.COM", "USER@ADENGARAGE.COM", null, null, false, "54b259d9-595a-4fbf-a972-c5577b78c8e7", false, "user@adengarage.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "1", "admin-id" },
+                    { "2", "user-id" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -181,15 +181,31 @@
                     <li class="nav-item">
                         <a href="@Url.Action("Create", "Musteris")" class="nav-link">+ Müşteri Ekle</a>
                     </li>
+                    <li class="nav-item">
+                        <form asp-controller="Account" asp-action="SeedData" method="post">
+                            <button type="submit" class="btn btn-success">Seed İşlemi Yap</button>
+                        </form>
+                    </li>
+                    @{
+                        var seedSuccess = TempData["SeedSuccess"];
+                        if (seedSuccess != null)
+                        {
+                            <div class="alert alert-success">
+                                @seedSuccess
+                            </div>
+                        }
+                    }
+
 
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Account" asp-action="Profile">Profil</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Logout", "Account")" class="nav-link">Çıkış Yap</a>
-                        </li>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit" class="btn btn-danger">Çıkış Yap</button>
+                        </form>
+
                     }
                     else
                     {
@@ -200,6 +216,13 @@
                             <a href="@Url.Action("Register", "Account")" class="nav-link">Kayıt Ol</a>
                         </li>
                     }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a>
+                        </li>
+                    }
+
                 </ul>
             </div>
         </nav>

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;  // IEmailSender arayüzü
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit.Encodings;
-using System.Text.Encodings.Web; // URL kodlaması için
-
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 public class AccountController : Controller
 {
@@ -11,17 +11,27 @@ public class AccountController : Controller
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IEmailSender _emailSender;
     private readonly UrlEncoder _urlEncoder;
-    public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender, UrlEncoder urlEncoder)
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+    public AccountController(
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager,
+        IEmailSender emailSender,
+        UrlEncoder urlEncoder,
+        RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _emailSender = emailSender;
         _urlEncoder = urlEncoder;
+        _roleManager = roleManager;
     }
 
+    // GET: Register Page
     [HttpGet]
     public IActionResult Register() => View();
 
+    // POST: Register Page
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
@@ -42,12 +52,14 @@ public class AccountController : Controller
 
             if (result.Succeeded)
             {
+                // Kullanıcıya rol ataması
+                var roleResult = await _userManager.AddToRoleAsync(user, "User");  // Varsayılan 'User' rolü
+
                 // E-posta doğrulama token'ını oluştur
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var encodedToken = _urlEncoder.Encode(token); // Token'ı URL'ye güvenli hale getir
+                var encodedToken = _urlEncoder.Encode(token);
                 var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = encodedToken }, Request.Scheme);
 
-                // E-posta gönder
                 await _emailSender.SendEmailAsync(model.Email, "E-posta Doğrulama",
                     $"Hesabınızı doğrulamak için <a href='{confirmationLink}'>bu bağlantıyı</a> tıklayın.");
 
@@ -66,47 +78,54 @@ public class AccountController : Controller
         return View(model);
     }
 
-    public IActionResult RegisterConfirmation()
+    [HttpPost]
+    public async Task<IActionResult> SeedData()
     {
-        return View();  // Bu, RegisterConfirmation.cshtml view'ini döndürecektir
-    }
-
-    public async Task<IActionResult> ConfirmEmail(string userId, string token)
-    {
-        if (userId == null || token == null)
+        // Admin rolünü oluştur
+        var roleExist = await _roleManager.RoleExistsAsync("Admin");
+        if (!roleExist)
         {
-            return RedirectToAction("Index", "Home");
+            await _roleManager.CreateAsync(new IdentityRole("Admin"));
         }
 
-        var user = await _userManager.FindByIdAsync(userId);
+        // Admin kullanıcısını kontrol et
+        var user = await _userManager.FindByEmailAsync("eyupskaraman@gmail.com");
+
         if (user == null)
         {
-            return RedirectToAction("Index", "Home");
+            // Admin kullanıcısını oluştur
+            user = new ApplicationUser
+            {
+                UserName = "eyupskaraman@gmail.com",
+                Email = "eyupskaraman@gmail.com",
+                FirstName = "EyupADmin",
+                LastName = "Admin",
+                EmailConfirmed = true,
+                DateOfBirth = new DateTime(1990, 1, 1),
+                Address = "Admin Address",
+                Gender = "Male"
+            };
+
+            var result = await _userManager.CreateAsync(user, "Admin1234!"); // Admin şifresi
+
+            if (result.Succeeded)
+            {
+                // Admin rolünü ekle
+                await _userManager.AddToRoleAsync(user, "Admin");
+            }
         }
 
-        var result = await _userManager.ConfirmEmailAsync(user, token);
-        if (result.Succeeded)
-        {
-            return RedirectToAction("ConfirmEmailSuccess");
-        }
-
-        return RedirectToAction("ConfirmEmailFailed");
-    }
-
-    public IActionResult ConfirmEmailSuccess()
-    {
-        return View(); // Başarılı e-posta doğrulama mesajı
-    }
-
-    public IActionResult ConfirmEmailFailed()
-    {
-        return View(); // Hatalı doğrulama mesajı
+        // Başarı mesajı döndür
+        TempData["SeedSuccess"] = "Admin hesabı ve rol başarıyla oluşturuldu!";
+        return RedirectToAction("Index", "Home");  // Ana sayfaya yönlendir
     }
 
 
+    // GET: Login Page
     [HttpGet]
     public IActionResult Login() => View();
 
+    // POST: Login Page
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
@@ -122,6 +141,7 @@ public class AccountController : Controller
         return View(model);
     }
 
+    // GET: Profile View
     [HttpGet]
     public async Task<IActionResult> Profile()
     {
@@ -130,8 +150,6 @@ public class AccountController : Controller
         {
             return RedirectToAction("Login");
         }
-
-
 
         var model = new ProfileViewModel
         {
@@ -146,6 +164,7 @@ public class AccountController : Controller
         return View(model);
     }
 
+    // POST: Update Profile
     [HttpPost]
     public async Task<IActionResult> Profile(ProfileViewModel model)
     {
@@ -154,7 +173,6 @@ public class AccountController : Controller
             return View(model);
         }
 
-        // Şu an giriş yapan kullanıcıyı alıyoruz
         var user = await _userManager.GetUserAsync(User);
 
         if (user == null)
@@ -162,7 +180,7 @@ public class AccountController : Controller
             return RedirectToAction("Login");
         }
 
-        // Kullanıcı bilgilerini güncelliyoruz
+        // Update user profile details
         user.FirstName = model.FirstName;
         user.LastName = model.LastName;
         user.DateOfBirth = model.DateOfBirth;
@@ -178,7 +196,7 @@ public class AccountController : Controller
             return View(model);
         }
 
-        // Güncelleme sırasında hata varsa, bunları gösteriyoruz
+        // If update fails, show errors
         foreach (var error in result.Errors)
         {
             ModelState.AddModelError(string.Empty, error.Description);
@@ -187,10 +205,12 @@ public class AccountController : Controller
         return View(model);
     }
 
+    // GET: Edit Profile Page
+    [HttpGet]
     public async Task<IActionResult> EditProfile()
     {
-        var userId = _userManager.GetUserId(User); 
-        var user = await _userManager.FindByIdAsync(userId); 
+        var userId = _userManager.GetUserId(User);
+        var user = await _userManager.FindByIdAsync(userId);
 
         if (user == null)
         {
@@ -202,7 +222,7 @@ public class AccountController : Controller
             FirstName = user.FirstName,
             LastName = user.LastName,
             Email = user.Email,
-            DateOfBirth = user.DateOfBirth,  
+            DateOfBirth = user.DateOfBirth,
             Address = user.Address,
             Gender = user.Gender
         };
@@ -210,10 +230,10 @@ public class AccountController : Controller
         return View(model);
     }
 
+    // POST: Update Profile from EditPage
     [HttpPost]
     public async Task<IActionResult> EditProfile(EditProfileViewModel model)
     {
-
         if (!ModelState.IsValid)
         {
             return View(model);
@@ -239,6 +259,7 @@ public class AccountController : Controller
             return RedirectToAction("Profile");
         }
 
+        // If update fails, show errors
         foreach (var error in result.Errors)
         {
             ModelState.AddModelError(string.Empty, error.Description);
@@ -247,7 +268,50 @@ public class AccountController : Controller
         return View(model);
     }
 
+    // Confirm Email Action
+    public async Task<IActionResult> ConfirmEmail(string userId, string token)
+    {
+        if (userId == null || token == null)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        var result = await _userManager.ConfirmEmailAsync(user, token);
+        if (result.Succeeded)
+        {
+            return RedirectToAction("ConfirmEmailSuccess");
+        }
+
+        return RedirectToAction("ConfirmEmailFailed");
+    }
+
+    // Registration Confirmation View
+    public IActionResult RegisterConfirmation()
+    {
+        return View();
+    }
+
+    // Email Confirmation Success View
+    public IActionResult ConfirmEmailSuccess()
+    {
+        return View();
+    }
+
+    // Email Confirmation Failed View
+    public IActionResult ConfirmEmailFailed()
+    {
+        return View();
+    }
+
+    // Logout Action
     [HttpPost]
+    [ValidateAntiForgeryToken] // Güvenlik için CSRF koruması ekleyin
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();

@@ -1,0 +1,27 @@
+﻿@model EditUserRolesViewModel
+
+@{
+    ViewData["Title"] = "Rolleri Düzenle";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Rolleri Düzenle: @Model.Email</h1>
+
+    <form asp-action="EditRoles" method="post">
+        <input type="hidden" name="UserId" value="@Model.UserId" />
+
+        <div class="form-group">
+            <label>Roller:</label>
+            @foreach (var role in Model.AllRoles)
+            {
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="SelectedRoles" value="@role" @(Model.UserRoles.Contains(role) ? "checked" : "") />
+                    <label class="form-check-label">@role</label>
+                </div>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-success">Kaydet</button>
+        <a asp-action="Dashboard" class="btn btn-secondary">Geri Dön</a>
+    </form>
+</div>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MimeKit.Encodings;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -30,6 +31,38 @@ public class AccountController : Controller
     // GET: Register Page
     [HttpGet]
     public IActionResult Register() => View();
+
+    [HttpGet]
+    public async Task<IActionResult> Dashboard()
+    {
+        // Tüm kullanıcıları getir
+        var users = await _userManager.Users.ToListAsync();
+
+        var userWithRoles = new List<UserWithRolesViewModel>();
+
+        // Kullanıcı bilgilerini ve rollerini modele dönüştür
+        foreach (var user in users)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+
+            userWithRoles.Add(new UserWithRolesViewModel
+            {
+                UserId = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                DateOfBirth = user.DateOfBirth?.ToString("yyyy-MM-dd"),
+                Address = user.Address,
+                Gender = user.Gender,
+                Roles = roles.ToList() // Roller listesi
+            });
+        }
+
+        // Kullanıcılar ve rolleri Dashboard görünümüne gönderiliyor
+        return View(userWithRoles);
+    }
+
+
 
     // POST: Register Page
     [HttpPost]
@@ -204,6 +237,67 @@ public class AccountController : Controller
 
         return View(model);
     }
+
+
+    [HttpGet]
+    public async Task<IActionResult> EditRoles(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return NotFound("Kullanıcı bulunamadı.");
+        }
+
+        var roles = await _roleManager.Roles.ToListAsync();
+        var userRoles = await _userManager.GetRolesAsync(user);
+
+        var model = new EditRolesViewModel
+        {
+            UserId = user.Id,
+            UserName = user.UserName,
+            Roles = roles.Select(r => new RoleSelectionViewModel
+            {
+                RoleName = r.Name,
+                IsSelected = userRoles.Contains(r.Name)
+            }).ToList()
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditRoles(EditRolesViewModel model)
+    {
+        var user = await _userManager.FindByIdAsync(model.UserId);
+        if (user == null)
+        {
+            return NotFound("Kullanıcı bulunamadı.");
+        }
+
+        var currentRoles = await _userManager.GetRolesAsync(user);
+        var selectedRoles = model.Roles.Where(r => r.IsSelected).Select(r => r.RoleName).ToList();
+
+        // Eski rolleri kaldır
+        var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles.Except(selectedRoles));
+        if (!removeResult.Succeeded)
+        {
+            ModelState.AddModelError("", "Roller kaldırılırken bir hata oluştu.");
+            return View(model);
+        }
+
+        // Yeni rolleri ekle
+        var addResult = await _userManager.AddToRolesAsync(user, selectedRoles.Except(currentRoles));
+        if (!addResult.Succeeded)
+        {
+            ModelState.AddModelError("", "Roller eklenirken bir hata oluştu.");
+            return View(model);
+        }
+
+        TempData["SuccessMessage"] = "Kullanıcı rolleri başarıyla güncellendi.";
+        return RedirectToAction("Dashboard");
+    }
+
+
 
     // GET: Edit Profile Page
     [HttpGet]

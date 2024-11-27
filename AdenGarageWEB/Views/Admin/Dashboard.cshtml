@@ -49,6 +49,11 @@
                                     <i class="fa fa-edit"></i> Düzenle
                                 </a>
 
+                                <!-- Rolleri Düzenleme -->
+                                <a asp-action="EditRoles" asp-route-userId="@user.UserId" class="btn btn-sm btn-info">
+                                    <i class="fa fa-users"></i> Rolleri Düzenle
+                                </a>
+
                                 <!-- Kullanıcıyı Silme -->
                                 <form asp-action="DeleteUser" asp-route-userId="@user.UserId" method="post" class="d-inline">
                                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?');">

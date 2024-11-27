@@ -131,4 +131,49 @@ public class AdminController : Controller
 
         return RedirectToAction("Dashboard");
     }
+    [HttpGet]
+    public async Task<IActionResult> EditRoles(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        var allRoles = _roleManager.Roles.Select(r => r.Name).ToList();
+        var userRoles = await _userManager.GetRolesAsync(user);
+
+        var model = new EditUserRolesViewModel
+        {
+            UserId = user.Id,
+            Email = user.Email,
+            UserRoles = userRoles.ToList(),
+            AllRoles = allRoles
+        };
+
+        return View(model);
+    }
+
+    // Kullanıcı Rolleri Düzenleme (POST)
+    [HttpPost]
+    public async Task<IActionResult> EditRoles(EditUserRolesViewModel model)
+    {
+        var user = await _userManager.FindByIdAsync(model.UserId);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        var userRoles = await _userManager.GetRolesAsync(user);
+
+        // Kullanıcıdan kaldırılacak roller
+        var rolesToRemove = userRoles.Except(model.SelectedRoles);
+        await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+
+        // Kullanıcıya eklenecek roller
+        var rolesToAdd = model.SelectedRoles.Except(userRoles);
+        await _userManager.AddToRolesAsync(user, rolesToAdd);
+
+        return RedirectToAction("Dashboard");
+    }
 }

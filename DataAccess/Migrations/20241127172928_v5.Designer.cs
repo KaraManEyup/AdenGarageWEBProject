@@ -4,6 +4,7 @@ using AdenGarageWEB.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AdenGarageDbContext))]
-    partial class AdenGarageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241127172928_v5")]
+    partial class v5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,7 +113,7 @@ namespace DataAccess.Migrations
                             Id = "admin-id",
                             AccessFailedCount = 0,
                             Address = "Admin Address",
-                            ConcurrencyStamp = "34a2f5c9-765d-4f49-92b5-b23a43173eb0",
+                            ConcurrencyStamp = "e16e522a-134b-4a7f-81e2-6b950e2924f5",
                             DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@adengarage.com",
                             EmailConfirmed = true,
@@ -121,7 +124,7 @@ namespace DataAccess.Migrations
                             NormalizedEmail = "ADMIN@ADENGARAGE.COM",
                             NormalizedUserName = "ADMIN@ADENGARAGE.COM",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f4224ce4-1db5-44e4-a7c0-f49ce4105407",
+                            SecurityStamp = "1f01fac1-a3e4-4203-a244-78ecf884a5c0",
                             TwoFactorEnabled = false,
                             UserName = "admin@adengarage.com"
                         },
@@ -130,7 +133,7 @@ namespace DataAccess.Migrations
                             Id = "user-id",
                             AccessFailedCount = 0,
                             Address = "User Address",
-                            ConcurrencyStamp = "743b6cef-feb4-4ea7-afa1-507c68782d1c",
+                            ConcurrencyStamp = "73c52485-bdc8-41e3-b79f-05463a64d079",
                             DateOfBirth = new DateTime(1995, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "user@adengarage.com",
                             EmailConfirmed = true,
@@ -141,7 +144,7 @@ namespace DataAccess.Migrations
                             NormalizedEmail = "USER@ADENGARAGE.COM",
                             NormalizedUserName = "USER@ADENGARAGE.COM",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7b3ed1b7-38a6-4fcb-8021-d4ea5e2e0340",
+                            SecurityStamp = "3a2c615b-3c7a-4cfb-9feb-c6d3563d93a6",
                             TwoFactorEnabled = false,
                             UserName = "user@adengarage.com"
                         });
